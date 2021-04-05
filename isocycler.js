@@ -68,3 +68,6 @@ doThingRecursivelyForVector(initialVector)
 solutions.forEach(solution => {
     console.log(solution.toString())
 })
+
+// TODO: and perhaps the error should actually be proportionate with the duration of the thing it's an error for
+//  So if it's a tiny error over 7 bars or something, that's a huge deal, but a borderline big error on 1 bar, maybe no
