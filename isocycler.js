@@ -105,8 +105,10 @@ solutions.forEach(solution => {
 
 // TODO: visual interface where you can:
 //  - Add a new voice with a + symbol in the next row
+//   Horizontal scroll, for when they get inevitably long? yeah it's just shift and scroll wheel, so that should be fine
 //  - There's a line across the top with tick marks and faint lines down for the units
 //  - Where no filled squares yet, empty or dotted-line squares the size of entire unit or remainder thereof
+//   Do them as SVGs, because I think that will work best for exporting for performance scores
 //  - You can select a sequence of existing squares or empty-squares, then the bank of possibilities updates w/r/t it
 //  - You should be able to click in the bank of possibilities to populate the score with some squares
 //  - Every voice's blank space should be sliced up by any other voice's boundaries, so you can always fit to any voice
@@ -116,6 +118,9 @@ solutions.forEach(solution => {
 //  - Might want to be able to ctrl+C ctrl+V copy paste squares around
 //  - Maybe it should highlight in red borders any squares that aren't the size of ones in your scale
 //  - What would the bank of possibilities look like? thumbnails of the squares you'd drag in? with some exact numbers?
+//   Snap points in vertical scroll for the bank which would be on the left column,
+//   to show how each pun aligns with the selection it’s a pun with (which is frozen at the top)
+//  - Could consider applying a spectrum of colors to the squares to help at a glance discern the pitch
 
 // TODO: perhaps a feature to snap something exactly to a unit bar, or whatever else
 
