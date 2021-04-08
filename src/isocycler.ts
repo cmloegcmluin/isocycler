@@ -1,23 +1,41 @@
-import {Duration, El, Er, Index, Max, Norm, Pun, Vector} from "./types"
+import {Duration, Count, Index, Max, Norm, Pun, Rpd, Vector} from "./types"
 
 // https://math.stackexchange.com/questions/793856/standard-notation-for-sum-of-vector-elements
 // https://en.wikipedia.org/wiki/Norm_(mathematics)#_norm_or_Manhattan_norm
 const computeVectorNorm = (vector: Vector): Norm => {
     return vector.reduce(
-        (norm: Norm, element: El) => {
+        (norm: Norm, element: Count) => {
             return norm + Math.abs(element) as Norm
         },
         0 as Norm,
     )
 }
 
-const computeVectorEr = (vector: Vector, durations: Duration[]): Er => {
+const computeVectorError = (vector: Vector, durations: Duration[]): Duration => {
     return vector.reduce(
-        (er: Er, el: El, index: number) => {
-            return er + el * durations[index] as Er
+        (error: Duration, el: Count, index: number) => {
+            return error + el * durations[index] as Duration
         },
-        0 as Er,
+        0 as Duration,
     )
+}
+
+const computeVectorRpd = (vector: Vector, durations: Duration[]): Rpd => {
+    const durationPositive = vector.reduce(
+        (duration: Duration, el: Count, index: number) => {
+            return el > 0 ? duration + el * durations[index] as Duration : duration
+        },
+        0 as Duration,
+    )
+
+    const durationNegative = -vector.reduce(
+        (duration: Duration, el: Count, index: number) => {
+            return el < 0 ? duration + el * durations[index] as Duration : duration
+        },
+        0 as Duration,
+    )
+
+    return 2 * Math.abs(durationPositive - durationNegative) / (durationPositive + durationNegative) as Rpd
 }
 
 const isFirstNonzeroElPositive = (vector: Vector): boolean => {
@@ -29,7 +47,7 @@ const isFirstNonzeroElPositive = (vector: Vector): boolean => {
 }
 
 const invertVector = (vector: Vector): Vector => {
-    return vector.map((el: El) => -el as El)
+    return vector.map((el: Count) => -el as Count)
 }
 
 const computeIncrementedVectorPuns = (
@@ -37,13 +55,13 @@ const computeIncrementedVectorPuns = (
     vector: Vector,
     durations: Duration[],
     maxNorm: Max<Norm>,
-    maxEr: Max<Er>,
+    maxRpd: Max<Rpd>,
     index: Index,
     increment: number,
 ) => {
     const newVector = [...vector]
-    newVector[index] = newVector[index] + increment as El
-    computeVectorPuns(puns, newVector, durations, maxNorm, maxEr, index)
+    newVector[index] = newVector[index] + increment as Count
+    computeVectorPuns(puns, newVector, durations, maxNorm, maxRpd, index)
 }
 
 const computeVectorPuns = (
@@ -51,7 +69,7 @@ const computeVectorPuns = (
     vector: Vector,
     durations: Duration[],
     maxNorm: Max<Norm>,
-    maxEr: Max<Er>,
+    maxRpd: Max<Rpd>,
     initialIndex: Index = 0 as Index,
 ) => {
     let norm = computeVectorNorm(vector)
@@ -59,50 +77,51 @@ const computeVectorPuns = (
         return
     }
 
-    const er = computeVectorEr(vector, durations)
-    if (Math.abs(er) < maxEr && isFirstNonzeroElPositive(vector)) {
-        if (er > 0) {
-            puns.push([vector, er])
+    const rpd = computeVectorRpd(vector, durations)
+    if (rpd < maxRpd && isFirstNonzeroElPositive(vector)) {
+        const error = computeVectorError(vector, durations)
+        if (error > 0) {
+            puns.push([vector, error, rpd])
         } else {
-            puns.push([invertVector(vector), -er as Er])
+            puns.push([invertVector(vector), -error as Duration, rpd])
         }
     }
 
     for (let index = initialIndex; index < vector.length; index++) {
         if (vector[index] === 0) {
             // Kick it off in both directions
-            computeIncrementedVectorPuns(puns, vector, durations, maxNorm, maxEr, index, 1)
-            computeIncrementedVectorPuns(puns, vector, durations, maxNorm, maxEr, index, -1)
+            computeIncrementedVectorPuns(puns, vector, durations, maxNorm, maxRpd, index, 1)
+            computeIncrementedVectorPuns(puns, vector, durations, maxNorm, maxRpd, index, -1)
         } else if (vector[index] > 0) {
             // Continue in positive direction
-            computeIncrementedVectorPuns(puns, vector, durations, maxNorm, maxEr, index, 1)
+            computeIncrementedVectorPuns(puns, vector, durations, maxNorm, maxRpd, index, 1)
         } else {
             // Continue in negative direction
-            computeIncrementedVectorPuns(puns, vector, durations, maxNorm, maxEr, index, -1)
+            computeIncrementedVectorPuns(puns, vector, durations, maxNorm, maxRpd, index, -1)
         }
     }
 }
 
 const formatPuns = (puns: Pun[]): string => {
     return puns.reduce(
-        (punOutput: string, pun: Pun): string => {
-            return punOutput + pun[0].toString() + ": " + pun[1] + "\n"
+        (punOutput: string, [vector, error, rpd]: Pun): string => {
+            return punOutput + vector.toString() + "; error: " + error.toPrecision(3) + "; RPD: " + (rpd * 100).toPrecision(3) + "%\n"
         },
         "",
     )
 }
 
-const sortPunsByEr = (puns: Pun[]): void => {
-    puns.sort((a: Pun, b: Pun) => a[1] - b[1])
+const sortPunsByRpd = (puns: Pun[]): void => {
+    puns.sort((a: Pun, b: Pun) => a[2] - b[2])
 }
 
-const computePuns = (durations: Duration[], maxNorm: Max<Norm> = 5 as Max<Norm>, maxEr: Max<Er> = 0.001 as Max<Er>) => {
+const computePuns = (durations: Duration[], maxNorm: Max<Norm> = 5 as Max<Norm>, maxRpd: Max<Rpd> = 0.001 as Max<Rpd>) => {
     const puns = [] as Pun[]
-    const initialVector = durations.map(_ => 0 as El)
+    const initialVector = durations.map(_ => 0 as Count)
 
-    computeVectorPuns(puns, initialVector, durations, maxNorm, maxEr)
+    computeVectorPuns(puns, initialVector, durations, maxNorm, maxRpd)
 
-    sortPunsByEr(puns)
+    sortPunsByRpd(puns)
 
     return formatPuns(puns)
 }
@@ -145,6 +164,8 @@ export {
 //  - Click the left edge of a square and drag to left to shift everything to the left while making it bigger
 //   And similarly click the right edge of a square and drag to the right to make it bigger shifting things to right
 //   If you instead want to just apportion space differently between two neighbor squares, maybe ctrl+drag?
+//   Although that will deviate from the scale, almost certainly. Maybe okay.
+//   It also needs some easy way to swap neighbors around. At the point they meet above the horizontal timeline?
 //  - Might want to be able to ctrl+C ctrl+V copy paste squares around
 //  - Maybe it should highlight in red borders any squares that aren't the size of ones in your scale
 //  - What would the bank of possibilities look like? thumbnails of the squares you'd drag in? with some exact numbers?
@@ -173,3 +194,13 @@ export {
 //  yeah it would never make sense to have two locked ever
 
 // TODO: thoughts on how to distribute the error here: https://app.asana.com/0/530392539241382/1200147391481332
+
+// TODO: eventually the error should be displayed in terms of seconds
+
+// TODO: hey wait, am I potentially being either super-redundant OR leaving a lot of possibilities out
+//  By focusing only on a single octave's worth of the scale? Shouldn't it include like at least one octave higher
+//  And/or how should you indicate this? I suppose for each voice you'd need to provide its max and min pitch
+//  (and its max and min durations) and then it will take those into account when proposing puns
+//  I mean I guess it's fine if it proposes puns like C4 contains two C5's, etc.
+//  And when doing puns for the "all" category maybe it just tries to find puns that work within the range of all voices
+//  So... you should by default start with one voice with a reasonable-ish range

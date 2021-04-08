@@ -1,10 +1,10 @@
 import {computeEdoDurations} from "./edo"
 import {computePuns} from "./isocycler"
-import {Edo, Er, Norm} from "./types"
+import {Edo, Rpd, Norm, Max} from "./types"
 
 const DEFAULT_EDO_INPUT_VALUE = "12"
 const DEFAULT_MAX_NORM_INPUT_VALUE = "5"
-const DEFAULT_MAX_ER_INPUT_VALUE = "0.001"
+const DEFAULT_MAX_RPD_INPUT_VALUE = "0.1"
 
 const root: HTMLDivElement = document.createElement("div")
 document.body.appendChild(root)
@@ -15,12 +15,12 @@ const components = {} as Record<string, HTMLInputElement>
 
 const handleChange = (): void => {
     const edo = parseInt(components.edoInput.value) as Edo
-    const maxNorm = parseInt(components.maxNormInput.value) as Norm
-    const maxEr = parseFloat(components.maxErInput.value) as Er
+    const maxNorm = parseInt(components.maxNormInput.value) as Max<Norm>
+    const maxRpd = parseFloat(components.maxRpdInput.value) / 100 as Max<Rpd>
 
     const durations = computeEdoDurations(edo)
 
-    results.innerText = computePuns(durations, maxNorm, maxEr)
+    results.innerText = computePuns(durations, maxNorm, maxRpd)
 }
 
 const buildEdoWrapper = (): HTMLDivElement => {
@@ -61,31 +61,31 @@ const buildMaxNormWrapper = (): HTMLDivElement => {
     return maxNormWrapper
 }
 
-const buildMaxErWrapper = (): HTMLDivElement => {
-    const maxErWrapper: HTMLDivElement = document.createElement("div")
+const buildMaxRpdWrapper = (): HTMLDivElement => {
+    const maxRpdWrapper: HTMLDivElement = document.createElement("div")
 
-    const maxErInput: HTMLInputElement = document.createElement("input")
-    maxErInput.type = "number"
-    maxErInput.value = DEFAULT_MAX_ER_INPUT_VALUE
-    maxErInput.step = "0.00001"
-    maxErInput.min = "0"
-    maxErInput.max = "0.05"
-    maxErInput.addEventListener("change", handleChange)
+    const maxRpdInput: HTMLInputElement = document.createElement("input")
+    maxRpdInput.type = "number"
+    maxRpdInput.value = DEFAULT_MAX_RPD_INPUT_VALUE
+    maxRpdInput.step = "0.001"
+    maxRpdInput.min = "0"
+    maxRpdInput.max = "5"
+    maxRpdInput.addEventListener("change", handleChange)
 
-    const maxErLabel = document.createElement("label")
-    maxErLabel.textContent = "max error"
+    const maxRpdLabel = document.createElement("label")
+    maxRpdLabel.textContent = "max RPD"
 
-    maxErWrapper.appendChild(maxErLabel)
-    maxErWrapper.appendChild(maxErInput)
+    maxRpdWrapper.appendChild(maxRpdLabel)
+    maxRpdWrapper.appendChild(maxRpdInput)
 
-    components.maxErInput = maxErInput
+    components.maxRpdInput = maxRpdInput
 
-    return maxErWrapper
+    return maxRpdWrapper
 }
 
 root.appendChild(buildEdoWrapper())
 root.appendChild(buildMaxNormWrapper())
-root.appendChild(buildMaxErWrapper())
+root.appendChild(buildMaxRpdWrapper())
 root.appendChild(results)
 
 handleChange()
