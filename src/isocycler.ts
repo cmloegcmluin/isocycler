@@ -1,4 +1,4 @@
-import {Duration, El, Er, Index, Norm, Pun, Vector} from "./types"
+import {Duration, El, Er, Index, Max, Norm, Pun, Vector} from "./types"
 
 // https://math.stackexchange.com/questions/793856/standard-notation-for-sum-of-vector-elements
 // https://en.wikipedia.org/wiki/Norm_(mathematics)#_norm_or_Manhattan_norm
@@ -32,13 +32,28 @@ const invertVector = (vector: Vector): Vector => {
     return vector.map((el: El) => -el as El)
 }
 
-const computeIncrementedVectorPuns = (puns: Pun[], vector: Vector, durations: Duration[], maxNorm: Norm, maxEr: Er, index: Index, increment: number) => {
+const computeIncrementedVectorPuns = (
+    puns: Pun[],
+    vector: Vector,
+    durations: Duration[],
+    maxNorm: Max<Norm>,
+    maxEr: Max<Er>,
+    index: Index,
+    increment: number,
+) => {
     const newVector = [...vector]
     newVector[index] = newVector[index] + increment as El
     computeVectorPuns(puns, newVector, durations, maxNorm, maxEr, index)
 }
 
-const computeVectorPuns = (puns: Pun[], vector: Vector, durations: Duration[], maxNorm: Norm, maxEr: Er, initialIndex: Index = 0 as Index) => {
+const computeVectorPuns = (
+    puns: Pun[],
+    vector: Vector,
+    durations: Duration[],
+    maxNorm: Max<Norm>,
+    maxEr: Max<Er>,
+    initialIndex: Index = 0 as Index,
+) => {
     let norm = computeVectorNorm(vector)
     if (norm > maxNorm) {
         return
@@ -81,7 +96,7 @@ const sortPunsByEr = (puns: Pun[]): void => {
     puns.sort((a: Pun, b: Pun) => a[1] - b[1])
 }
 
-const computePuns = (durations: Duration[], maxNorm: Norm = 5 as Norm, maxEr: Er = 0.001 as Er) => {
+const computePuns = (durations: Duration[], maxNorm: Max<Norm> = 5 as Max<Norm>, maxEr: Max<Er> = 0.001 as Max<Er>) => {
     const puns = [] as Pun[]
     const initialVector = durations.map(_ => 0 as El)
 
@@ -106,7 +121,7 @@ export {
 //  Or rather, all the vector combinations of the notes in the scale, I mean (assuming the bottom one is the unit)
 //  But you may also select any sequence of notes you're trying to redo or supplement and it should find puns for it
 
-// TODO: Add tests that this thing is as efficient as possible
+// TODO: Add tests that this thing is as efficient as possible (in terms of which vectors it looks at)
 
 // TODO: the error should actually be proportionate with the duration of the thing it's an error for
 //  So if it's a tiny error over 7 bars or something, that's a huge deal, but a borderline big error on 1 bar, maybe no
