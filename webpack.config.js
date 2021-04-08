@@ -1,9 +1,10 @@
 const path = require("path")
 const HtmlWebpackPlugin = require("html-webpack-plugin")
+const IgnoreNotFoundExportPlugin = require("ignore-not-found-export-webpack-plugin")
 
 module.exports = {
     mode: "development",
-    entry: "./src/index.ts",
+    entry: "./src/app/index.ts",
     devtool: "inline-source-map",
     devServer: {
         watchContentBase: true,
@@ -23,6 +24,7 @@ module.exports = {
             title: "Isocycler",
             meta: {viewport: "width=device-width, height=device-height, initial-scale=1, maximum-scale=1"},
         }),
+        new IgnoreNotFoundExportPlugin(),
     ],
     module: {
         rules: [

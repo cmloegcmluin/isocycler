@@ -1,6 +1,5 @@
 import {computeError} from "./error"
 import {computeNorm} from "./norm"
-import {formatPuns, sortPunsByRpd} from "./output"
 import {computeRpd} from "./rpd"
 import {Duration, Count, Index, Max, Norm, Pun, Rpd, Vector} from "./types"
 
@@ -69,19 +68,8 @@ const computePuns = (
     }
 }
 
-const computeAllPuns = (durations: Duration[], maxNorm: Max<Norm> = 5 as Max<Norm>, maxRpd: Max<Rpd> = 0.001 as Max<Rpd>) => {
-    const puns = [] as Pun[]
-    const initialVector = durations.map(_ => 0 as Count)
-
-    computePuns(puns, initialVector, durations, maxNorm, maxRpd)
-
-    sortPunsByRpd(puns)
-
-    return formatPuns(puns)
-}
-
 export {
-    computeAllPuns,
+    computePuns,
 }
 
 // TODO: Would be cool if you could also check JI pitches up to a certain odd limit or something (including e.g. 3/2)

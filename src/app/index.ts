@@ -1,6 +1,5 @@
-import {computeEdoDurations} from "./edo"
+import {computeEdoDurations, Edo, Rpd, Norm, Max} from "../puns"
 import {computeAllPuns} from "./puns"
-import {Edo, Rpd, Norm, Max} from "./types"
 
 const DEFAULT_EDO_INPUT_VALUE = "12"
 const DEFAULT_MAX_NORM_INPUT_VALUE = "5"

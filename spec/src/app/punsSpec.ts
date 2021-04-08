@@ -1,5 +1,5 @@
-import {computeAllPuns} from "../../src/puns"
-import {Duration} from "../../src/types"
+import {computeAllPuns} from "../../../src/app/puns"
+import {Duration} from "../../../src/puns/types"
 
 describe("computePuns", (): void => {
     it("returns puns for the given durations, defaulting max norm to 5 and max RPD to 1%", (): void => {

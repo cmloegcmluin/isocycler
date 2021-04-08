@@ -1,4 +1,4 @@
-import {Pun} from "./types"
+import {Pun} from "../puns"
 
 const formatPuns = (puns: Pun[]): string => {
     return puns.reduce(

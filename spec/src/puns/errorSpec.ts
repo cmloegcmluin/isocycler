@@ -1,5 +1,5 @@
-import {computeError} from "../../src/error"
-import {Duration, Vector} from "../../src/types"
+import {computeError} from "../../../src/puns/error"
+import {Duration, Vector} from "../../../src/puns/types"
 
 describe("computeError", (): void => {
     it("computes the difference between the total durations of the two halves of the potential pun", (): void => {

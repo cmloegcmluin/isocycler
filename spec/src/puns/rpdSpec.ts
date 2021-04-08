@@ -1,5 +1,5 @@
-import {computeRpd} from "../../src/rpd"
-import {Duration, Rpd, Vector} from "../../src/types"
+import {computeRpd} from "../../../src/puns/rpd"
+import {Duration, Rpd, Vector} from "../../../src/puns/types"
 
 describe("computeRpd", (): void => {
     it("returns the relative percent difference between the total durations of the two halves of the potential pun", (): void => {

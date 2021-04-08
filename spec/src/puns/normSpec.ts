@@ -1,5 +1,5 @@
-import {computeNorm} from "../../src/norm"
-import {Norm, Vector} from "../../src/types"
+import {computeNorm} from "../../../src/puns/norm"
+import {Norm, Vector} from "../../../src/puns/types"
 
 describe("computeNorm", (): void => {
     it("computes the count of notes in the potential pun", (): void => {
