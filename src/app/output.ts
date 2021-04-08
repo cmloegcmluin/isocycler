@@ -1,44 +1,40 @@
 import {Pun} from "../puns"
-import {Count, Duration, Vector} from "../puns/types"
+import {Count, Duration} from "../puns/types"
 
 const SCALER = 40
 
 const computeSvgString = ([vector, _, rpd]: Pun, durations: Duration[]): string => {
     let squares = ""
-    let topHalfX = 0
-    let bottomHalfX = 0
-    let topHalfY = 0
-    let bottomHalfY = 0
+    let higherHalfX = 0
+    let lowerHalfX = 0
+    let higherHalfY = 0
+    let lowerHalfY = 0
 
-    // first do the positives
+    // first do the higher half
     vector.forEach((count: Count, countIndex: number) => {
         if (count <= 0) return
-        // console.log("count", count)
         for (let squareIndex = 0; squareIndex < count; squareIndex++) {
-            // console.log("squareIndex", squareIndex)
             const duration = durations[countIndex]
-            squares += `<rect x="${topHalfX*SCALER}" y="0" height="${duration*SCALER}" width="${duration*SCALER}" style="fill:rgb(255,255,255);stroke-width:1;stroke:rgb(0,0,0)"></rect>`
-            topHalfX += duration
-            if (duration > topHalfY) topHalfY = duration
+            squares += `<rect x="${higherHalfX * SCALER}" y="0" height="${duration * SCALER}" width="${duration * SCALER}" style="fill:rgb(255,255,255);stroke-width:1;stroke:rgb(0,0,0)"></rect>`
+            higherHalfX += duration
+            if (duration > higherHalfY) higherHalfY = duration
         }
     })
 
-    // then do the negatives
+    // then do the lower half
     vector.forEach((count: Count, countIndex: number) => {
         if (count >= 0) return
-        // console.log("count", count)
         for (let squareIndex = 0; squareIndex < -count; squareIndex++) {
-            // console.log("squareIndex", squareIndex)
             const duration = durations[countIndex]
-            squares += `<rect x="${bottomHalfX*SCALER}" y="${topHalfY*SCALER}" height="${duration*SCALER}" width="${duration*SCALER}" style="fill:rgb(255,255,255);stroke-width:1;stroke:rgb(0,0,0)"></rect>`
-            bottomHalfX += duration
-            if (duration > bottomHalfY) bottomHalfY = duration
+            squares += `<rect x="${lowerHalfX * SCALER}" y="${higherHalfY * SCALER}" height="${duration * SCALER}" width="${duration * SCALER}" style="fill:rgb(255,255,255);stroke-width:1;stroke:rgb(0,0,0)"></rect>`
+            lowerHalfX += duration
+            if (duration > lowerHalfY) lowerHalfY = duration
         }
     })
 
     const title = `${vector.toString()}; RPD: ${(rpd * 100).toPrecision(3)}%`
 
-    return `<svg height="${(topHalfY + bottomHalfY) * SCALER}" width="${Math.max(topHalfX, bottomHalfX)*SCALER}"><title>${title}</title>${squares}</svg>`
+    return `<svg height="${(higherHalfY + lowerHalfY) * SCALER}" width="${Math.max(higherHalfX, lowerHalfX) * SCALER}"><title>${title}</title>${squares}</svg>`
 }
 
 const formatPuns = (puns: Pun[], durations: Duration[]): string => {
@@ -65,10 +61,6 @@ export {
     presentPuns,
 }
 
-// TODO: I want the vectors to be sorted so that the fewer squares are on the bottom (because bass below treble)
-//  However that's at odds with the error always being positive
-//  Maybe we don't actually want that anymore. Just whichever error, and sort it so the fewer of pos/neg are bottom
-
 // TODO: WHICH ALL PUNS
 //  ah, it seems that (probably for EDOs) if you have some pun that looks like say [0, 0, 1, -2, 1, 0, 0, 0]
 //  then that pun is going to be true no matter how you translate it
@@ -88,7 +80,7 @@ export {
 //  well maybe it does
 //  okay so if you solved the problem of the different octaves by just,
 //  taking what you've already got code-wise, but adding another layer for each tested vector,
-//  to see if repeated halvings of all different combinatinos of the durations create new puns
+//  to see if repeated halving of all different combinations of the durations create new puns
 //  then the max length vector (ignoring trailing/leading/whatever zeroes mode note-to-self recent I mean)
 //  would be the length of the scale cardinality right?
 //  so it would just be the case that for EDOs
@@ -149,3 +141,21 @@ export {
 //   (oh just had a random thought: perhaps the max norm shouldn't be a thing user worries about,
 //   but should be based on the durations and just calculated automatically based on what could actually possibly help
 //   ... or maybe it's a different case for that when in "all" mode vs "pun for this situation" mode)
+
+// TODO: WHICH PUNS
+//  there would also probably be a control to limit how many factors of 2 you allow / octave range
+
+// TODO: WHICH PUNS
+//  hey wait, am I potentially being either super-redundant OR leaving a lot of possibilities out
+//  By focusing only on a single octave's worth of the scale? Shouldn't it include like at least one octave higher
+//  And/or how should you indicate this? I suppose for each voice you'd need to provide its max and min pitch
+//  (and its max and min durations) and then it will take those into account when proposing puns
+//  I mean I guess it's fine if it proposes puns like C4 contains two C5's, etc.
+//  And when doing puns for the "all" category maybe it just tries to find puns that work within the range of all voices
+//  So... you should by default start with one voice with a reasonable-ish range
+
+// TODO: PUNS STUFF
+//  And also begin to set it up for success with if you give it for an input an arbitrary target (besides 1)
+//  Meaning that it should always start out pre-populated with a list of puns you can achieve with the unit
+//  Or rather, all the vector combinations of the notes in the scale, I mean (assuming the bottom one is the unit)
+//  But you may also select any sequence of notes you're trying to redo or supplement and it should find puns for it

@@ -1,12 +1,8 @@
-// TODO: Would be cool if you could also check JI pitches up to a certain odd limit or something (including e.g. 3/2)
+// TODO: KINDA RELATED TO ALL PUNS BUT MORE ABOUT THE INTERFACE
+//  Would be cool if you could also check JI pitches up to a certain odd limit or something (including e.g. 3/2)
 //  Or really, it should just be able to take an arbitrary scale (.scl file) and use its pitches as the building block
 //  (Or equivalently a set of durations, a duration scale, if you're thinking like that)
 //  Or select from a set of obvious common choices, like 12-EDO, a harmonic mode
-
-// TODO: And also begin to set it up for success with if you give it for an input an arbitrary target (besides 1)
-//  Meaning that it should always start out pre-populated with a list of puns you can achieve with the unit
-//  Or rather, all the vector combinations of the notes in the scale, I mean (assuming the bottom one is the unit)
-//  But you may also select any sequence of notes you're trying to redo or supplement and it should find puns for it
 
 // TODO: HUGE: it can generate sheet music through Lilypond or something, w/ normal staff notation & squares supplement
 
@@ -56,14 +52,6 @@
 // TODO: thoughts on how to distribute the error here: https://app.asana.com/0/530392539241382/1200147391481332
 
 // TODO: eventually the error should be displayed in terms of seconds
-
-// TODO: hey wait, am I potentially being either super-redundant OR leaving a lot of possibilities out
-//  By focusing only on a single octave's worth of the scale? Shouldn't it include like at least one octave higher
-//  And/or how should you indicate this? I suppose for each voice you'd need to provide its max and min pitch
-//  (and its max and min durations) and then it will take those into account when proposing puns
-//  I mean I guess it's fine if it proposes puns like C4 contains two C5's, etc.
-//  And when doing puns for the "all" category maybe it just tries to find puns that work within the range of all voices
-//  So... you should by default start with one voice with a reasonable-ish range
 
 // TODO: plug in @musical-patterns/material to perform it (or however houndstoothtopia does it)
 //  The default timbre should probably have a weak-ish attack to help cover up the inexact onsets

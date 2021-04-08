@@ -1,6 +1,6 @@
 import {computeError} from "./error"
 import {invertVector} from "./invert"
-import {computeNorm} from "./norm"
+import {computeLowerHalfNorm, computeNorm, computeHigherHalfNorm} from "./norm"
 import {computeRpd} from "./rpd"
 import {Duration, Count, Index, Max, Norm, Pun, Rpd, Vector} from "./types"
 
@@ -39,7 +39,12 @@ export const computePuns = (
     const rpd = computeRpd(vector, durations)
     if (rpd < maxRpd) {
         const error = computeError(vector, durations)
-        if (error > 0) {
+
+        // TODO: Perhaps I should just rename norm to note count? But how would that play with Count type of Vector els?
+        const higherHalfNoteCount = computeHigherHalfNorm(vector)
+        const lowerHalfNoteCount = computeLowerHalfNorm(vector)
+
+        if (higherHalfNoteCount > lowerHalfNoteCount) {
             puns.push([vector, error, rpd])
         } else {
             puns.push([invertVector(vector), -error as Duration, rpd])

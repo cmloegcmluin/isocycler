@@ -3,7 +3,7 @@ import * as computePunsModule from "../../../src/puns/puns"
 import {Duration, Vector} from "../../../src/puns/types"
 
 describe("computePuns", (): void => {
-    it("achieves exclusion of puns that are inverse equivalents by excluding those whose first non-zero term is not positive", (): void => {
+    fit("achieves exclusion of puns that are inverse equivalents by excluding those whose first non-zero term is not positive", (): void => {
         const maxNorm: Max<Norm> = 9 as Max<Norm>
         const maxRpd: Max<Rpd> = 0.01 as Max<Rpd>
         const puns: Pun[] = []
@@ -12,11 +12,16 @@ describe("computePuns", (): void => {
 
         computePuns(puns, vector, durations, maxNorm, maxRpd)
 
+        // Okay, this is kind of a bad example, because literally every one of these puns' 1st nonzero el is negative
+        // But the reason for that is: every one had to be flipped in order for the total of the negative numbers
+        // To be less than the total of the positive numbers (among the terms of the vector)
+        // So that the squares display with bigger (lower pitch) ones below
+        // Which is the new rule (not flipping it so they all have positive error)
+        // (because RPD which is always positive took over for error on that job)
         expect(puns).toEqual([
-            [[4, -5, 0], 0.03149737007950115, 0.007905467700100489] as Pun,
-            // first non-zero term is negative because the error that way comes out negative so it got flipped
+            [[-4, 5, 0], -0.03149737007950115, 0.007905467700100489] as Pun,
             [[-3, 3, 1], 0.011062102899736082, 0.003680581804137354] as Pun,
-            [[0, 4, -5], 0.02499947919921608, 0.007905467700100541] as Pun,
+            [[0, -4, 5], -0.02499947919921608, 0.007905467700100541] as Pun,
         ])
     })
 
