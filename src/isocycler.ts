@@ -96,13 +96,6 @@ export {
     computePuns,
 }
 
-// TODO: you could also increase the efficiency
-//  by only searching for ones where the first non-zero element of the vector is positive
-//  Effectively halving the space you search, since half are redundant
-//  (and that's more efficient than waiting to see if the error is negative)
-//  Which by the way you should at the end, if the error is negative,
-//  Flip sign on all vector elements and the error to make everything consistent
-
 // TODO: Would be cool if you could also check JI pitches up to a certain odd limit or something (including e.g. 3/2)
 //  Or really, it should just be able to take an arbitrary scale (.scl file) and use its pitches as the building block
 //  (Or equivalently a set of durations, a duration scale, if you're thinking like that)
@@ -113,27 +106,13 @@ export {
 //  Or rather, all the vector combinations of the notes in the scale, I mean (assuming the bottom one is the unit)
 //  But you may also select any sequence of notes you're trying to redo or supplement and it should find puns for it
 
-// TODO: would be cool if you could provide config as CLI args, though don't agonize over it because even moreso
-//  You should aspire to the web interface for it
-//  Config like the total number of intervals in each pun, which EDO/limit/scale
+// TODO: Add tests that this thing is as efficient as possible
 
-// TODO: Switch to TS now
-
-// TODO: Add tests, e.g. that this thing is as efficient as possible
-
-// TODO: Rename this bad crap, variable names
-
-// TODO: and perhaps the error should actually be proportionate with the duration of the thing it's an error for
+// TODO: the error should actually be proportionate with the duration of the thing it's an error for
 //  So if it's a tiny error over 7 bars or something, that's a huge deal, but a borderline big error on 1 bar, maybe no
-
-// TODO: have it sort the results by how small their error is
-
-// TODO: format the results more nicely
 
 // TODO: plug in @musical-patterns/material to perform it (or however houndstoothtopia does it)
 //  The default timbre should probably have a weak-ish attack to help cover up the inexact onsets
-
-// TODO: take another pass over tasks in Asana and extract stuff that is clear enough I should do here
 
 // TODO: it can generate sheet music through Lilypond or something, with normal staff notation & squares supplement
 
