@@ -1,53 +1,20 @@
+import {computeVectorError} from "./error"
+import {computeVectorNorm} from "./norm"
+import {formatPuns, sortPunsByRpd} from "./output"
+import {computeVectorRpd} from "./rpd"
 import {Duration, Count, Index, Max, Norm, Pun, Rpd, Vector} from "./types"
 
-// https://math.stackexchange.com/questions/793856/standard-notation-for-sum-of-vector-elements
-// https://en.wikipedia.org/wiki/Norm_(mathematics)#_norm_or_Manhattan_norm
-const computeVectorNorm = (vector: Vector): Norm => {
-    return vector.reduce(
-        (norm: Norm, element: Count) => {
-            return norm + Math.abs(element) as Norm
-        },
-        0 as Norm,
-    )
-}
-
-const computeVectorError = (vector: Vector, durations: Duration[]): Duration => {
-    return vector.reduce(
-        (error: Duration, el: Count, index: number) => {
-            return error + el * durations[index] as Duration
-        },
-        0 as Duration,
-    )
-}
-
-const computeVectorRpd = (vector: Vector, durations: Duration[]): Rpd => {
-    const durationPositive = vector.reduce(
-        (duration: Duration, el: Count, index: number) => {
-            return el > 0 ? duration + el * durations[index] as Duration : duration
-        },
-        0 as Duration,
-    )
-
-    const durationNegative = -vector.reduce(
-        (duration: Duration, el: Count, index: number) => {
-            return el < 0 ? duration + el * durations[index] as Duration : duration
-        },
-        0 as Duration,
-    )
-
-    return 2 * Math.abs(durationPositive - durationNegative) / (durationPositive + durationNegative) as Rpd
-}
-
-const isFirstNonzeroElPositive = (vector: Vector): boolean => {
-    for (const el of vector) {
-        if (el < 0) return false
-        if (el > 0) return true
+// TODO: write test to prove that this excludes the desired results
+const isFirstNonzeroCountPositive = (vector: Vector): boolean => {
+    for (const count of vector) {
+        if (count < 0) return false
+        if (count > 0) return true
     }
     return false
 }
 
 const invertVector = (vector: Vector): Vector => {
-    return vector.map((el: Count) => -el as Count)
+    return vector.map((count: Count) => -count as Count)
 }
 
 const computeIncrementedVectorPuns = (
@@ -78,7 +45,7 @@ const computeVectorPuns = (
     }
 
     const rpd = computeVectorRpd(vector, durations)
-    if (rpd < maxRpd && isFirstNonzeroElPositive(vector)) {
+    if (rpd < maxRpd && isFirstNonzeroCountPositive(vector)) {
         const error = computeVectorError(vector, durations)
         if (error > 0) {
             puns.push([vector, error, rpd])
@@ -100,19 +67,6 @@ const computeVectorPuns = (
             computeIncrementedVectorPuns(puns, vector, durations, maxNorm, maxRpd, index, -1)
         }
     }
-}
-
-const formatPuns = (puns: Pun[]): string => {
-    return puns.reduce(
-        (punOutput: string, [vector, error, rpd]: Pun): string => {
-            return punOutput + vector.toString() + "; error: " + error.toPrecision(3) + "; RPD: " + (rpd * 100).toPrecision(3) + "%\n"
-        },
-        "",
-    )
-}
-
-const sortPunsByRpd = (puns: Pun[]): void => {
-    puns.sort((a: Pun, b: Pun) => a[2] - b[2])
 }
 
 const computePuns = (durations: Duration[], maxNorm: Max<Norm> = 5 as Max<Norm>, maxRpd: Max<Rpd> = 0.001 as Max<Rpd>) => {
