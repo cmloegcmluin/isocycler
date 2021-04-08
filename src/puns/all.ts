@@ -1,6 +1,5 @@
-import {computePuns} from "../puns"
-import {Count, Duration, Max, Norm, Pun, Rpd} from "../puns/types"
-import {formatPuns, sortPunsByRpd} from "./output"
+import {computePuns} from "./puns"
+import {Count, Duration, Max, Norm, Pun, Rpd} from "./types"
 
 const computeAllPuns = (durations: Duration[], maxNorm: Max<Norm> = 5 as Max<Norm>, maxRpd: Max<Rpd> = 0.001 as Max<Rpd>) => {
     const puns = [] as Pun[]
@@ -8,9 +7,7 @@ const computeAllPuns = (durations: Duration[], maxNorm: Max<Norm> = 5 as Max<Nor
 
     computePuns(puns, initialVector, durations, maxNorm, maxRpd)
 
-    sortPunsByRpd(puns)
-
-    return formatPuns(puns)
+    return puns
 }
 
 export {

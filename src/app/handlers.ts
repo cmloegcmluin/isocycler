@@ -1,6 +1,7 @@
 import {computeEdoDurations, Edo, Max, Norm, Rpd} from "../puns"
+import {computeAllPuns} from "../puns/all"
 import {components} from "./globals"
-import {computeAllPuns} from "./puns"
+import {presentPuns} from "./output"
 
 const handleChange = (): void => {
     const edo = parseInt(components.edoInput.value) as Edo
@@ -8,8 +9,9 @@ const handleChange = (): void => {
     const maxRpd = parseFloat(components.maxRpdInput.value) / 100 as Max<Rpd>
 
     const durations = computeEdoDurations(edo)
+    const puns = computeAllPuns(durations, maxNorm, maxRpd)
 
-    components.results.innerText = computeAllPuns(durations, maxNorm, maxRpd)
+    components.results.innerHTML = presentPuns(puns, durations)
 }
 
 export {
