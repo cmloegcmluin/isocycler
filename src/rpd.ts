@@ -1,8 +1,7 @@
 import {Count, Duration, Rpd, Vector} from "./types"
 
-const computeVectorRpd = (vector: Vector, durations: Duration[]): Rpd => {
+const computeRpd = (vector: Vector, durations: Duration[]): Rpd => {
     const durationPositive = vector.reduce(
-        // TODO: DRY this up with error
         (duration: Duration, count: Count, index: number) => {
             return count > 0 ? duration + count * durations[index] as Duration : duration
         },
@@ -20,5 +19,5 @@ const computeVectorRpd = (vector: Vector, durations: Duration[]): Rpd => {
 }
 
 export {
-    computeVectorRpd,
+    computeRpd,
 }

@@ -2,7 +2,7 @@
 // https://en.wikipedia.org/wiki/Norm_(mathematics)#_norm_or_Manhattan_norm
 import {Count, Norm, Vector} from "./types"
 
-const computeVectorNorm = (vector: Vector): Norm => {
+const computeNorm = (vector: Vector): Norm => {
     return vector.reduce(
         (norm: Norm, element: Count) => {
             return norm + Math.abs(element) as Norm
@@ -12,5 +12,5 @@ const computeVectorNorm = (vector: Vector): Norm => {
 }
 
 export {
-    computeVectorNorm,
+    computeNorm,
 }

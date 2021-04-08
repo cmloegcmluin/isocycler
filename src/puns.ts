@@ -1,7 +1,7 @@
-import {computeVectorError} from "./error"
-import {computeVectorNorm} from "./norm"
+import {computeError} from "./error"
+import {computeNorm} from "./norm"
 import {formatPuns, sortPunsByRpd} from "./output"
-import {computeVectorRpd} from "./rpd"
+import {computeRpd} from "./rpd"
 import {Duration, Count, Index, Max, Norm, Pun, Rpd, Vector} from "./types"
 
 // TODO: write test to prove that this excludes the desired results
@@ -28,10 +28,10 @@ const computeIncrementedVectorPuns = (
 ) => {
     const newVector = [...vector]
     newVector[index] = newVector[index] + increment as Count
-    computeVectorPuns(puns, newVector, durations, maxNorm, maxRpd, index)
+    computePuns(puns, newVector, durations, maxNorm, maxRpd, index)
 }
 
-const computeVectorPuns = (
+const computePuns = (
     puns: Pun[],
     vector: Vector,
     durations: Duration[],
@@ -39,14 +39,14 @@ const computeVectorPuns = (
     maxRpd: Max<Rpd>,
     initialIndex: Index = 0 as Index,
 ) => {
-    let norm = computeVectorNorm(vector)
+    let norm = computeNorm(vector)
     if (norm > maxNorm) {
         return
     }
 
-    const rpd = computeVectorRpd(vector, durations)
+    const rpd = computeRpd(vector, durations)
     if (rpd < maxRpd && isFirstNonzeroCountPositive(vector)) {
-        const error = computeVectorError(vector, durations)
+        const error = computeError(vector, durations)
         if (error > 0) {
             puns.push([vector, error, rpd])
         } else {
@@ -69,11 +69,11 @@ const computeVectorPuns = (
     }
 }
 
-const computePuns = (durations: Duration[], maxNorm: Max<Norm> = 5 as Max<Norm>, maxRpd: Max<Rpd> = 0.001 as Max<Rpd>) => {
+const computeAllPuns = (durations: Duration[], maxNorm: Max<Norm> = 5 as Max<Norm>, maxRpd: Max<Rpd> = 0.001 as Max<Rpd>) => {
     const puns = [] as Pun[]
     const initialVector = durations.map(_ => 0 as Count)
 
-    computeVectorPuns(puns, initialVector, durations, maxNorm, maxRpd)
+    computePuns(puns, initialVector, durations, maxNorm, maxRpd)
 
     sortPunsByRpd(puns)
 
@@ -81,7 +81,7 @@ const computePuns = (durations: Duration[], maxNorm: Max<Norm> = 5 as Max<Norm>,
 }
 
 export {
-    computePuns,
+    computeAllPuns,
 }
 
 // TODO: Would be cool if you could also check JI pitches up to a certain odd limit or something (including e.g. 3/2)

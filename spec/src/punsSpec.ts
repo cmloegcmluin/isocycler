@@ -1,4 +1,4 @@
-import {computePuns} from "../../src/isocycler"
+import {computeAllPuns} from "../../src/puns"
 import {Duration} from "../../src/types"
 
 describe("computePuns", (): void => {
@@ -19,7 +19,7 @@ describe("computePuns", (): void => {
             0.5297315471796477,
         ] as Duration[]
 
-        const actual = computePuns(durations)
+        const actual = computeAllPuns(durations)
 
         expect(actual).toEqual(`-1,-1,0,0,0,0,2,0,0,0,0,1; error: 0.0000708; RPD: 0.00364%
 -2,0,0,1,0,0,0,0,1,0,0,1; error: 0.000588; RPD: 0.0294%

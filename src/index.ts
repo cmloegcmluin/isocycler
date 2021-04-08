@@ -1,5 +1,5 @@
 import {computeEdoDurations} from "./edo"
-import {computePuns} from "./isocycler"
+import {computeAllPuns} from "./puns"
 import {Edo, Rpd, Norm, Max} from "./types"
 
 const DEFAULT_EDO_INPUT_VALUE = "12"
@@ -20,7 +20,7 @@ const handleChange = (): void => {
 
     const durations = computeEdoDurations(edo)
 
-    results.innerText = computePuns(durations, maxNorm, maxRpd)
+    results.innerText = computeAllPuns(durations, maxNorm, maxRpd)
 }
 
 const buildEdoWrapper = (): HTMLDivElement => {

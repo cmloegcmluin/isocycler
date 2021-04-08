@@ -1,6 +1,6 @@
 import {Count, Duration, Vector} from "./types"
 
-const computeVectorError = (vector: Vector, durations: Duration[]): Duration => {
+const computeError = (vector: Vector, durations: Duration[]): Duration => {
     return vector.reduce(
         (error: Duration, el: Count, index: number) => {
             return error + el * durations[index] as Duration
@@ -10,5 +10,5 @@ const computeVectorError = (vector: Vector, durations: Duration[]): Duration => 
 }
 
 export {
-    computeVectorError,
+    computeError,
 }
