@@ -1,80 +1,107 @@
-const edo = 12
-const steps = [...Array(edo).keys()]
-const sizes = steps.map(step => 2 ** -(step / edo))
-console.log(sizes)
+import {Duration, El, Er, Index, Norm, Pun, Vector} from "./types"
 
-const maxTotalAbs = 6
-const vectorIsTooBad = vector => {
-    const totalAbs = vector.reduce((totalAbs, term) => {
-        return totalAbs + Math.abs(term)
-    }, 0)
-
-    return totalAbs >= maxTotalAbs
+// https://math.stackexchange.com/questions/793856/standard-notation-for-sum-of-vector-elements
+// https://en.wikipedia.org/wiki/Norm_(mathematics)#_norm_or_Manhattan_norm
+const computeVectorNorm = (vector: Vector): Norm => {
+    return vector.reduce(
+        (norm: Norm, element: El) => {
+            return norm + Math.abs(element) as Norm
+        },
+        0 as Norm,
+    )
 }
 
-const maxError = 0.001
-const solutions = []
-const doCoolThingForVectorMaybeAddingSolution = vector => {
-    let error = 0
-    vector.forEach((term, index) => {
-        error = error + term * sizes[index]
-    })
+const computeVectorEr = (vector: Vector, durations: Duration[]): Er => {
+    return vector.reduce(
+        (er: Er, el: El, index: number) => {
+            return er + el * durations[index] as Er
+        },
+        0 as Er,
+    )
+}
 
-    if (Math.abs(error) < maxError) {
-        solutions.push([vector, error])
+const isFirstNonzeroElPositive = (vector: Vector): boolean => {
+    for (const el of vector) {
+        if (el < 0) return false
+        if (el > 0) return true
     }
+    return false
 }
 
-const doThingRecursivelyForVector = (vector, topIndex = 0) => {
-    if (vectorIsTooBad(vector)) {
+const invertVector = (vector: Vector): Vector => {
+    return vector.map((el: El) => -el as El)
+}
+
+const computeIncrementedVectorPuns = (puns: Pun[], vector: Vector, durations: Duration[], maxNorm: Norm, maxEr: Er, index: Index, increment: number) => {
+    const newVector = [...vector]
+    newVector[index] = newVector[index] + increment as El
+    computeVectorPuns(puns, newVector, durations, maxNorm, maxEr, index)
+}
+
+const computeVectorPuns = (puns: Pun[], vector: Vector, durations: Duration[], maxNorm: Norm, maxEr: Er, initialIndex: Index = 0 as Index) => {
+    let norm = computeVectorNorm(vector)
+    if (norm > maxNorm) {
         return
     }
 
-    doCoolThingForVectorMaybeAddingSolution(vector)
-
-    for (let index = topIndex; index < vector.length; index++) {
-        if (vector[index] === 0) {
-            const newVector = [...vector]
-            newVector[index] = newVector[index] + 1
-            doThingRecursivelyForVector(newVector, index)
-
-            const newVector2 = [...vector]
-            newVector2[index] = newVector2[index] - 1
-            doThingRecursivelyForVector(newVector2, index)
-        } else if (vector[index] > 0) {
-            const newVector = [...vector]
-            newVector[index] = newVector[index] + 1
-            doThingRecursivelyForVector(newVector, index)
+    const er = computeVectorEr(vector, durations)
+    if (Math.abs(er) < maxEr && isFirstNonzeroElPositive(vector)) {
+        if (er > 0) {
+            puns.push([vector, er])
         } else {
-            const newVector2 = [...vector]
-            newVector2[index] = newVector2[index] - 1
-            doThingRecursivelyForVector(newVector2, index)
+            puns.push([invertVector(vector), -er as Er])
+        }
+    }
+
+    for (let index = initialIndex; index < vector.length; index++) {
+        if (vector[index] === 0) {
+            // Kick it off in both directions
+            computeIncrementedVectorPuns(puns, vector, durations, maxNorm, maxEr, index, 1)
+            computeIncrementedVectorPuns(puns, vector, durations, maxNorm, maxEr, index, -1)
+        } else if (vector[index] > 0) {
+            // Continue in positive direction
+            computeIncrementedVectorPuns(puns, vector, durations, maxNorm, maxEr, index, 1)
+        } else {
+            // Continue in negative direction
+            computeIncrementedVectorPuns(puns, vector, durations, maxNorm, maxEr, index, -1)
         }
     }
 }
 
-const doThing = () => {
-    const initialVector = [...Array(edo).keys()].map(_ => 0)
-    doThingRecursivelyForVector(initialVector)
+const formatPuns = (puns: Pun[]): string => {
+    return puns.reduce(
+        (punOutput: string, pun: Pun): string => {
+            return punOutput + pun[0].toString() + ": " + pun[1] + "\n"
+        },
+        "",
+    )
+}
 
-    let output = ""
-    solutions.forEach(solution => {
-        output += solution.toString()
-    })
+const sortPunsByEr = (puns: Pun[]): void => {
+    puns.sort((a: Pun, b: Pun) => a[1] - b[1])
+}
 
-    return output
+const computePuns = (durations: Duration[], maxNorm: Norm = 5 as Norm, maxEr: Er = 0.001 as Er) => {
+    const puns = [] as Pun[]
+    const initialVector = durations.map(_ => 0 as El)
+
+    computeVectorPuns(puns, initialVector, durations, maxNorm, maxEr)
+
+    sortPunsByEr(puns)
+
+    return formatPuns(puns)
 }
 
 export {
-    doThing,
+    computePuns,
 }
 
 // TODO: you could also increase the efficiency
-//  by only searching for ones where the first non-zero term of the vector is positive
+//  by only searching for ones where the first non-zero element of the vector is positive
 //  Effectively halving the space you search, since half are redundant
 //  (and that's more efficient than waiting to see if the error is negative)
 //  Which by the way you should at the end, if the error is negative,
-//  Flip sign on all vector terms and the error to make everything consistent
+//  Flip sign on all vector elements and the error to make everything consistent
 
 // TODO: Would be cool if you could also check JI pitches up to a certain odd limit or something (including e.g. 3/2)
 //  Or really, it should just be able to take an arbitrary scale (.scl file) and use its pitches as the building block
@@ -130,6 +157,11 @@ export {
 //   Snap points in vertical scroll for the bank which would be on the left column,
 //   to show how each pun aligns with the selection it’s a pun with (which is frozen at the top)
 //  - Could consider applying a spectrum of colors to the squares to help at a glance discern the pitch
+//   That'd be one of a small set of checkbox options, to enable spectral coloration
+//  - Along with whether you allow the results to include results that simpler divisions could do
+//   (like the vector could be divided by 2? No do that by default...
+//   I mean like would be possible in 13-EDO but you’re looking at 26-EDO, if that’s possible,
+//   like look at new results this edo contributes to the field)
 
 // TODO: perhaps a feature to snap something exactly to a unit bar, or whatever else
 
