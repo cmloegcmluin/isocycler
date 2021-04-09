@@ -1,4 +1,4 @@
-import {computeLowerHalfNorm, computeNorm, computeHigherHalfNorm} from "../../../src/puns/norm"
+import {computeLowerHalfNorm, computeNorm, computeUpperHalfNorm} from "../../../src/puns/norm"
 import {Norm, Vector} from "../../../src/puns/types"
 
 describe("computeNorm", (): void => {
@@ -12,11 +12,11 @@ describe("computeNorm", (): void => {
     })
 })
 
-describe("computeHigherHalfNorm", (): void => {
+describe("computeUpperHalfNorm", (): void => {
     it("computes the count of notes in the higher half of the potential pun (the positives)", (): void => {
         const vector = [0, 1, -2, 0, 2] as Vector
 
-        const actual = computeHigherHalfNorm(vector)
+        const actual = computeUpperHalfNorm(vector)
 
         const expected = 3 as Norm
         expect(actual).toBe(expected)

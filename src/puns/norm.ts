@@ -12,7 +12,7 @@ const computeNorm = (vector: Vector): Norm => {
     )
 }
 
-const computeHigherHalfNorm = (vector: Vector): Norm => {
+const computeUpperHalfNorm = (vector: Vector): Norm => {
     return vector.reduce(
         (norm: Norm, element: Count) => {
             return element > 0 ? norm + element as Norm : norm
@@ -32,6 +32,6 @@ const computeLowerHalfNorm = (vector: Vector): Norm => {
 
 export {
     computeNorm,
-    computeHigherHalfNorm,
+    computeUpperHalfNorm,
     computeLowerHalfNorm,
 }

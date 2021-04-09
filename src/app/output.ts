@@ -1,5 +1,6 @@
 import {Pun} from "../puns"
 import {Count, Duration} from "../puns/types"
+import {computeColor} from "./color"
 
 const SCALER = 40
 
@@ -15,7 +16,9 @@ const computeSvgString = ([vector, _, rpd]: Pun, durations: Duration[]): string 
         if (count <= 0) return
         for (let squareIndex = 0; squareIndex < count; squareIndex++) {
             const duration = durations[countIndex]
-            squares += `<rect x="${higherHalfX * SCALER}" y="0" height="${duration * SCALER}" width="${duration * SCALER}" style="fill:rgb(255,255,255);stroke-width:1;stroke:rgb(0,0,0)"></rect>`
+            const [r, g, b] = computeColor(duration)
+
+            squares += `<rect x="${higherHalfX * SCALER}" y="0" height="${duration * SCALER}" width="${duration * SCALER}" style="fill:rgb(${r},${g},${b});stroke-width:1;stroke:rgb(0,0,0)"></rect>`
             higherHalfX += duration
             if (duration > higherHalfY) higherHalfY = duration
         }
@@ -26,7 +29,9 @@ const computeSvgString = ([vector, _, rpd]: Pun, durations: Duration[]): string 
         if (count >= 0) return
         for (let squareIndex = 0; squareIndex < -count; squareIndex++) {
             const duration = durations[countIndex]
-            squares += `<rect x="${lowerHalfX * SCALER}" y="${higherHalfY * SCALER}" height="${duration * SCALER}" width="${duration * SCALER}" style="fill:rgb(255,255,255);stroke-width:1;stroke:rgb(0,0,0)"></rect>`
+            const [r, g, b] = computeColor(duration)
+
+            squares += `<rect x="${lowerHalfX * SCALER}" y="${higherHalfY * SCALER}" height="${duration * SCALER}" width="${duration * SCALER}" style="fill:rgb(${r},${g},${b});stroke-width:1;stroke:rgb(0,0,0)"></rect>`
             lowerHalfX += duration
             if (duration > lowerHalfY) lowerHalfY = duration
         }
@@ -139,6 +144,14 @@ export {
 //  but how would you do that?
 //  I guess before you add a pun to the list, ... hmm no I can't figure this one out. kinda hard.
 //  This one is not specific to EDOs
+//  - Wait if you disallow powers of 2, does that somehow already solve the problem of compound vectors in the results?
+//  What if you had [5,-6]
+//  And [-4, 5]
+//  Sum is [1, -1]
+//  so... no
+//  - But maybe this is just one of those things you can do as a pass if you’re precomputing these things
+//  - But what about when you aren’t precomputing
+//  On the fly for a random special Scala file ?
 
 // TODO: TOGGLE BETWEEN ALL PUNS AND ONLY PUNS FOR SELECTED
 //  when it’s just suggesting all possible starting points it’s different
@@ -167,3 +180,15 @@ export {
 //  Meaning that it should always start out pre-populated with a list of puns you can achieve with the unit
 //  Or rather, all the vector combinations of the notes in the scale, I mean (assuming the bottom one is the unit)
 //  But you may also select any sequence of notes you're trying to redo or supplement and it should find puns for it
+
+// TODO: PRECOMPUTE
+//  I might have to do asynchronous population of them now
+//  So it doesn’t block or crash
+//  And you can see it progress
+//  And/or
+//  Just precompute them up for a while
+//      And just use those as filters on it
+//  Orchestra range let’s say 8 octaves bc piano over 7
+//  What should the norm range then be
+//  well 1 to 2^7, which is 128?
+//      That’s crazy huge

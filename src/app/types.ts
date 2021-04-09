@@ -6,6 +6,9 @@ interface Components {
     results: HTMLDivElement,
 }
 
+type Color = [number, number, number]
+
 export {
     Components,
+    Color,
 }
