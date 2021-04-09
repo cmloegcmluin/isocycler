@@ -12,9 +12,12 @@ describe("computePuns", (): void => {
         const maxUnpunniness: Max<Unpunniness> = 200 as Max<Unpunniness>
         const puns: Pun[] = []
         const vector: Vector = DEFAULT_INITIAL_VECTOR_FOR_EQUAL_TEMPERED_TUNINGS
-        const durations: Duration[] = [1, 0.7937005259840998, 0.6299605249474366] as Duration[]
+        const edo = 3 as Edo
+        const basePeriodDurations: Duration[] = computeEdoBasePeriodDurations(edo)
+        const periods = 1 as Periods
+        const durations = computeDurations(basePeriodDurations, periods)
 
-        computePuns(puns, vector, durations, maxNorm, maxUnpunniness)
+        computePuns(puns, vector, durations, maxNorm, maxUnpunniness, edo)
 
         // Okay, this is kind of a bad example, because literally every one of these puns' 1st nonzero el is negative
         // But the reason for that is: every one had to be flipped in order for the total of the negative numbers
@@ -22,7 +25,6 @@ describe("computePuns", (): void => {
         // So that the squares display with bigger (lower pitch) ones below
         // Which is the new rule (not flipping it so they all have positive error)
         // (because unpunniness which is always positive took over for error on that job)
-        // TODO: clean this comment, and also maybe save Puns to precision 5
         expect(puns).toEqual([
             [[-3, 3, 1], 0.011062102899736082, 175.599937800217] as Pun,
         ])
@@ -33,10 +35,13 @@ describe("computePuns", (): void => {
         const maxUnpunniness: Max<Unpunniness> = 1 as Max<Unpunniness>
         const puns: Pun[] = []
         const vector: Vector = DEFAULT_INITIAL_VECTOR_FOR_EQUAL_TEMPERED_TUNINGS
-        const durations: Duration[] = [1, 0.7937005259840998, 0.6299605249474366] as Duration[]
+        const edo = 3 as Edo
+        const basePeriodDurations: Duration[] = computeEdoBasePeriodDurations(edo)
+        const periods = 1 as Periods
+        const durations = computeDurations(basePeriodDurations, periods)
         spyOn(punsModule, "computePuns").and.callThrough()
 
-        punsModule.computePuns(puns, vector, durations, maxNorm, maxUnpunniness)
+        punsModule.computePuns(puns, vector, durations, maxNorm, maxUnpunniness, edo)
         const calls = (punsModule.computePuns as Spy).calls.all() as Array<unknown> as Array<{args: [Pun[], Vector]}>
         const actual = calls.map(({args: [_, vector]}) => vector)
 
@@ -69,12 +74,13 @@ describe("computePuns", (): void => {
         const maxUnpunniness: Max<Unpunniness> = 1 as Max<Unpunniness>
         const puns: Pun[] = []
         const vector: Vector = DEFAULT_INITIAL_VECTOR_FOR_EQUAL_TEMPERED_TUNINGS
-        const basePeriodDurations: Duration[] = [1, 0.7937005259840998, 0.6299605249474366] as Duration[]
+        const edo = 3 as Edo
+        const basePeriodDurations: Duration[] = computeEdoBasePeriodDurations(edo)
         const periods = 2 as Periods
         const durations = computeDurations(basePeriodDurations, periods)
         spyOn(punsModule, "computePuns").and.callThrough()
 
-        punsModule.computePuns(puns, vector, durations, maxNorm, maxUnpunniness)
+        punsModule.computePuns(puns, vector, durations, maxNorm, maxUnpunniness, edo)
         const calls = (punsModule.computePuns as Spy).calls.all() as Array<unknown> as Array<{args: [Pun[], Vector]}>
         const actual = calls.map(({args: [_, vector]}) => vector)
 
@@ -161,15 +167,16 @@ describe("computePuns", (): void => {
         const maxUnpunniness: Max<Unpunniness> = 0.000000001 as Max<Unpunniness>
         const puns: Pun[] = []
         const vector: Vector = DEFAULT_INITIAL_VECTOR_FOR_EQUAL_TEMPERED_TUNINGS
-        const basePeriodDurations: Duration[] = computeEdoBasePeriodDurations(12 as Edo)
+        const edo = 12 as Edo
+        const basePeriodDurations: Duration[] = computeEdoBasePeriodDurations()
         const periods = 3 as Periods
         const durations = computeDurations(basePeriodDurations, periods)
 
         const trials = 15
         let totalTime = 0
-        for (let trial = 0; trial < trials; trial++) {
+        for (let trial = 1; trial <= trials; trial++) {
             const before = performance.now()
-            computePuns(puns, vector, durations, maxNorm, maxUnpunniness)
+            computePuns(puns, vector, durations, maxNorm, maxUnpunniness, edo)
             const time = performance.now() - before
             console.log(`trial ${trial}: ${time.toPrecision(5)}`)
             totalTime += time
@@ -178,5 +185,22 @@ describe("computePuns", (): void => {
         console.log(`AVERAGE: ${averageTime.toPrecision(5)}`)
 
         expect(averageTime).toBeLessThan(500)
+    })
+
+    it("excludes puns which include notes which are related by the period (and thus could be simplified)", (): void => {
+        const maxNorm: Max<Norm> = 8 as Max<Norm>
+        const maxUnpunniness: Max<Unpunniness> = 50 as Max<Unpunniness>
+        const puns: Pun[] = []
+        const vector: Vector = DEFAULT_INITIAL_VECTOR_FOR_EQUAL_TEMPERED_TUNINGS
+        const edo = 3 as Edo
+        const basePeriodDurations: Duration[] = computeEdoBasePeriodDurations(edo)
+        const periods = 2 as Periods
+        const durations = computeDurations(basePeriodDurations, periods)
+
+        computePuns(puns, vector, durations, maxNorm, maxUnpunniness, edo)
+
+        expect(puns).toEqual([
+            // Otherwise would contain [-3,1,3,0,0,1]
+        ])
     })
 })

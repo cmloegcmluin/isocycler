@@ -1,8 +1,9 @@
+import {vectorContainsNoNotesRelatedByPeriod} from "./containsNoNotesRelatedByPeriod"
 import {computeError} from "./error"
 import {invertVector} from "./invert"
-import {computeUpperHalfNorm, computeLowerHalfNorm, computeNorm} from "./norm"
+import {computeLowerHalfNorm, computeNorm, computeUpperHalfNorm} from "./norm"
+import {Count, Duration, Edo, Index, Max, Norm, Pun, Unpunniness, Vector} from "./types"
 import {computeUnpunniness} from "./unpunniness"
-import {Count, Duration, Index, Max, Norm, Pun, Unpunniness, Vector} from "./types"
 
 const isFirstNonzeroCountPositive = (vector: Vector): boolean => {
     for (const count of vector) {
@@ -12,6 +13,7 @@ const isFirstNonzeroCountPositive = (vector: Vector): boolean => {
     return false
 }
 
+// TODO: CODE CLEANLINESS: EXTRACT AND TEST THIS
 const vectorContainsNoPowersOfTwo = (vector: Vector): boolean => {
     for (const count of vector) {
         const absCount = Math.abs(count)
@@ -28,6 +30,7 @@ const computeIncrementedVectorPuns = (
     durations: Duration[],
     maxNorm: Max<Norm>,
     maxUnpunniness: Max<Unpunniness>,
+    edo: Edo,
     index: Index,
     increment: number,
 ) => {
@@ -36,7 +39,7 @@ const computeIncrementedVectorPuns = (
     newVector[index] = newVector[index] + increment as Count
 
     if (isFirstNonzeroCountPositive(newVector)) {
-        computePuns(puns, newVector, durations, maxNorm, maxUnpunniness, index)
+        computePuns(puns, newVector, durations, maxNorm, maxUnpunniness, edo, index)
     }
 }
 
@@ -46,19 +49,17 @@ export const computePuns = (
     durations: Duration[],
     maxNorm: Max<Norm>,
     maxUnpunniness: Max<Unpunniness>,
+    edo: Edo,
     initialIndex: Index = 0 as Index,
 ): void => {
     const unpunniness = computeUnpunniness(vector, durations)
-    if (unpunniness < maxUnpunniness && vectorContainsNoPowersOfTwo(vector)) {
+    if (unpunniness < maxUnpunniness && vectorContainsNoPowersOfTwo(vector) && vectorContainsNoNotesRelatedByPeriod(vector, edo)) {
         const error = computeError(vector, durations)
-
-        const upperHalfNorm = computeUpperHalfNorm(vector)
-        const lowerHalfNorm = computeLowerHalfNorm(vector)
 
         // If there are more notes in the upper half, then it overall has higher pitched notes
         // (Though there's no guarantee that the single lowest pitched note isn't amongst them)
         // And it's more natural to see the lower pitched notes in the lower half
-        if (upperHalfNorm > lowerHalfNorm) {
+        if (computeUpperHalfNorm(vector) > computeLowerHalfNorm(vector)) {
             puns.push([vector, error, unpunniness])
         } else {
             puns.push([invertVector(vector), -error as Duration, unpunniness])
@@ -74,14 +75,14 @@ export const computePuns = (
         const count = vector[index]
         if (count === undefined) {
             // Kick it off in both directions
-            computeIncrementedVectorPuns(puns, vector, durations, maxNorm, maxUnpunniness, index, 1)
-            computeIncrementedVectorPuns(puns, vector, durations, maxNorm, maxUnpunniness, index, -1)
+            computeIncrementedVectorPuns(puns, vector, durations, maxNorm, maxUnpunniness, edo, index, 1)
+            computeIncrementedVectorPuns(puns, vector, durations, maxNorm, maxUnpunniness, edo, index, -1)
         } else if (count > 0) {
             // Continue adding upper half notes
-            computeIncrementedVectorPuns(puns, vector, durations, maxNorm, maxUnpunniness, index, 1)
+            computeIncrementedVectorPuns(puns, vector, durations, maxNorm, maxUnpunniness, edo, index, 1)
         } else {
             // Continue adding lower half notes
-            computeIncrementedVectorPuns(puns, vector, durations, maxNorm, maxUnpunniness, index, -1)
+            computeIncrementedVectorPuns(puns, vector, durations, maxNorm, maxUnpunniness, edo, index, -1)
         }
     }
 }

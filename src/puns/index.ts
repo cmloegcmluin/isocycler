@@ -24,18 +24,6 @@ export {computeEdoBasePeriodDurations} from "./edo"
 //  Though this statement should probably be expressed somewhere as a test (of computeDurations method)
 //  And/or you could do something smart related to how Scala files use the last pitch as its period
 
-// TODO: PUNS, EXCLUDING PUNS THAT HAVE A NOTE IN ONE HALF WITH A POWER-OF-TWO OF THE SAME NOTE IN THE OTHER HALF
-//  Consider the following 12-EDO pun: [-1,0,0,0, 0,1,0,0, 0,0,0,-1,
-//                                       1,0,0,0, 0,0,0,0, 0,0,1     ]
-//  You can see how it has both a low D (the first -1) and a high D (the first 1 on the 2nd row)
-//  This pun should be rejected because you know the exact relationship between low D and high D
-//  So you could subtract the same amount from both halves, a high D, to eliminate the high D on one side
-//  And turn the low D into a high D
-//  At which point you'd have [ 0,0,0,0, 0,1,0,0, 0,0,0,-1,
-//                             -1,0,0,0, 0,0,0,0, 0,0,1     ]
-//  But then you need to shift (because it's equal tempered, so only the class w/ no leading zeroes matters)
-//  So you get [ 1,0,0, 0,0,0,-1, -1,0,0,0, 0,0,0,0, 0,0,1]
-
 // TODO: PUNS, EXCLUDING COMPOUND-PUNS WITH FANCY LINEAR ALGEBRA
 //  somehow you've got to prevent vectors that are just combinations of simpler vectors
 //  like i saw one that was like [0, 1, -1, 0, 0, 0, -1] right
