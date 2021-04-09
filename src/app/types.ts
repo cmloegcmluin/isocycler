@@ -3,6 +3,7 @@ interface Components {
     maxNormInput: HTMLInputElement,
     maxRpdInput: HTMLInputElement,
     periodsInput: HTMLInputElement,
+    etCheckbox: HTMLInputElement,
     results: HTMLDivElement,
 }
 

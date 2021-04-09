@@ -1,15 +1,17 @@
+import {DEFAULT_MAX_NORM, DEFAULT_MAX_RPD} from "../app/constants"
 import {DEFAULT_INITIAL_VECTOR} from "./constants"
 import {computePuns} from "./puns"
-import {Duration, Max, Norm, Pun, Rpd} from "./types"
+import {Duration, Max, Norm, Pun, Rpd, Vector} from "./types"
 
 const computeAllPuns = (
     durations: Duration[],
-    maxNorm: Max<Norm> = 5 as Max<Norm>,
-    maxRpd: Max<Rpd> = 0.001 as Max<Rpd>,
+    initialVector: Vector = DEFAULT_INITIAL_VECTOR,
+    maxNorm: Max<Norm> = DEFAULT_MAX_NORM,
+    maxRpd: Max<Rpd> = DEFAULT_MAX_RPD,
 ) => {
     const puns = [] as Pun[]
 
-    computePuns(puns, DEFAULT_INITIAL_VECTOR, durations, maxNorm, maxRpd)
+    computePuns(puns, initialVector, durations, maxNorm, maxRpd)
 
     return puns
 }

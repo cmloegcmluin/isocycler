@@ -1,6 +1,6 @@
 import {performance} from "perf_hooks"
 import {computeEdoBasePeriodDurations, computePuns, Edo, Max, Norm, Pun, Rpd} from "../../../src/puns"
-import {DEFAULT_INITIAL_VECTOR} from "../../../src/puns/constants"
+import {DEFAULT_INITIAL_VECTOR, DEFAULT_INITIAL_VECTOR_FOR_EQUAL_TEMPERED_TUNINGS} from "../../../src/puns/constants"
 import * as computePunsModule from "../../../src/puns/puns"
 import {computeDurations} from "../../../src/puns/durations"
 import {Duration, Periods, Vector} from "../../../src/puns/types"
@@ -10,7 +10,7 @@ describe("computePuns", (): void => {
         const maxNorm: Max<Norm> = 9 as Max<Norm>
         const maxRpd: Max<Rpd> = 0.01 as Max<Rpd>
         const puns: Pun[] = []
-        const vector: Vector = DEFAULT_INITIAL_VECTOR
+        const vector: Vector = DEFAULT_INITIAL_VECTOR_FOR_EQUAL_TEMPERED_TUNINGS
         const durations: Duration[] = [1, 0.7937005259840998, 0.6299605249474366] as Duration[]
 
         computePuns(puns, vector, durations, maxNorm, maxRpd)
@@ -22,9 +22,7 @@ describe("computePuns", (): void => {
         // Which is the new rule (not flipping it so they all have positive error)
         // (because RPD which is always positive took over for error on that job)
         expect(puns).toEqual([
-            // [[-4, 5, 0], -0.03149737007950115, 0.007905467700100489] as Pun,
             [[-3, 3, 1], 0.011062102899736082, 0.003680581804137354] as Pun,
-            // [[0, -4, 5], -0.02499947919921608, 0.007905467700100541] as Pun,
         ])
     })
 
@@ -32,7 +30,7 @@ describe("computePuns", (): void => {
         const maxNorm: Max<Norm> = 3 as Max<Norm>
         const maxRpd: Max<Rpd> = 0.24 as Max<Rpd>
         const puns: Pun[] = []
-        const vector: Vector = DEFAULT_INITIAL_VECTOR
+        const vector: Vector = DEFAULT_INITIAL_VECTOR_FOR_EQUAL_TEMPERED_TUNINGS
         const durations: Duration[] = [1, 0.7937005259840998, 0.6299605249474366] as Duration[]
         spyOn(computePunsModule, "computePuns").and.callThrough()
 
@@ -67,7 +65,7 @@ describe("computePuns", (): void => {
         const maxNorm: Max<Norm> = 3 as Max<Norm>
         const maxRpd: Max<Rpd> = 0.24 as Max<Rpd>
         const puns: Pun[] = []
-        const vector: Vector = DEFAULT_INITIAL_VECTOR
+        const vector: Vector = DEFAULT_INITIAL_VECTOR_FOR_EQUAL_TEMPERED_TUNINGS
         const basePeriodDurations: Duration[] = [1, 0.7937005259840998, 0.6299605249474366] as Duration[]
         const periods = 2 as Periods
         const durations = computeDurations(basePeriodDurations, periods)

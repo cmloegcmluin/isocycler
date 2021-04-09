@@ -1,5 +1,6 @@
 import {
     buildEdoWrapper,
+    buildEtWrapper,
     buildMaxNormWrapper,
     buildMaxRpdWrapper,
     buildPeriodsWrapper,
@@ -11,6 +12,7 @@ const root: HTMLDivElement = document.createElement("div")
 document.body.appendChild(root)
 
 root.appendChild(buildEdoWrapper())
+root.appendChild(buildEtWrapper())
 root.appendChild(buildMaxNormWrapper())
 root.appendChild(buildMaxRpdWrapper())
 root.appendChild(buildPeriodsWrapper())
@@ -25,6 +27,10 @@ handleChange()
 
 // TODO: UI FINESSE: DEMOING SOUND OF PUNS
 //  you should be able to click any of the puns in the bank to demo it (hear it)
+
+// TODO: UI FINESSE: TRANSPOSING PUNS
+//  if equal tempered is checked, then there should be arrows up/down that appear next to each pun class
+//  to cycle through its transpositions
 
 // TODO: UI FINESSE: IMPORT SCALA FILE OR CHOOSE FROM COMMON TUNINGS
 //  Would be cool if you could also check JI pitches up to a certain odd limit or something (including e.g. 3/2)

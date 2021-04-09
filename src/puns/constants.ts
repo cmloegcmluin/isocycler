@@ -1,7 +1,10 @@
 import {Vector} from "./types"
 
-const DEFAULT_INITIAL_VECTOR = [1] as Vector
+const DEFAULT_INITIAL_VECTOR_FOR_EQUAL_TEMPERED_TUNINGS = [1] as Vector
+
+const DEFAULT_INITIAL_VECTOR = [] as Vector
 
 export {
+    DEFAULT_INITIAL_VECTOR_FOR_EQUAL_TEMPERED_TUNINGS,
     DEFAULT_INITIAL_VECTOR,
 }

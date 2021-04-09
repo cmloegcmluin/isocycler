@@ -1,8 +1,8 @@
 import {
-    DEFAULT_EDO_INPUT_VALUE,
-    DEFAULT_PERIODS_INPUT_VALUE,
-    DEFAULT_MAX_NORM_INPUT_VALUE,
-    DEFAULT_MAX_RPD_INPUT_VALUE,
+    DEFAULT_EDO,
+    DEFAULT_PERIODS,
+    DEFAULT_MAX_NORM,
+    DEFAULT_MAX_RPD, DEFAULT_ET,
 } from "./constants"
 import {components} from "./globals"
 import {handleChange} from "./handlers"
@@ -12,7 +12,7 @@ const buildEdoWrapper = (): HTMLDivElement => {
 
     const edoInput: HTMLInputElement = document.createElement("input")
     edoInput.type = "number"
-    edoInput.value = DEFAULT_EDO_INPUT_VALUE
+    edoInput.value = DEFAULT_EDO.toString()
     edoInput.addEventListener("change", handleChange)
 
     const edoLabel = document.createElement("label")
@@ -31,7 +31,7 @@ const buildMaxNormWrapper = (): HTMLDivElement => {
 
     const maxNormInput: HTMLInputElement = document.createElement("input")
     maxNormInput.type = "number"
-    maxNormInput.value = DEFAULT_MAX_NORM_INPUT_VALUE
+    maxNormInput.value = DEFAULT_MAX_NORM.toString()
     maxNormInput.addEventListener("change", handleChange)
 
     const maxNormLabel = document.createElement("label")
@@ -50,7 +50,7 @@ const buildMaxRpdWrapper = (): HTMLDivElement => {
 
     const maxRpdInput: HTMLInputElement = document.createElement("input")
     maxRpdInput.type = "number"
-    maxRpdInput.value = DEFAULT_MAX_RPD_INPUT_VALUE
+    maxRpdInput.value = DEFAULT_MAX_RPD.toString()
     maxRpdInput.step = "0.001"
     maxRpdInput.min = "0"
     maxRpdInput.max = "5"
@@ -72,7 +72,7 @@ const buildPeriodsWrapper = (): HTMLDivElement => {
 
     const periodsInput: HTMLInputElement = document.createElement("input")
     periodsInput.type = "number"
-    periodsInput.value = DEFAULT_PERIODS_INPUT_VALUE
+    periodsInput.value = DEFAULT_PERIODS.toString()
     periodsInput.min = "1"
     periodsInput.max = "6"
     periodsInput.addEventListener("change", handleChange)
@@ -88,6 +88,25 @@ const buildPeriodsWrapper = (): HTMLDivElement => {
     return periodsWrapper
 }
 
+const buildEtWrapper = (): HTMLDivElement => {
+    const etWrapper: HTMLDivElement = document.createElement("div")
+
+    const etCheckbox: HTMLInputElement = document.createElement("input")
+    etCheckbox.type = "checkbox"
+    etCheckbox.checked = DEFAULT_ET
+    etCheckbox.addEventListener("change", handleChange)
+
+    const etLabel = document.createElement("label")
+    etLabel.textContent = "is equal tempered"
+
+    etWrapper.appendChild(etLabel)
+    etWrapper.appendChild(etCheckbox)
+
+    components.etCheckbox = etCheckbox
+
+    return etWrapper
+}
+
 const buildResults = (): HTMLDivElement => {
     const results: HTMLDivElement = document.createElement("div")
 
@@ -101,5 +120,6 @@ export {
     buildMaxNormWrapper,
     buildMaxRpdWrapper,
     buildPeriodsWrapper,
+    buildEtWrapper,
     buildResults,
 }

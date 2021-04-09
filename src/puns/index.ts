@@ -91,9 +91,3 @@ export {computeEdoBasePeriodDurations} from "./edo"
 //  Or: Halves' Absolute Difference Over Minimum Note = HADOMN
 //  Or: Difference (Absolute) / Minimum Note = DAMN ADMN
 //  Minimum Note Under Absolute Difference = MNUD
-
-// TODO: PUNS: TRANSPOSE-ABLE OR NOT
-//  Have a checkbox for whether the scale is equal tempered or not
-//  In which case you ignore those leading zeroes
-//  Otherwise you accept them but only up to one repetition of the scale
-//  And if equal tempered, then there should be arrows up/down that appear next to it to cycle through its transposition
