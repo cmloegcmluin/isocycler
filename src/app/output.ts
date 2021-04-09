@@ -61,7 +61,26 @@ export {
     presentPuns,
 }
 
-// TODO: WHICH ALL PUNS
+// TODO: WHICH ALL PUNS, DEALING WITH OCTAVES
+//  there would also probably be a control to limit how many factors of 2 you allow / octave range
+//  This is different than the no exact powers of 2 in them idea, more related to the each voice having a range idea
+//  Unless the max norm works as a limiter for that...
+
+// TODO: WHICH ALL PUNS, DEALING WITH OCTAVES
+//  I think actually for each vector you should try repeated divisions by the interval of equivalence
+//  because any fatter one would just be some multiple or the smaller one, don’t worry about max norm count
+//  Or, you know, maybe still do, and that could be the natural way by which it stops going
+
+// TODO: WHICH ALL PUNS, DEALING WITH OCTAVES
+//  hey wait, am I potentially being either super-redundant OR leaving a lot of possibilities out
+//  By focusing only on a single octave's worth of the scale? Shouldn't it include like at least one octave higher
+//  And/or how should you indicate this? I suppose for each voice you'd need to provide its max and min pitch
+//  (and its max and min durations) and then it will take those into account when proposing puns
+//  I mean I guess it's fine if it proposes puns like C4 contains two C5's, etc.
+//  And when doing puns for the "all" category maybe it just tries to find puns that work within the range of all voices
+//  So... you should by default start with one voice with a reasonable-ish range
+
+// TODO: WHICH ALL PUNS, DEALING WITH OCTAVES
 //  ah, it seems that (probably for EDOs) if you have some pun that looks like say [0, 0, 1, -2, 1, 0, 0, 0]
 //  then that pun is going to be true no matter how you translate it
 //  meaning that [0, 1, -2, 1, 0, 0, 0, 0] will also be a pun
@@ -91,7 +110,7 @@ export {
 //  that it doesn't create an artificial boundary at the top or bottom of the scale , if
 //  (wait just got interrupted by the thought that EDOs are basically just 1-interval tunings,
 //  the octave in a sense doesn't matter... does that affect this at all?)
-//  you were seeing [0, 1, -1, -1, 1, 0, 0, 0] or hwatever,
+//  you were seeing [0, 1, -1, -1, 1, 0, 0, 0] or whatever,
 //  and then of course also  [0, 0, 1, -1, -1, 1, 0, 0] would you also see  [1, 0, 0, 0, 0, 2, -2, -2]
 //  aye yaye yaye and how to get it to recognize that as not really new information...
 //  unless it *IS* new information?
@@ -100,25 +119,22 @@ export {
 //  because you always know you can replace anything with its own power of 2 of itself...
 //  but 3's are interesting still, that's new information
 
-// TODO: WHICH ALL PUNS
-//  I think actually for each vector you should try repeated divisions by the interval of equivalence
-//  because any fatter one would just be some multiple or the smaller one, don’t worry about norm count
-
-// TODO: WHICH ALL PUNS
+// TODO: WHICH ALL PUNS, DEALING WITH EDO-PUN-CLASSES
 //  sort by RPD first and then error, because of all of those puns which are of the same class
 //  But increasingly small. or maybe you should only present one of those classes at a time and
 //  Give the ability to transpose it to the desired pitch
 //  Wait this means that you only have to search them abstractly
-//  Meaning... you don't need to worry about vectors with trailing zereos
+//  Meaning... you don't need to worry about vectors with trailing zeroes
 //  or rather: any with leading zeroes!
 
-// TODO: WHICH ALL PUNS
+// TODO: WHICH ALL PUNS, DEALING WITH COMPOUND-PUNS
 //  somehow you've got to prevent vectors that are just combinations of simpler vectors
 //  like i saw one that was like [0, 1, -1, 0, 0, 0, -1] right
 //  and another that's like [0, 1, 0, -1, 0, -1, 0]
 //  and another that's like [0, 2, -1, -1, 0, -1, -1] which is just the sum of those two...
 //  but how would you do that?
-//  I guess before you add a pun to the list, ... hmmm no I can't figure this one out. kinda hard.
+//  I guess before you add a pun to the list, ... hmm no I can't figure this one out. kinda hard.
+//  This one is not specific to EDOs
 
 // TODO: TOGGLE BETWEEN ALL PUNS AND ONLY PUNS FOR SELECTED
 //  when it’s just suggesting all possible starting points it’s different
@@ -141,18 +157,6 @@ export {
 //   (oh just had a random thought: perhaps the max norm shouldn't be a thing user worries about,
 //   but should be based on the durations and just calculated automatically based on what could actually possibly help
 //   ... or maybe it's a different case for that when in "all" mode vs "pun for this situation" mode)
-
-// TODO: WHICH PUNS
-//  there would also probably be a control to limit how many factors of 2 you allow / octave range
-
-// TODO: WHICH PUNS
-//  hey wait, am I potentially being either super-redundant OR leaving a lot of possibilities out
-//  By focusing only on a single octave's worth of the scale? Shouldn't it include like at least one octave higher
-//  And/or how should you indicate this? I suppose for each voice you'd need to provide its max and min pitch
-//  (and its max and min durations) and then it will take those into account when proposing puns
-//  I mean I guess it's fine if it proposes puns like C4 contains two C5's, etc.
-//  And when doing puns for the "all" category maybe it just tries to find puns that work within the range of all voices
-//  So... you should by default start with one voice with a reasonable-ish range
 
 // TODO: PUNS STUFF
 //  And also begin to set it up for success with if you give it for an input an arbitrary target (besides 1)
