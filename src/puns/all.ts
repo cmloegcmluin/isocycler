@@ -8,7 +8,7 @@ const computeAllPuns = (
     initialVector: Vector = DEFAULT_INITIAL_VECTOR,
     maxNorm: Max<Norm> = DEFAULT_MAX_NORM,
     maxRpd: Max<Rpd> = DEFAULT_MAX_RPD,
-) => {
+): Pun[] => {
     const puns = [] as Pun[]
 
     computePuns(puns, initialVector, durations, maxNorm, maxRpd)

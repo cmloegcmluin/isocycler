@@ -47,7 +47,7 @@ export const computePuns = (
     maxNorm: Max<Norm>,
     maxRpd: Max<Rpd>,
     initialIndex: Index = 0 as Index,
-) => {
+): void => {
     const rpd = computeRpd(vector, durations)
     if (rpd < maxRpd && vectorContainsNoPowersOfTwo(vector)) {
         const error = computeError(vector, durations)
@@ -65,13 +65,13 @@ export const computePuns = (
         }
     }
 
-    let norm = computeNorm(vector)
+    const norm = computeNorm(vector)
     if (norm === maxNorm) {
         return
     }
 
     for (let index = initialIndex; index < durations.length; index++) {
-        let count = vector[index]
+        const count = vector[index]
         if (count === undefined) {
             // Kick it off in both directions
             computeIncrementedVectorPuns(puns, vector, durations, maxNorm, maxRpd, index, 1)

@@ -2,8 +2,8 @@ import {Count, Duration, Vector} from "./types"
 
 const computeError = (vector: Vector, durations: Duration[]): Duration => {
     return vector.reduce(
-        (error: Duration, el: Count, index: number) => {
-            return error + el * durations[index] as Duration
+        (error: Duration, count: Count, index: number) => {
+            return error + count * durations[index] as Duration
         },
         0 as Duration,
     )

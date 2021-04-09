@@ -1,4 +1,4 @@
-type Count = number & {_ElBrand: boolean}
+type Count = number & {_CountBrand: boolean}
 type Vector = Count[]
 type Rpd = number & {_RpdBrand: boolean}
 type Pun = [Vector, Duration, Rpd]

@@ -5,6 +5,7 @@
   "main": "isocycler.js",
   "scripts": {
     "start": "webpack serve",
+    "lint": "npx eslint . --ext .ts --fix",
     "test": "node -r ts-node/register/transpile-only node_modules/jasmine/bin/jasmine"
   },
   "repository": {
@@ -20,6 +21,9 @@
   "devDependencies": {
     "@types/jasmine": "^3.6.9",
     "@types/node": "^14.14.37",
+    "@typescript-eslint/eslint-plugin": "^4.21.0",
+    "@typescript-eslint/parser": "^4.21.0",
+    "eslint": "^7.23.0",
     "html-webpack-plugin": "^5.3.1",
     "ignore-not-found-export-webpack-plugin": "^1.0.2",
     "jasmine": "^3.7.0",

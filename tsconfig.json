@@ -20,6 +20,7 @@
     "removeComments": true
   },
   "include": [
-    "src"
+    "src",
+    "spec",
   ]
 }

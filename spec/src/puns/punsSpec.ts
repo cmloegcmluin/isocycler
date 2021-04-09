@@ -1,9 +1,10 @@
 import {performance} from "perf_hooks"
 import {computeEdoBasePeriodDurations, computePuns, Edo, Max, Norm, Pun, Rpd} from "../../../src/puns"
 import {DEFAULT_INITIAL_VECTOR, DEFAULT_INITIAL_VECTOR_FOR_EQUAL_TEMPERED_TUNINGS} from "../../../src/puns/constants"
-import * as computePunsModule from "../../../src/puns/puns"
+import * as punsModule from "../../../src/puns/puns"
 import {computeDurations} from "../../../src/puns/durations"
 import {Duration, Periods, Vector} from "../../../src/puns/types"
+import Spy = jasmine.Spy
 
 describe("computePuns", (): void => {
     it("achieves exclusion of puns that are inverse equivalents by excluding those whose first non-zero term is not positive", (): void => {
@@ -32,10 +33,11 @@ describe("computePuns", (): void => {
         const puns: Pun[] = []
         const vector: Vector = DEFAULT_INITIAL_VECTOR_FOR_EQUAL_TEMPERED_TUNINGS
         const durations: Duration[] = [1, 0.7937005259840998, 0.6299605249474366] as Duration[]
-        spyOn(computePunsModule, "computePuns").and.callThrough()
+        spyOn(punsModule, "computePuns").and.callThrough()
 
-        computePunsModule.computePuns(puns, vector, durations, maxNorm, maxRpd)
-        const actual = (computePunsModule.computePuns as jasmine.Spy).calls.all().map(({args: [_, vector]}) => vector)
+        punsModule.computePuns(puns, vector, durations, maxNorm, maxRpd)
+        const calls = (punsModule.computePuns as Spy).calls.all() as Array<unknown> as Array<{args: [Pun[], Vector]}>
+        const actual = calls.map(({args: [_, vector]}) => vector)
 
         const expected = [
             [1],
@@ -69,10 +71,11 @@ describe("computePuns", (): void => {
         const basePeriodDurations: Duration[] = [1, 0.7937005259840998, 0.6299605249474366] as Duration[]
         const periods = 2 as Periods
         const durations = computeDurations(basePeriodDurations, periods)
-        spyOn(computePunsModule, "computePuns").and.callThrough()
+        spyOn(punsModule, "computePuns").and.callThrough()
 
-        computePunsModule.computePuns(puns, vector, durations, maxNorm, maxRpd)
-        const actual = (computePunsModule.computePuns as jasmine.Spy).calls.all().map(({args: [_, vector]}) => vector)
+        punsModule.computePuns(puns, vector, durations, maxNorm, maxRpd)
+        const calls = (punsModule.computePuns as Spy).calls.all() as Array<unknown> as Array<{args: [Pun[], Vector]}>
+        const actual = calls.map(({args: [_, vector]}) => vector)
 
         const expected = [
             [1],
