@@ -1,7 +1,7 @@
 interface Components {
     edoInput: HTMLInputElement,
     maxNormInput: HTMLInputElement,
-    maxRpdInput: HTMLInputElement,
+    maxUnpunninessInput: HTMLInputElement,
     periodsInput: HTMLInputElement,
     etCheckbox: HTMLInputElement,
     results: HTMLDivElement,

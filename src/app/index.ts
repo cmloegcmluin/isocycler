@@ -2,7 +2,7 @@ import {
     buildEdoWrapper,
     buildEtWrapper,
     buildMaxNormWrapper,
-    buildMaxRpdWrapper,
+    buildMaxUnpunninessWrapper,
     buildPeriodsWrapper,
     buildResults,
 } from "./components"
@@ -14,14 +14,14 @@ document.body.appendChild(root)
 root.appendChild(buildEdoWrapper())
 root.appendChild(buildEtWrapper())
 root.appendChild(buildMaxNormWrapper())
-root.appendChild(buildMaxRpdWrapper())
+root.appendChild(buildMaxUnpunninessWrapper())
 root.appendChild(buildPeriodsWrapper())
 root.appendChild(buildResults())
 
 handleChange()
 
 // TODO: UI FINESSE: SORTING PUNS
-//  Maybe there's a better way to sort the puns than by RPD, because who really cares about that as long as
+//  Maybe there's a better way to sort the puns than by unpunniness, because who really cares about that as long as
 //  it's within your tolerance. instead maybe it should sort them by norm, how many notes there are I mean.
 //  Or maybe ability to change what they're sorted by is a good feature to have
 

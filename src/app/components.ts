@@ -2,7 +2,8 @@ import {
     DEFAULT_EDO,
     DEFAULT_PERIODS,
     DEFAULT_MAX_NORM,
-    DEFAULT_MAX_RPD, DEFAULT_ET,
+    DEFAULT_MAX_UNPUNNINESS,
+    DEFAULT_ET,
 } from "./constants"
 import {components} from "./globals"
 import {handleChange} from "./handlers"
@@ -45,26 +46,26 @@ const buildMaxNormWrapper = (): HTMLDivElement => {
     return maxNormWrapper
 }
 
-const buildMaxRpdWrapper = (): HTMLDivElement => {
-    const maxRpdWrapper: HTMLDivElement = document.createElement("div")
+const buildMaxUnpunninessWrapper = (): HTMLDivElement => {
+    const maxUnpunninessWrapper: HTMLDivElement = document.createElement("div")
 
-    const maxRpdInput: HTMLInputElement = document.createElement("input")
-    maxRpdInput.type = "number"
-    maxRpdInput.value = DEFAULT_MAX_RPD.toString()
-    maxRpdInput.step = "0.001"
-    maxRpdInput.min = "0"
-    maxRpdInput.max = "5"
-    maxRpdInput.addEventListener("change", handleChange)
+    const maxUnpunninessInput: HTMLInputElement = document.createElement("input")
+    maxUnpunninessInput.type = "number"
+    maxUnpunninessInput.value = DEFAULT_MAX_UNPUNNINESS.toString()
+    maxUnpunninessInput.step = "0.1"
+    maxUnpunninessInput.min = "0"
+    maxUnpunninessInput.max = "500"
+    maxUnpunninessInput.addEventListener("change", handleChange)
 
-    const maxRpdLabel = document.createElement("label")
-    maxRpdLabel.textContent = "max RPD"
+    const maxUnpunninessLabel = document.createElement("label")
+    maxUnpunninessLabel.textContent = "max unpunniness"
 
-    maxRpdWrapper.appendChild(maxRpdLabel)
-    maxRpdWrapper.appendChild(maxRpdInput)
+    maxUnpunninessWrapper.appendChild(maxUnpunninessLabel)
+    maxUnpunninessWrapper.appendChild(maxUnpunninessInput)
 
-    components.maxRpdInput = maxRpdInput
+    components.maxUnpunninessInput = maxUnpunninessInput
 
-    return maxRpdWrapper
+    return maxUnpunninessWrapper
 }
 
 const buildPeriodsWrapper = (): HTMLDivElement => {
@@ -118,7 +119,7 @@ const buildResults = (): HTMLDivElement => {
 export {
     buildEdoWrapper,
     buildMaxNormWrapper,
-    buildMaxRpdWrapper,
+    buildMaxUnpunninessWrapper,
     buildPeriodsWrapper,
     buildEtWrapper,
     buildResults,

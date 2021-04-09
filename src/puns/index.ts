@@ -1,4 +1,4 @@
-export {Edo, Rpd, Norm, Max, Pun} from "./types"
+export {Edo, Unpunniness, Norm, Max, Pun} from "./types"
 export {computePuns} from "./puns"
 export {computeEdoBasePeriodDurations} from "./edo"
 
@@ -23,6 +23,18 @@ export {computeEdoBasePeriodDurations} from "./edo"
 //  I accept dealing with it later if want to compose isocyclic Bohlen-Pierce with tritave-equivalence
 //  Though this statement should probably be expressed somewhere as a test (of computeDurations method)
 //  And/or you could do something smart related to how Scala files use the last pitch as its period
+
+// TODO: PUNS, EXCLUDING PUNS THAT HAVE A NOTE IN ONE HALF WITH A POWER-OF-TWO OF THE SAME NOTE IN THE OTHER HALF
+//  Consider the following 12-EDO pun: [-1,0,0,0, 0,1,0,0, 0,0,0,-1,
+//                                       1,0,0,0, 0,0,0,0, 0,0,1     ]
+//  You can see how it has both a low D (the first -1) and a high D (the first 1 on the 2nd row)
+//  This pun should be rejected because you know the exact relationship between low D and high D
+//  So you could subtract the same amount from both halves, a high D, to eliminate the high D on one side
+//  And turn the low D into a high D
+//  At which point you'd have [ 0,0,0,0, 0,1,0,0, 0,0,0,-1,
+//                             -1,0,0,0, 0,0,0,0, 0,0,1     ]
+//  But then you need to shift (because it's equal tempered, so only the class w/ no leading zeroes matters)
+//  So you get [ 1,0,0, 0,0,0,-1, -1,0,0,0, 0,0,0,0, 0,0,1]
 
 // TODO: PUNS, EXCLUDING COMPOUND-PUNS WITH FANCY LINEAR ALGEBRA
 //  somehow you've got to prevent vectors that are just combinations of simpler vectors
@@ -59,16 +71,3 @@ export {computeEdoBasePeriodDurations} from "./edo"
 //  Well except you might still want to keep going
 //  because keeping going on that index might be necessary positioning for a later index
 //  It’s just that you wouldn’t have to bother expending resources on checking the intermediate
-
-// TODO: PUNS, HOW TO FILTER PUNS / MEASURE QUALITY; PROBABLY NOT BY RPD BUT STILL NEED TO NAME THIS MEASURE
-//  Maybe I should measure error relative to the min, not the average...
-//  Because if there’s a really small square in the thing that’s what matters most, right?
-//  Wait but I mean, not even the min out of the two halves, upper and lower
-//  But actually the min out of all the durations which comprise them!
-//  Yes I think that would be better
-//  But then it's not Rpd at all anymore
-//  It's... proportion of the absolute difference between halves to the minimum note = POTADBHTTMN
-//  Or: Proportion of the Halves' Absolute Difference to the minimum note = PHADMN
-//  Or: Halves' Absolute Difference Over Minimum Note = HADOMN
-//  Or: Difference (Absolute) / Minimum Note = DAMN ADMN
-//  Minimum Note Under Absolute Difference = MNUD

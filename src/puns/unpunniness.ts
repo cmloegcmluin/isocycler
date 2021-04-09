@@ -1,6 +1,7 @@
-import {Count, Duration, Rpd, Vector} from "./types"
+import {UNPUNNINESS_CONSTANT} from "./constants"
+import {Count, Duration, Unpunniness, Vector} from "./types"
 
-const computeRpd = (vector: Vector, durations: Duration[]): Rpd => {
+const computeUnpunniness = (vector: Vector, durations: Duration[]): Unpunniness => {
     const durationUpperHalf = vector.reduce(
         (duration: Duration, count: Count, index: number) => {
             return count > 0 ? duration + count * durations[index] as Duration : duration
@@ -15,9 +16,11 @@ const computeRpd = (vector: Vector, durations: Duration[]): Rpd => {
         0 as Duration,
     )
 
-    return 2 * Math.abs(durationUpperHalf - durationLowerHalf) / (durationUpperHalf + durationLowerHalf) as Rpd
+    const minimumDuration = durations[vector.length - 1]
+
+    return UNPUNNINESS_CONSTANT * Math.abs(durationUpperHalf - durationLowerHalf) / minimumDuration as Unpunniness
 }
 
 export {
-    computeRpd,
+    computeUnpunniness,
 }

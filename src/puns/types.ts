@@ -1,7 +1,7 @@
 type Count = number & {_CountBrand: boolean}
 type Vector = Count[]
-type Rpd = number & {_RpdBrand: boolean}
-type Pun = [Vector, Duration, Rpd]
+type Unpunniness = number & {_UnpunninessBrand: boolean}
+type Pun = [Vector, Duration, Unpunniness]
 type Norm = number & {_NormBrand: boolean}
 type Index = number & {_IndexBrand: boolean}
 type Edo = number & {_EdoBrand: boolean}
@@ -20,7 +20,7 @@ export {
     Edo,
     Duration,
     Max,
-    Rpd,
+    Unpunniness,
     Periods,
     Pitch,
 }

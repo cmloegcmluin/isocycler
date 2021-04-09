@@ -4,7 +4,7 @@ import {computeColor} from "./color"
 
 const SCALER = 40
 
-const computeSvgString = ([vector, _, rpd]: Pun, durations: Duration[]): string => {
+const computeSvgString = ([vector, _, unpunniness]: Pun, durations: Duration[]): string => {
     let squares = ""
     let upperHalfX = 0
     let lowerHalfX = 0
@@ -37,7 +37,7 @@ const computeSvgString = ([vector, _, rpd]: Pun, durations: Duration[]): string 
         }
     })
 
-    const title = `${vector.toString()}; RPD: ${(rpd * 100).toPrecision(3)}%`
+    const title = `${vector.toString()}; unpunniness: ${unpunniness.toPrecision(3)}`
 
     return `<svg height="${(upperHalfY + lowerHalfY) * SCALER}" width="${Math.max(upperHalfX, lowerHalfX) * SCALER}"><title>${title}</title>${squares}</svg>`
 }
@@ -52,12 +52,12 @@ const formatPuns = (puns: Pun[], durations: Duration[]): string => {
     )
 }
 
-const sortPunsByRpd = (puns: Pun[]): void => {
+const sortPunsByUnpunniness = (puns: Pun[]): void => {
     puns.sort((a: Pun, b: Pun) => a[2] - b[2])
 }
 
 const presentPuns = (puns: Pun[], durations: Duration[]): string => {
-    sortPunsByRpd(puns)
+    sortPunsByUnpunniness(puns)
 
     return formatPuns(puns, durations)
 }
