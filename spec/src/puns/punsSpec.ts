@@ -1,8 +1,8 @@
 import {performance} from "perf_hooks"
 import {computeEdoBasePeriodDurations, computePuns, Edo, Max, Norm, Pun, Unpunniness} from "../../../src/puns"
-import {DEFAULT_INITIAL_VECTOR, DEFAULT_INITIAL_VECTOR_FOR_EQUAL_TEMPERED_TUNINGS} from "../../../src/puns/constants"
-import * as punsModule from "../../../src/puns/puns"
+import {DEFAULT_INITIAL_VECTOR_FOR_EQUAL_TEMPERED_TUNINGS} from "../../../src/puns/constants"
 import {computeDurations} from "../../../src/puns/durations"
+import * as punsModule from "../../../src/puns/puns"
 import {Duration, Periods, Vector} from "../../../src/puns/types"
 import Spy = jasmine.Spy
 
@@ -160,7 +160,7 @@ describe("computePuns", (): void => {
         const maxNorm: Max<Norm> = 5 as Max<Norm>
         const maxUnpunniness: Max<Unpunniness> = 0.000000001 as Max<Unpunniness>
         const puns: Pun[] = []
-        const vector: Vector = DEFAULT_INITIAL_VECTOR
+        const vector: Vector = DEFAULT_INITIAL_VECTOR_FOR_EQUAL_TEMPERED_TUNINGS
         const basePeriodDurations: Duration[] = computeEdoBasePeriodDurations(12 as Edo)
         const periods = 3 as Periods
         const durations = computeDurations(basePeriodDurations, periods)
