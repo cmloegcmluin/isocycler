@@ -46,17 +46,6 @@ export {computeEdoBasePeriodDurations} from "./edo"
 //  Find every combination of 2 vectors, then see if any of those are equal to any of the original vectors
 //  If so, eliminate them, and if any were eliminated this round, then repeat the process
 
-// TODO: PUNS, ALL PUNS MODE VS SPECIFIC PUNS MODE
-//  - when in specific puns mode, ignore max norm
-//  You can do that if you have some other way to cut yourself off, when you're no longer exploring sane puns
-//  Which is related to the other to-do here about efficiency of calculation
-//  - oh just had a random thought: perhaps the max norm shouldn't be a thing user worries about,
-//  but should be based on the durations and just calculated automatically based on what could actually possibly help
-//  ... or maybe it's a different case for that when in "all" mode vs "pun for this situation" mode
-//  Hm I mean I could imagine leaving off max norm in all cases, but then I think computationally it would get out of
-//  Hand what with in the 3rd period, say, just trying all these combos of the tiniest durations
-//  I dunno I think it just makes sense to keep this always
-
 // TODO: PUNS, ALL PUNS MODE PRECOMPUTING
 //  I might have to do asynchronous population of them now, so it doesn’t block or crash and you can see it progress
 //  Or precompute any anyone would ever want, and use controls to filter it; data might be big, but filtering is fast
