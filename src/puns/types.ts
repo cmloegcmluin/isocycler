@@ -7,7 +7,7 @@ type Index = number & {_IndexBrand: boolean}
 type Edo = number & {_EdoBrand: boolean}
 type Duration = number & {_DurationBrand: boolean}
 type Pitch = number & {_PitchBrand: boolean}
-type RepRange = number & {_RepRangeBrand: boolean}
+type Periods = number & {_PeriodsBrand: boolean}
 
 type Max<T extends unknown = number> = T & {_MaxBrand: boolean}
 
@@ -21,6 +21,6 @@ export {
     Duration,
     Max,
     Rpd,
-    RepRange,
+    Periods,
     Pitch,
 }

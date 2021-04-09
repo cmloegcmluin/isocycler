@@ -1,7 +1,7 @@
 import { isocyclicDuration } from "./isocyclic"
 import {Duration, Edo, Pitch} from "./types"
 
-const computeEdoDurations = (edo: Edo = 12 as Edo): Duration[] => {
+const computeEdoBasePeriodDurations = (edo: Edo = 12 as Edo): Duration[] => {
     const steps = [...Array(edo).keys()]
 
     return steps.map(step => {
@@ -12,5 +12,5 @@ const computeEdoDurations = (edo: Edo = 12 as Edo): Duration[] => {
 }
 
 export {
-    computeEdoDurations,
+    computeEdoBasePeriodDurations,
 }

@@ -1,6 +1,6 @@
 import {
     DEFAULT_EDO_INPUT_VALUE,
-    DEFAULT_REPETITION_RANGE_INPUT_VALUE,
+    DEFAULT_PERIODS_INPUT_VALUE,
     DEFAULT_MAX_NORM_INPUT_VALUE,
     DEFAULT_MAX_RPD_INPUT_VALUE,
 } from "./constants"
@@ -67,25 +67,25 @@ const buildMaxRpdWrapper = (): HTMLDivElement => {
     return maxRpdWrapper
 }
 
-const buildRepetitionRangeWrapper = (): HTMLDivElement => {
-    const repetitionRangeWrapper: HTMLDivElement = document.createElement("div")
+const buildPeriodsWrapper = (): HTMLDivElement => {
+    const periodsWrapper: HTMLDivElement = document.createElement("div")
 
-    const repetitionRangeInput: HTMLInputElement = document.createElement("input")
-    repetitionRangeInput.type = "number"
-    repetitionRangeInput.value = DEFAULT_REPETITION_RANGE_INPUT_VALUE
-    repetitionRangeInput.min = "1"
-    repetitionRangeInput.max = "6"
-    repetitionRangeInput.addEventListener("change", handleChange)
+    const periodsInput: HTMLInputElement = document.createElement("input")
+    periodsInput.type = "number"
+    periodsInput.value = DEFAULT_PERIODS_INPUT_VALUE
+    periodsInput.min = "1"
+    periodsInput.max = "6"
+    periodsInput.addEventListener("change", handleChange)
 
-    const repetitionRangeLabel = document.createElement("label")
-    repetitionRangeLabel.textContent = "repetition range"
+    const periodsLabel = document.createElement("label")
+    periodsLabel.textContent = "periods"
 
-    repetitionRangeWrapper.appendChild(repetitionRangeLabel)
-    repetitionRangeWrapper.appendChild(repetitionRangeInput)
+    periodsWrapper.appendChild(periodsLabel)
+    periodsWrapper.appendChild(periodsInput)
 
-    components.repetitionRangeInput = repetitionRangeInput
+    components.periodsInput = periodsInput
 
-    return repetitionRangeWrapper
+    return periodsWrapper
 }
 
 const buildResults = (): HTMLDivElement => {
@@ -100,6 +100,6 @@ export {
     buildEdoWrapper,
     buildMaxNormWrapper,
     buildMaxRpdWrapper,
-    buildRepetitionRangeWrapper,
+    buildPeriodsWrapper,
     buildResults,
 }

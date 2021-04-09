@@ -2,7 +2,7 @@ import {computeError} from "./error"
 import {invertVector} from "./invert"
 import {computeUpperHalfNorm, computeLowerHalfNorm, computeNorm} from "./norm"
 import {computeRpd} from "./rpd"
-import {Count, Duration, Index, Max, Norm, Pun, RepRange, Rpd, Vector} from "./types"
+import {Count, Duration, Index, Max, Norm, Pun, Rpd, Vector} from "./types"
 
 const isFirstNonzeroCountPositive = (vector: Vector): boolean => {
     for (const count of vector) {
@@ -28,17 +28,15 @@ const computeIncrementedVectorPuns = (
     durations: Duration[],
     maxNorm: Max<Norm>,
     maxRpd: Max<Rpd>,
-    repetitionsRange: RepRange,
     index: Index,
     increment: number,
 ) => {
-    // TODO: this might not be the most performant way to clone the array while filling with zeroes and incrementing end
-    const newVector = new Array(index + 1).fill(0)
-    vector.forEach((count, index) => newVector[index] = count)
+    const newVector = [...vector]
+    for (let i = newVector.length; i <= index; i++) newVector[i] = 0 as Count
     newVector[index] = newVector[index] + increment as Count
 
     if (isFirstNonzeroCountPositive(newVector)) {
-        computePuns(puns, newVector, durations, maxNorm, maxRpd, repetitionsRange, index)
+        computePuns(puns, newVector, durations, maxNorm, maxRpd, index)
     }
 }
 
@@ -48,18 +46,19 @@ export const computePuns = (
     durations: Duration[],
     maxNorm: Max<Norm>,
     maxRpd: Max<Rpd>,
-    repetitionsRange: RepRange,
     initialIndex: Index = 0 as Index,
 ) => {
     const rpd = computeRpd(vector, durations)
-    if (rpd < maxRpd && vectorContainsNoPowersOfTwo(vector)) { // TODO: maybe more performant to switch order of checks?
+    if (rpd < maxRpd && vectorContainsNoPowersOfTwo(vector)) {
         const error = computeError(vector, durations)
 
-        // TODO: Perhaps I should just rename norm to note count? But how would that play with Count type of Vector els?
-        const higherHalfNoteCount = computeUpperHalfNorm(vector)
-        const lowerHalfNoteCount = computeLowerHalfNorm(vector)
+        const upperHalfNorm = computeUpperHalfNorm(vector)
+        const lowerHalfNorm = computeLowerHalfNorm(vector)
 
-        if (higherHalfNoteCount > lowerHalfNoteCount) {
+        // If there are more notes in the upper half, then it overall has higher pitched notes
+        // (Though there's no guarantee that the single lowest pitched note isn't amongst them)
+        // And it's more natural to see the lower pitched notes in the lower half
+        if (upperHalfNorm > lowerHalfNorm) {
             puns.push([vector, error, rpd])
         } else {
             puns.push([invertVector(vector), -error as Duration, rpd])
@@ -71,20 +70,18 @@ export const computePuns = (
         return
     }
 
-    // TODO: maybe don't calc this every time? can do it once up front?
-    const maxDimension = durations.length * repetitionsRange
-
-    for (let index = initialIndex; index < maxDimension; index++) {
-        if (vector[index] === 0 || vector[index] === undefined) {
+    for (let index = initialIndex; index < durations.length; index++) {
+        let count = vector[index]
+        if (count === undefined) {
             // Kick it off in both directions
-            computeIncrementedVectorPuns(puns, vector, durations, maxNorm, maxRpd, repetitionsRange, index, 1)
-            computeIncrementedVectorPuns(puns, vector, durations, maxNorm, maxRpd, repetitionsRange, index, -1)
-        } else if (vector[index] > 0 /*&& vector[0] !== 0*/) {
-            // Continue in positive direction
-            computeIncrementedVectorPuns(puns, vector, durations, maxNorm, maxRpd, repetitionsRange, index, 1)
-        } else if (vector[index] < 0 /*&& vector[0] !== 0*/) {
-            // Continue in negative direction
-            computeIncrementedVectorPuns(puns, vector, durations, maxNorm, maxRpd, repetitionsRange, index, -1)
+            computeIncrementedVectorPuns(puns, vector, durations, maxNorm, maxRpd, index, 1)
+            computeIncrementedVectorPuns(puns, vector, durations, maxNorm, maxRpd, index, -1)
+        } else if (count > 0) {
+            // Continue adding upper half notes
+            computeIncrementedVectorPuns(puns, vector, durations, maxNorm, maxRpd, index, 1)
+        } else {
+            // Continue adding lower half notes
+            computeIncrementedVectorPuns(puns, vector, durations, maxNorm, maxRpd, index, -1)
         }
     }
 }
