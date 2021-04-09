@@ -47,28 +47,20 @@ export {computeEdoBasePeriodDurations} from "./edo"
 //  If so, eliminate them, and if any were eliminated this round, then repeat the process
 
 // TODO: PUNS, ALL PUNS MODE VS SPECIFIC PUNS MODE
-//  - One of the UI controls will be a toggle between all puns and specific puns
-//  - when in specific puns mode, there's one frozen heading, the specific selection
-//  and the scrolling part is one half of a pun at a time
-//  but when in all puns mode, It’s not snap scrolling with one frozen heading
-//  Every one is a different combination of two halves,
-//  And either of those halves could be clicked to insert
-//  - when in only-for-selected mode, ignore max norm
+//  - when in specific puns mode, ignore max norm
+//  You can do that if you have some other way to cut yourself off, when you're no longer exploring sane puns
+//  Which is related to the other to-do here about efficiency of calculation
 //  - oh just had a random thought: perhaps the max norm shouldn't be a thing user worries about,
 //  but should be based on the durations and just calculated automatically based on what could actually possibly help
 //  ... or maybe it's a different case for that when in "all" mode vs "pun for this situation" mode
+//  Hm I mean I could imagine leaving off max norm in all cases, but then I think computationally it would get out of
+//  Hand what with in the 3rd period, say, just trying all these combos of the tiniest durations
+//  I dunno I think it just makes sense to keep this always
 
 // TODO: PUNS, ALL PUNS MODE PRECOMPUTING
-//  I might have to do asynchronous population of them now
-//  So it doesn’t block or crash
-//  And you can see it progress
-//  And/or
-//  Just precompute them up for a while
-//      And just use those as filters on it
-//  Orchestra range let’s say 8 octaves bc piano over 7
-//  What should the norm range then be
-//  well 1 to 2^7, which is 128?
-//      That’s crazy huge
+//  I might have to do asynchronous population of them now, so it doesn’t block or crash and you can see it progress
+//  Or precompute any anyone would ever want, and use controls to filter it; data might be big, but filtering is fast
+//  What range, then? Let’s say 8 octaves b/c piano >7. The norm range then be 1 to 2^7, which is 128. That’s crazy huge
 
 // TODO: PUNS, EFFICIENCY OF CALCULATION
 //  Also probably some stuff we could do for efficiency not checking ones

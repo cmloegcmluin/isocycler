@@ -32,6 +32,14 @@ handleChange()
 //  if equal tempered is checked, then there should be arrows up/down that appear next to each pun class
 //  to cycle through its transpositions
 
+// TODO: UI FUNDAMENTALS, ALL PUNS MODE VS SPECIFIC PUNS MODE
+//  - One of the UI controls will be a toggle between all puns and specific puns
+//  - when in specific puns mode, there's one frozen heading, the specific selection
+//  and the scrolling part is one half of a pun at a time
+//  but when in all puns mode, It’s not snap scrolling with one frozen heading
+//  Every one is a different combination of two halves,
+//  And either of those halves could be clicked to insert
+
 // TODO: UI FINESSE: IMPORT SCALA FILE OR CHOOSE FROM COMMON TUNINGS
 //  Would be cool if you could also check JI pitches up to a certain odd limit or something (including e.g. 3/2)
 //  Or really, it should just be able to take an arbitrary scale (.scl file) and use its pitches as the building block
