@@ -65,6 +65,10 @@ export {
 //  there would also probably be a control to limit how many factors of 2 you allow / octave range
 //  This is different than the no exact powers of 2 in them idea, more related to the each voice having a range idea
 //  Unless the max norm works as a limiter for that...
+//  No I think this is more like... what's the max vector cardinality/size you know? I think that's its dimension
+//  According to this: https://math.stackexchange.com/a/2452453
+//  A vector isn't necessarily 1D, it's necessarily *rank* 1. while a matrix is *rank* 2
+//  (and like the vector, whatever dimensionality you're dealing with at the time)
 
 // TODO: WHICH ALL PUNS, DEALING WITH OCTAVES
 //  I think actually for each vector you should try repeated divisions by the interval of equivalence

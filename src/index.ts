@@ -55,3 +55,7 @@
 
 // TODO: plug in @musical-patterns/material to perform it (or however houndstoothtopia does it)
 //  The default timbre should probably have a weak-ish attack to help cover up the inexact onsets
+
+// TODO: maybe there's a better way to sort the puns than by RPD, because who really cares about that as long as
+//  it's within your tolerance. instead maybe it should sort them by norm, how many notes there are I mean.
+//  Or maybe ability to change what they're sorted by is a good feature to have

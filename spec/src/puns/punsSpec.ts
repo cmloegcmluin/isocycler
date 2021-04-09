@@ -33,9 +33,9 @@ describe("computePuns", (): void => {
             //  because you have to shift the -4 down two octaves
             //  (first to -2 then to -1)
             //  so you have to shift the 5 over to octaves, first to that next right 3-EDO vector chunk 0,0,0 then again
-            [[-4, 5, 0], -0.03149737007950115, 0.007905467700100489] as Pun,
+            // [[-4, 5, 0], -0.03149737007950115, 0.007905467700100489] as Pun,
             [[-3, 3, 1], 0.011062102899736082, 0.003680581804137354] as Pun,
-            [[0, -4, 5], -0.02499947919921608, 0.007905467700100541] as Pun,
+            // [[0, -4, 5], -0.02499947919921608, 0.007905467700100541] as Pun,
         ])
     })
 

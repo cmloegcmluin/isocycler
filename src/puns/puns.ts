@@ -1,8 +1,8 @@
 import {computeError} from "./error"
 import {invertVector} from "./invert"
-import {computeLowerHalfNorm, computeNorm, computeHigherHalfNorm} from "./norm"
+import {computeHigherHalfNorm, computeLowerHalfNorm, computeNorm} from "./norm"
 import {computeRpd} from "./rpd"
-import {Duration, Count, Index, Max, Norm, Pun, Rpd, Vector} from "./types"
+import {Count, Duration, Index, Max, Norm, Pun, Rpd, Vector} from "./types"
 
 const isFirstNonzeroCountPositive = (vector: Vector): boolean => {
     for (const count of vector) {
@@ -10,6 +10,16 @@ const isFirstNonzeroCountPositive = (vector: Vector): boolean => {
         if (count > 0) return true
     }
     return false
+}
+
+const vectorContainsNoPowersOfTwo = (vector: Vector): boolean => {
+    for (const count of vector) {
+        const absCount = Math.abs(count)
+        if (absCount > 1 && Math.log2(absCount) % 1 === 0) {
+            return false
+        }
+    }
+    return true
 }
 
 const computeIncrementedVectorPuns = (
@@ -37,7 +47,7 @@ export const computePuns = (
     initialIndex: Index = 0 as Index,
 ) => {
     const rpd = computeRpd(vector, durations)
-    if (rpd < maxRpd) {
+    if (rpd < maxRpd && vectorContainsNoPowersOfTwo(vector)) { // TODO: maybe more performant to switch order of checks?
         const error = computeError(vector, durations)
 
         // TODO: Perhaps I should just rename norm to note count? But how would that play with Count type of Vector els?
