@@ -4,7 +4,7 @@ const DEFAULT_MAX_RPD_INPUT_VALUE = "0.1"
 // TODO: WHICH ALL PUNS, DEALING WITH OCTAVES
 //  THis is just 3x the EDO input value, meaning we allow a span of 3 octaves
 //  (The max vector would relate the lowest D to a C# which is just shy of 3 octaves higher D)
-const DEFAULT_REPETITION_RANGE_INPUT_VALUE = "3"
+const DEFAULT_REPETITION_RANGE_INPUT_VALUE = "2"
 
 export {
     DEFAULT_EDO_INPUT_VALUE,

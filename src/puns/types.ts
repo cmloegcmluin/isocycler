@@ -6,6 +6,7 @@ type Norm = number & {_NormBrand: boolean}
 type Index = number & {_IndexBrand: boolean}
 type Edo = number & {_EdoBrand: boolean}
 type Duration = number & {_DurationBrand: boolean}
+type RepRange = number & {_RepRangeBrand: boolean}
 
 type Max<T extends unknown = number> = T & {_MaxBrand: boolean}
 
@@ -19,4 +20,5 @@ export {
     Duration,
     Max,
     Rpd,
+    RepRange,
 }

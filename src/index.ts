@@ -59,3 +59,5 @@
 // TODO: maybe there's a better way to sort the puns than by RPD, because who really cares about that as long as
 //  it's within your tolerance. instead maybe it should sort them by norm, how many notes there are I mean.
 //  Or maybe ability to change what they're sorted by is a good feature to have
+
+// TODO: you should be able to click any of the puns in the bank to demo it (hear it)

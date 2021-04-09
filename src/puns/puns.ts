@@ -2,7 +2,7 @@ import {computeError} from "./error"
 import {invertVector} from "./invert"
 import {computeHigherHalfNorm, computeLowerHalfNorm, computeNorm} from "./norm"
 import {computeRpd} from "./rpd"
-import {Count, Duration, Index, Max, Norm, Pun, Rpd, Vector} from "./types"
+import {Count, Duration, Index, Max, Norm, Pun, RepRange, Rpd, Vector} from "./types"
 
 const isFirstNonzeroCountPositive = (vector: Vector): boolean => {
     for (const count of vector) {
@@ -28,13 +28,17 @@ const computeIncrementedVectorPuns = (
     durations: Duration[],
     maxNorm: Max<Norm>,
     maxRpd: Max<Rpd>,
+    repetitionsRange: RepRange,
     index: Index,
     increment: number,
 ) => {
-    const newVector = [...vector]
+    // TODO: this might not be the most performant way to clone the array while filling with zeroes and incrementing end
+    const newVector = new Array(index + 1).fill(0)
+    vector.forEach((count, index) => newVector[index] = count)
     newVector[index] = newVector[index] + increment as Count
+
     if (isFirstNonzeroCountPositive(newVector)) {
-        computePuns(puns, newVector, durations, maxNorm, maxRpd, index)
+        computePuns(puns, newVector, durations, maxNorm, maxRpd, repetitionsRange, index)
     }
 }
 
@@ -44,6 +48,7 @@ export const computePuns = (
     durations: Duration[],
     maxNorm: Max<Norm>,
     maxRpd: Max<Rpd>,
+    repetitionsRange: RepRange,
     initialIndex: Index = 0 as Index,
 ) => {
     const rpd = computeRpd(vector, durations)
@@ -66,17 +71,20 @@ export const computePuns = (
         return
     }
 
-    for (let index = initialIndex; index < vector.length; index++) {
-        if (vector[index] === 0) {
+    // TODO: maybe don't calc this every time? can do it once up front?
+    const maxDimension = durations.length * repetitionsRange
+
+    for (let index = initialIndex; index < maxDimension; index++) {
+        if (vector[index] === 0 || vector[index] === undefined) {
             // Kick it off in both directions
-            computeIncrementedVectorPuns(puns, vector, durations, maxNorm, maxRpd, index, 1)
-            computeIncrementedVectorPuns(puns, vector, durations, maxNorm, maxRpd, index, -1)
-        } else if (vector[index] > 0) {
+            computeIncrementedVectorPuns(puns, vector, durations, maxNorm, maxRpd, repetitionsRange, index, 1)
+            computeIncrementedVectorPuns(puns, vector, durations, maxNorm, maxRpd, repetitionsRange, index, -1)
+        } else if (vector[index] > 0 /*&& vector[0] !== 0*/) {
             // Continue in positive direction
-            computeIncrementedVectorPuns(puns, vector, durations, maxNorm, maxRpd, index, 1)
-        } else {
+            computeIncrementedVectorPuns(puns, vector, durations, maxNorm, maxRpd, repetitionsRange, index, 1)
+        } else if (vector[index] < 0 /*&& vector[0] !== 0*/) {
             // Continue in negative direction
-            computeIncrementedVectorPuns(puns, vector, durations, maxNorm, maxRpd, index, -1)
+            computeIncrementedVectorPuns(puns, vector, durations, maxNorm, maxRpd, repetitionsRange, index, -1)
         }
     }
 }
