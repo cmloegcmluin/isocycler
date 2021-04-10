@@ -34,16 +34,3 @@ export {computeEdoBasePeriodDurations} from "./edo"
 //  I accept dealing with it later if want to compose isocyclic Bohlen-Pierce with tritave-equivalence
 //  Though this statement should probably be expressed somewhere as a test (of computeDurations method)
 //  And/or you could do something smart related to how Scala files use the last pitch as its period
-
-// TODO: PUNS, EXCLUDING ONES THAT OBVIOUSLY CAN BE REDUCED
-//  If like the entire frigging thing is zeroes or twos or all zeroes and threes or whatever then it should be reduced
-//  And I think now it’s not doing that at all
-//  And maybe never did it for non powers of two such as three
-//  Maybe make a test for that
-//  yeah! found one
-//  EDO: 3
-//  max norm: 6
-//  max unpunniness: 800
-//  periods: 3
-//  will include -2,2,0,0,0,0,0,2
-//  wow haha

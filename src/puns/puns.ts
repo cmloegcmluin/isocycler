@@ -1,5 +1,6 @@
 import {DEFAULT_EDO, DEFAULT_MAX_NORM, DEFAULT_MAX_UNPUNNINESS} from "../app/constants"
 import {vectorCanBeNormReduced} from "./canBeNormReduced"
+import {vectorCanBeReduced} from "./canBeReduced"
 import {DEFAULT_INITIAL_VECTOR} from "./constants"
 import {vectorContainsNoNotesRelatedByPeriod} from "./containsNoNotesRelatedByPeriod"
 import {computeError} from "./error"
@@ -62,6 +63,7 @@ export const computePuns = (
             unpunniness < maxUnpunniness
             && vectorContainsNoNotesRelatedByPeriod(vector, edo)
             && !vectorCanBeNormReduced(vector, edo, durations)
+            && !vectorCanBeReduced(vector)
         ) {
             // If there are more notes in the upper half, then it overall has higher pitched notes
             // (Though there's no guarantee that the single lowest pitched note isn't amongst them)

@@ -20,10 +20,11 @@ root.appendChild(buildResults())
 
 handleChange()
 
-// TODO: UI FINESSE: SORTING PUNS
+// TODO: UI FINESSE: SORTING & FILTERING PUNS
 //  Maybe there's a better way to sort the puns than by unpunniness, because who really cares about that as long as
 //  it's within your tolerance. instead maybe it should sort them by norm, how many notes there are I mean.
 //  Or maybe ability to change what they're sorted by is a good feature to have
+//  - It would also be good if you could filter by things like "must include note A" or "must not include note B"
 
 // TODO: UI FINESSE: DEMOING SOUND OF PUNS
 //  you should be able to click any of the puns in the bank to demo it (hear it)
@@ -45,6 +46,9 @@ handleChange()
 //  Or really, it should just be able to take an arbitrary scale (.scl file) and use its pitches as the building block
 //  (Or equivalently a set of durations, a duration scale, if you're thinking like that)
 //  Or select from a set of obvious common choices, like 12-EDO, a harmonic mode
+//  - It could automatically determine if it is equal tempered, so you could eliminate that checkbox
+//  Tunings to include: EDO (n), JI (p-limit & o-limit), MOS (g and cardinality), CPS (k & n), EFG
+//  Meaning that you'd select type and then it would drop in whatever other controls you needed to make those tunings
 
 // TODO: UI HUGE: SCORE EXPORT:
 //  it can generate sheet music through Lilypond or something, w/ normal staff notation & squares supplement
@@ -98,3 +102,7 @@ handleChange()
 //  if you're just forced to have one of the three locked at all times
 //  yeah it would never make sense to have two locked ever
 //  and eventually the error should be displayed in terms of seconds
+
+// TODO: UI FINESSE: SAVE STATE
+//  Store GUI state in cookies & params like how StaffCode does
+

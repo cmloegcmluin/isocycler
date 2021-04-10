@@ -22,7 +22,7 @@ describe("computePuns", (): void => {
 
         expect(puns).toEqual(jasmine.arrayWithExactContents([
             [[-2, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 1], 0.0005884873807988633, 11.109162441467543],
-            [[-1, -1, 0, 0, 0, 0,  2, 0, 0, 0, 0,  1], 0.0000707968710490503, 1.3364669600308325],
+            [[-1, -1, 0, 0, 0, 0, 2, 0, 0, 0, 0, 1], 0.0000707968710490503, 1.3364669600308325],
             [[-1, 0, 0, -1, 0, 1, 0, 0, 0, 0, 1, 1], -0.0007803054810396892, 14.730205991959801],
             [[-1, 0, -1, 0, 0, 0, 0, 1, 1, 1], 0.0010852913934751296, 18.252352845575167],
             [[-1, 0, -1, 0, 0, 0, 0, 0, 3], -0.001017143298029488, 16.14614341294413],
@@ -48,7 +48,7 @@ describe("computePuns", (): void => {
 
         expect(puns).toEqual(jasmine.arrayWithExactContents([
             [[-2, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 1], 0.0005884873807988633, 11.109162441467543],
-            [[-1, -1, 0, 0, 0, 0,  2, 0, 0, 0, 0,  1], 0.0000707968710490503, 1.3364669600308325],
+            [[-1, -1, 0, 0, 0, 0, 2, 0, 0, 0, 0, 1], 0.0000707968710490503, 1.3364669600308325],
             [[-1, 0, 0, -1, 0, 1, 0, 0, 0, 0, 1, 1], -0.0007803054810396892, 14.730205991959801],
             [[-1, 0, -1, 0, 0, 0, 0, 1, 1, 1], 0.0010852913934751296, 18.252352845575167],
             [[-1, 0, -1, 0, 0, 0, 0, 0, 3], -0.001017143298029488, 16.14614341294413],
@@ -250,5 +250,22 @@ describe("computePuns", (): void => {
         expect(puns).toEqual([
             // Otherwise would contain [-3,1,3,0,0,1]
         ])
+    })
+
+    it("excludes puns which can be reduced", (): void => {
+        const maxNorm: Max<Norm> = 6 as Max<Norm>
+        const maxUnpunniness: Max<Unpunniness> = 800 as Max<Unpunniness>
+        const puns: Pun[] = []
+        const vector: Vector = DEFAULT_INITIAL_VECTOR_FOR_EQUAL_TEMPERED_TUNINGS
+        const edo = 3 as Edo
+        const basePeriodDurations: Duration[] = computeEdoBasePeriodDurations(edo)
+        const periods = 3 as Periods
+        const durations = computeDurations(basePeriodDurations, periods)
+
+        computePuns(puns, durations, vector, maxNorm, maxUnpunniness, edo)
+
+        puns.forEach(pun => {
+            expect(pun[0]).not.toEqual([-2, 2, 0, 0, 0, 0, 0, 2] as Vector)
+        })
     })
 })
