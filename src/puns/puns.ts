@@ -1,7 +1,6 @@
 import {DEFAULT_EDO, DEFAULT_MAX_NORM, DEFAULT_MAX_UNPUNNINESS} from "../app/constants"
 import {DEFAULT_INITIAL_VECTOR} from "./constants"
 import {vectorContainsNoNotesRelatedByPeriod} from "./containsNoNotesRelatedByPeriod"
-import {vectorContainsNoPowersOfTwo} from "./containsNoPowersOfTwo"
 import {computeError} from "./error"
 import {invertVector} from "./invert"
 import {computeLowerHalfNorm, computeNorm, computeUpperHalfNorm} from "./norm"
@@ -47,7 +46,7 @@ export const computePuns = (
     const unpunniness = computeUnpunniness(vector, durations)
     if (
         unpunniness < maxUnpunniness
-        && vectorContainsNoPowersOfTwo(vector)
+        // && vectorContainsNoPowersOfTwo(vector)
         && vectorContainsNoNotesRelatedByPeriod(vector, edo)
     ) {
         const error = computeError(vector, durations)
