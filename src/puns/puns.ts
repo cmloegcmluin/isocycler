@@ -1,6 +1,7 @@
 import {DEFAULT_EDO, DEFAULT_MAX_NORM, DEFAULT_MAX_UNPUNNINESS} from "../app/constants"
 import {DEFAULT_INITIAL_VECTOR} from "./constants"
 import {vectorContainsNoNotesRelatedByPeriod} from "./containsNoNotesRelatedByPeriod"
+import {vectorContainsNoPowersOfTwo} from "./containsNoPowersOfTwo"
 import {computeError} from "./error"
 import {invertVector} from "./invert"
 import {computeLowerHalfNorm, computeNorm, computeUpperHalfNorm} from "./norm"
@@ -13,17 +14,6 @@ const isFirstNonzeroCountPositive = (vector: Vector): boolean => {
         if (count > 0) return true
     }
     return false
-}
-
-// TODO: CODE CLEANLINESS: EXTRACT AND TEST THIS
-const vectorContainsNoPowersOfTwo = (vector: Vector): boolean => {
-    for (const count of vector) {
-        const absCount = Math.abs(count)
-        if (absCount > 1 && Math.log2(absCount) % 1 === 0) {
-            return false
-        }
-    }
-    return true
 }
 
 const computeIncrementedVectorPuns = (
@@ -55,7 +45,11 @@ export const computePuns = (
     initialIndex: Index = 0 as Index,
 ): void => {
     const unpunniness = computeUnpunniness(vector, durations)
-    if (unpunniness < maxUnpunniness && vectorContainsNoPowersOfTwo(vector) && vectorContainsNoNotesRelatedByPeriod(vector, edo)) {
+    if (
+        unpunniness < maxUnpunniness
+        && vectorContainsNoPowersOfTwo(vector)
+        && vectorContainsNoNotesRelatedByPeriod(vector, edo)
+    ) {
         const error = computeError(vector, durations)
 
         // If there are more notes in the upper half, then it overall has higher pitched notes
