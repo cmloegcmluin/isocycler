@@ -1,5 +1,4 @@
-import {computeEdoBasePeriodDurations, Edo, Max, Norm, Unpunniness} from "../puns"
-import {computeAllPuns} from "../puns/all"
+import {computeEdoBasePeriodDurations, computePuns, Edo, Max, Norm, Pun, Unpunniness} from "../puns"
 import {DEFAULT_INITIAL_VECTOR, DEFAULT_INITIAL_VECTOR_FOR_EQUAL_TEMPERED_TUNINGS} from "../puns/constants"
 import {computeDurations} from "../puns/durations"
 import {Periods} from "../puns/types"
@@ -18,7 +17,8 @@ const handleChange = (): void => {
     console.log(durations)
     const initialVector = isEt ? DEFAULT_INITIAL_VECTOR_FOR_EQUAL_TEMPERED_TUNINGS : DEFAULT_INITIAL_VECTOR
 
-    const puns = computeAllPuns(durations, initialVector, maxNorm, maxUnpunniness, edo)
+    const puns = [] as Pun[]
+    computePuns(puns, durations, initialVector, maxNorm, maxUnpunniness, edo)
 
     components.results.innerHTML = presentPuns(puns, durations)
 }

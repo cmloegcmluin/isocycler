@@ -1,3 +1,5 @@
+import {DEFAULT_EDO, DEFAULT_MAX_NORM, DEFAULT_MAX_UNPUNNINESS} from "../app/constants"
+import {DEFAULT_INITIAL_VECTOR} from "./constants"
 import {vectorContainsNoNotesRelatedByPeriod} from "./containsNoNotesRelatedByPeriod"
 import {computeError} from "./error"
 import {invertVector} from "./invert"
@@ -26,8 +28,8 @@ const vectorContainsNoPowersOfTwo = (vector: Vector): boolean => {
 
 const computeIncrementedVectorPuns = (
     puns: Pun[],
-    vector: Vector,
     durations: Duration[],
+    vector: Vector,
     maxNorm: Max<Norm>,
     maxUnpunniness: Max<Unpunniness>,
     edo: Edo,
@@ -39,17 +41,17 @@ const computeIncrementedVectorPuns = (
     newVector[index] = newVector[index] + increment as Count
 
     if (isFirstNonzeroCountPositive(newVector)) {
-        computePuns(puns, newVector, durations, maxNorm, maxUnpunniness, edo, index)
+        computePuns(puns, durations, newVector, maxNorm, maxUnpunniness, edo, index)
     }
 }
 
 export const computePuns = (
     puns: Pun[],
-    vector: Vector,
     durations: Duration[],
-    maxNorm: Max<Norm>,
-    maxUnpunniness: Max<Unpunniness>,
-    edo: Edo,
+    vector: Vector = DEFAULT_INITIAL_VECTOR,
+    maxNorm: Max<Norm> = DEFAULT_MAX_NORM,
+    maxUnpunniness: Max<Unpunniness> = DEFAULT_MAX_UNPUNNINESS,
+    edo: Edo = DEFAULT_EDO,
     initialIndex: Index = 0 as Index,
 ): void => {
     const unpunniness = computeUnpunniness(vector, durations)
@@ -75,14 +77,14 @@ export const computePuns = (
         const count = vector[index]
         if (count === undefined) {
             // Kick it off in both directions
-            computeIncrementedVectorPuns(puns, vector, durations, maxNorm, maxUnpunniness, edo, index, 1)
-            computeIncrementedVectorPuns(puns, vector, durations, maxNorm, maxUnpunniness, edo, index, -1)
+            computeIncrementedVectorPuns(puns, durations, vector, maxNorm, maxUnpunniness, edo, index, 1)
+            computeIncrementedVectorPuns(puns, durations, vector, maxNorm, maxUnpunniness, edo, index, -1)
         } else if (count > 0) {
             // Continue adding upper half notes
-            computeIncrementedVectorPuns(puns, vector, durations, maxNorm, maxUnpunniness, edo, index, 1)
+            computeIncrementedVectorPuns(puns, durations, vector, maxNorm, maxUnpunniness, edo, index, 1)
         } else {
             // Continue adding lower half notes
-            computeIncrementedVectorPuns(puns, vector, durations, maxNorm, maxUnpunniness, edo, index, -1)
+            computeIncrementedVectorPuns(puns, durations, vector, maxNorm, maxUnpunniness, edo, index, -1)
         }
     }
 }
