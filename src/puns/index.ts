@@ -28,3 +28,9 @@ export {computeEdoBasePeriodDurations} from "./edo"
 //  I might have to do asynchronous population of them now, so it doesn’t block or crash and you can see it progress
 //  Or precompute any anyone would ever want, and use controls to filter it; data might be big, but filtering is fast
 //  What range, then? Let’s say 8 octaves b/c piano >7. The norm range then be 1 to 2^7, which is 128. That’s crazy huge
+
+// TODO: PUNS, EXCLUDING POWERS OF 2 (OR REPETITIONS IN GENERAL) BUT ONLY SELECTIVELY
+//  - We assume octave equivalence for now; it has just been baked in
+//  I accept dealing with it later if want to compose isocyclic Bohlen-Pierce with tritave-equivalence
+//  Though this statement should probably be expressed somewhere as a test (of computeDurations method)
+//  And/or you could do something smart related to how Scala files use the last pitch as its period
