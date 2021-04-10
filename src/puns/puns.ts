@@ -9,10 +9,10 @@ import {computeLowerHalfNorm, computeNorm, computeUpperHalfNorm} from "./norm"
 import {Count, Duration, Edo, Index, Max, Norm, Pun, Unpunniness, Vector} from "./types"
 import {computeUnpunniness} from "./unpunniness"
 
-const isFirstNonzeroCountPositive = (vector: Vector): boolean => {
+const isFirstNonzeroCountNegative = (vector: Vector): boolean => {
     for (const count of vector) {
-        if (count < 0) return false
-        if (count > 0) return true
+        if (count < 0) return true
+        if (count > 0) return false
     }
     return false
 }
@@ -32,11 +32,12 @@ const computeIncrementedVectorPuns = (
     for (let i = newVector.length; i <= index; i++) newVector[i] = 0 as Count
     newVector[index] = newVector[index] + increment as Count
 
-    if (isFirstNonzeroCountPositive(newVector)) {
+    if (isFirstNonzeroCountNegative(newVector)) {
         computePuns(puns, durations, newVector, maxNorm, maxUnpunniness, edo, previousError, index, increment)
     }
 }
 
+// let checked = 0
 export const computePuns = (
     puns: Pun[],
     durations: Duration[],
@@ -48,6 +49,9 @@ export const computePuns = (
     initialIndex: Index = 0 as Index,
     increment: number = 0,
 ): void => {
+    // checked++
+    // if (checked % 1000000 === 0) console.log(checked)
+
     let error = previousError
     // Don't worry about checking these intermediate steps for puns.
     // If the error is already negative and we're decrementing, this one's not going to be a pun.
@@ -65,14 +69,17 @@ export const computePuns = (
             && !vectorCanBeNormReduced(vector, edo, durations)
             && !vectorCanBeReduced(vector)
         ) {
+            let pun: Pun
             // If there are more notes in the upper half, then it overall has higher pitched notes
             // (Though there's no guarantee that the single lowest pitched note isn't amongst them)
             // And it's more natural to see the lower pitched notes in the lower half
             if (computeUpperHalfNorm(vector) > computeLowerHalfNorm(vector)) {
-                puns.push([vector, error, unpunniness])
+                pun = [vector, error, unpunniness]
             } else {
-                puns.push([invertVector(vector), -error as Duration, unpunniness])
+                pun = [invertVector(vector), -error as Duration, unpunniness]
             }
+            puns.push(pun)
+            // console.log(pun)
         }
     }
 

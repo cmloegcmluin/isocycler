@@ -49,6 +49,10 @@ handleChange()
 //  - It could automatically determine if it is equal tempered, so you could eliminate that checkbox
 //  Tunings to include: EDO (n), JI (p-limit & o-limit), MOS (g and cardinality), CPS (k & n), EFG
 //  Meaning that you'd select type and then it would drop in whatever other controls you needed to make those tunings
+//  - We assume octave equivalence for now; it has just been baked in
+//  I accept dealing with it later if want to compose isocyclic Bohlen-Pierce with tritave-equivalence
+//  Though this statement should probably be expressed somewhere as a test (of computeDurations method)
+//  And/or you could do something smart related to how Scala files use the last pitch as its period
 
 // TODO: UI HUGE: SCORE EXPORT:
 //  it can generate sheet music through Lilypond or something, w/ normal staff notation & squares supplement
