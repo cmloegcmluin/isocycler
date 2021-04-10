@@ -28,12 +28,3 @@ export {computeEdoBasePeriodDurations} from "./edo"
 //  I might have to do asynchronous population of them now, so it doesn’t block or crash and you can see it progress
 //  Or precompute any anyone would ever want, and use controls to filter it; data might be big, but filtering is fast
 //  What range, then? Let’s say 8 octaves b/c piano >7. The norm range then be 1 to 2^7, which is 128. That’s crazy huge
-
-// TODO: PUNS, EFFICIENCY OF CALCULATION
-//  Also probably some stuff we could do for efficiency not checking ones
-//  that are just like ones that didn’t work but could only be worse
-//  Like save the result from the error calculation
-//  And if keeping going could bring it to the sweet spot keep going but if you passed it then don’t keep going
-//  Well except you might still want to keep going
-//  because keeping going on that index might be necessary positioning for a later index
-//  It’s just that you wouldn’t have to bother expending resources on checking the intermediate

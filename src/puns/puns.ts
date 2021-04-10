@@ -22,6 +22,7 @@ const computeIncrementedVectorPuns = (
     maxNorm: Max<Norm>,
     maxUnpunniness: Max<Unpunniness>,
     edo: Edo,
+    previousError: Duration,
     index: Index,
     increment: number,
 ) => {
@@ -30,7 +31,7 @@ const computeIncrementedVectorPuns = (
     newVector[index] = newVector[index] + increment as Count
 
     if (isFirstNonzeroCountPositive(newVector)) {
-        computePuns(puns, durations, newVector, maxNorm, maxUnpunniness, edo, index)
+        computePuns(puns, durations, newVector, maxNorm, maxUnpunniness, edo, previousError, index, increment)
     }
 }
 
@@ -41,23 +42,34 @@ export const computePuns = (
     maxNorm: Max<Norm> = DEFAULT_MAX_NORM,
     maxUnpunniness: Max<Unpunniness> = DEFAULT_MAX_UNPUNNINESS,
     edo: Edo = DEFAULT_EDO,
+    previousError: Duration = 0 as Duration,
     initialIndex: Index = 0 as Index,
+    increment: number = 0,
 ): void => {
-    const unpunniness = computeUnpunniness(vector, durations)
+    let error = previousError
+    // Don't worry about checking these intermediate steps for puns.
+    // If the error is already negative and we're decrementing, this one's not going to be a pun.
+    // Not until we turn around. So spare yourself from making the unpunniness or error etc. computations in here
     if (
-        unpunniness < maxUnpunniness
-        // && vectorContainsNoPowersOfTwo(vector)
-        && vectorContainsNoNotesRelatedByPeriod(vector, edo)
+        !(previousError < 0 && increment < 0)
+        && !(previousError > 0 && increment > 0)
     ) {
-        const error = computeError(vector, durations)
+        const unpunniness = computeUnpunniness(vector, durations)
+        error = computeError(vector, durations)
 
-        // If there are more notes in the upper half, then it overall has higher pitched notes
-        // (Though there's no guarantee that the single lowest pitched note isn't amongst them)
-        // And it's more natural to see the lower pitched notes in the lower half
-        if (computeUpperHalfNorm(vector) > computeLowerHalfNorm(vector)) {
-            puns.push([vector, error, unpunniness])
-        } else {
-            puns.push([invertVector(vector), -error as Duration, unpunniness])
+        if (
+            unpunniness < maxUnpunniness
+            // && vectorContainsNoPowersOfTwo(vector)
+            && vectorContainsNoNotesRelatedByPeriod(vector, edo)
+        ) {
+            // If there are more notes in the upper half, then it overall has higher pitched notes
+            // (Though there's no guarantee that the single lowest pitched note isn't amongst them)
+            // And it's more natural to see the lower pitched notes in the lower half
+            if (computeUpperHalfNorm(vector) > computeLowerHalfNorm(vector)) {
+                puns.push([vector, error, unpunniness])
+            } else {
+                puns.push([invertVector(vector), -error as Duration, unpunniness])
+            }
         }
     }
 
@@ -70,14 +82,14 @@ export const computePuns = (
         const count = vector[index]
         if (count === undefined) {
             // Kick it off in both directions
-            computeIncrementedVectorPuns(puns, durations, vector, maxNorm, maxUnpunniness, edo, index, 1)
-            computeIncrementedVectorPuns(puns, durations, vector, maxNorm, maxUnpunniness, edo, index, -1)
+            computeIncrementedVectorPuns(puns, durations, vector, maxNorm, maxUnpunniness, edo, error, index, 1)
+            computeIncrementedVectorPuns(puns, durations, vector, maxNorm, maxUnpunniness, edo, error, index, -1)
         } else if (count > 0) {
             // Continue adding upper half notes
-            computeIncrementedVectorPuns(puns, durations, vector, maxNorm, maxUnpunniness, edo, index, 1)
+            computeIncrementedVectorPuns(puns, durations, vector, maxNorm, maxUnpunniness, edo, error, index, 1)
         } else {
             // Continue adding lower half notes
-            computeIncrementedVectorPuns(puns, durations, vector, maxNorm, maxUnpunniness, edo, index, -1)
+            computeIncrementedVectorPuns(puns, durations, vector, maxNorm, maxUnpunniness, edo, error, index, -1)
         }
     }
 }
