@@ -25,6 +25,16 @@ setupAudio().then()
 
 handleChange()
 
+// TODO: CODE CLEANLINESS
+//  globals should be used for puns so you don't have to pass them around a lot
+
+// TODO: UI FINESSE: CONTROLS FOR PLAYBACK OF INDIVIDUAL PUNS
+//  - There should be a loop checkbox, and only if it's checked does the stop button appear
+//  - might be cool to just randomize the notes, or make that a checkbox
+
+// TODO: UI FINESSE: DON'T CRASH
+//  It should compute the combinations w/ repetitions count (see precompute.ts) and abort if too big (with message)
+
 // TODO: UI FINESSE: SORTING & FILTERING PUNS
 //  Maybe there's a better way to sort the puns than by unpunniness, because who really cares about that as long as
 //  it's within your tolerance. instead maybe it should sort them by norm, how many notes there are I mean.
@@ -63,10 +73,6 @@ handleChange()
 //  it can generate sheet music through Lilypond or something, w/ normal staff notation & squares supplement
 //  or I guess at least you can download the SVGs so you could drag them into your score software and supplement
 //  that would be a good first step, just yank what you can from StaffCode's export
-
-// TODO: UI HUGE: AUDIO PLAYBACK AT ALL:
-//  plug in @musical-patterns/material to perform it (or however houndstoothtopia does it)
-//  The default timbre should probably have a weak-ish attack to help cover up the inexact onsets
 
 // TODO: UI FUNDAMENTALS, MISC:
 //  - Add a new voice with a + symbol in the next row

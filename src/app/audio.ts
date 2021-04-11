@@ -32,7 +32,12 @@ const playPun = async ([vector]: Pun, durations: Duration[]) => {
         if (count > 0) {
             for (let index = 0; index < count; index++) {
                 upperNotes.push({
-                    pitch: {scalar: 1 / duration as unknown as Scalar<Pitch>}, // TODO: not pitch, it's frequency!
+                    // TODO: CODE CLEANLINESS: INCONSISTENT CONCEPTION OF SOUND
+                    //  not pitch, it's frequency! that's why the isocyclicPitch function didn't work here
+                    //  because pitch takes the log
+                    //  I wonder if we'll ever want a like, shared general utility library that could work for
+                    //  Sagittal, StaffCode, MusicalPatterns, and Isocycler
+                    pitch: {scalar: 1 / duration as unknown as Scalar<Pitch>},
                     value: {scalar: duration as unknown as Scalar<Value>},
                     envelope: {scalar: 0.9 * duration as unknown as Scalar<Value>},
                     intensity: {scalar: 0.5 as unknown as Scalar<Intensity>},
@@ -48,7 +53,6 @@ const playPun = async ([vector]: Pun, durations: Duration[]) => {
                 })
             }
         }
-        // TODO: might be cool to just randomize the notes, or make that a checkbox
     })
 
     const upperEntity: Entity = {
@@ -71,9 +75,22 @@ const playPun = async ([vector]: Pun, durations: Duration[]) => {
     }
     const materializeEntities: MaterializeEntities = () => [upperEntity, lowerEntity]
 
+    // TODO: HELP MUSICAL PATTERNS AS DISTANCED FUTURE SELF COMING TO IT
+    //  Readme for musical patterns material is out of date
+    //  And could really use a starting from scratch basic example
+    //  Like what I’ve just made in isocycler
+    //  Including a version that has the scales and it uses them by index which was an alternate approach here
     const pitchScale: Scale<Pitch> = {basis: 220 as unknown as Tone}
     const valueScale: Scale<Value> = {basis: 1000 as unknown as UtilitiesDuration}
     const scales: Scales = {PITCH: [pitchScale], VALUE: [valueScale]}
+    // const pitchScale: Scale<Pitch> = {
+    //     basis: 440 as unknown as Tone,
+    //     scalars: [1, 2, 3] as unknown[] as Array<Scalar<Pitch>>,
+    // }
+    // const valueScale: Scale<Value> = {
+    //     basis: 100 as unknown as Duration,
+    //     scalars: [1, 2, 3] as unknown[] as Array<Scalar<Value>>,
+    // }
     const materializeScales: MaterializeScales = () => scales
 
     const material: Material = {materializeEntities, materializeScales}
@@ -87,8 +104,6 @@ export {
     playPun,
 }
 
-// TODO: look at EDO 11 max norm 7 unpunny 50 periods 2 a little ways down
-//  there's a set of bad ones where just one of the notes on one side is a power of two
-//  and you can find its replacement
-//  yeah I think you do still want to reject any power of 2, as long as one scale rep downwards is an empty cell
-//  which you could transfer yourself into 1/2 as high count
+// TODO: AUDIO: IMPROVE TIMBRE
+//  I don't like the jerky sustain being arbitrary .9 or .95 of duration
+//  Would be better if it was 100% and instead the problem was solved with a timbre with an attack

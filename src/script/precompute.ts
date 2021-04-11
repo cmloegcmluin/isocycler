@@ -5,17 +5,15 @@ import {Periods} from "../puns/types"
 
 const edo = 12 as Edo
 
-var f = []
+const f: number[] = []
+const factorial = (n: number): number => {
+    if (n == 0 || n == 1) return 1
+    if (f[n] > 0) return f[n]
 
-function factorial(n) {
-    if (n == 0 || n == 1)
-        return 1
-    if (f[n] > 0)
-        return f[n]
     return f[n] = factorial(n - 1) * n
 }
 
-// TODO: PUNS, ALL PUNS MODE PRECOMPUTING
+// TODO: PUNS, ALL PUNS MODE PRECOMPUTING, EFFICIENCY THEREOF
 //  I might have to do asynchronous population of them now, so it doesn’t block or crash and you can see it progress
 //  Or precompute any anyone would ever want, and use controls to filter it; data might be big, but filtering is fast
 //  What range, then? Let’s say 8 octaves b/c piano >7. The norm range then be 1 to 2^7, which is 128. That’s crazy huge
@@ -34,6 +32,9 @@ function factorial(n) {
 //      but it starts to fall apart when you wonder about 2x, 3x etc of each step, how you would handle that...
 //  So now I'm more just like trying to rationalize this, why you wouldn't really care about puns spanning more than 3 periods
 //  Or with more than norm 8
+//  - Maybe things could run more efficiently if you separated the directionality to a separate vector of 1 and -1?
+//  So you wouldn't all the time be having to take absolute value when you simply didn't care about that information
+//  And maybe checking for -1 or 1 is faster
 
 // const maxNorm = 128 as Max<Norm>
 const maxNorm = 7 as Max<Norm>
