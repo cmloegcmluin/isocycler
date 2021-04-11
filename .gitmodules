@@ -1,0 +1,3 @@
+[submodule "isocycler.github.io"]
+	path = dist
+	url = git@github.com:isocycler/isocycler.github.io.git

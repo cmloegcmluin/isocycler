@@ -17,7 +17,7 @@ module.exports = {
         extensions: [".ts", ".scss", ".js", ".json"],
     },
     output: {
-        path: path.resolve(__dirname, "dist/app"),
+        path: path.resolve(__dirname, "dist"),
     },
     plugins: [
         new HtmlWebpackPlugin({

@@ -1,13 +1,15 @@
 {
   "name": "isocycler",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "",
   "main": "isocycler.js",
   "scripts": {
+    "build": "webpack",
     "start": "webpack serve",
     "lint": "npx eslint . --ext .ts --fix",
     "test": "node -r ts-node/register/transpile-only node_modules/jasmine/bin/jasmine",
-    "precompute": "node -r ts-node/register/transpile-only --max-old-space-size=131072 src/script/precompute.ts"
+    "precompute": "node -r ts-node/register/transpile-only --max-old-space-size=131072 src/script/precompute.ts",
+    "deploy": "sh bin/deploy.sh"
   },
   "repository": {
     "type": "git",
