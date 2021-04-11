@@ -20,7 +20,7 @@ const handleChange = (): void => {
     const puns = [] as Pun[]
     computePuns(puns, durations, initialVector, maxNorm, maxUnpunniness, edo)
 
-    components.results.innerHTML = presentPuns(puns, durations)
+    presentPuns(puns, durations)
 }
 
 export {

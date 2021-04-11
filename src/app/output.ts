@@ -1,6 +1,8 @@
 import {Pun} from "../puns"
 import {Count, Duration} from "../puns/types"
+import {playPun} from "./audio"
 import {computeColor} from "./color"
+import {components} from "./globals"
 
 const SCALER = 40
 
@@ -42,24 +44,24 @@ const computeSvgString = ([vector, _, unpunniness]: Pun, durations: Duration[]):
     return `<svg height="${(upperHalfY + lowerHalfY) * SCALER}" width="${Math.max(upperHalfX, lowerHalfX) * SCALER}"><title>${title}</title>${squares}</svg>`
 }
 
-const formatPuns = (puns: Pun[], durations: Duration[]): string => {
-    return puns.reduce(
-        (punOutput: string, pun: Pun): string => {
-            const svgString = computeSvgString(pun, durations)
-            return punOutput + svgString + "<br>"
-        },
-        "",
-    )
-}
-
 const sortPunsByUnpunniness = (puns: Pun[]): void => {
     puns.sort((a: Pun, b: Pun) => a[2] - b[2])
 }
 
-const presentPuns = (puns: Pun[], durations: Duration[]): string => {
-    sortPunsByUnpunniness(puns)
+const presentPuns = (puns: Pun[], durations: Duration[]): void => {
+    components.results.innerHTML = ""
 
-    return formatPuns(puns, durations)
+    sortPunsByUnpunniness(puns)
+    puns.forEach((pun: Pun) => {
+        const svgString = computeSvgString(pun, durations)
+        const svgWrapper = document.createElement("div")
+        svgWrapper.innerHTML = svgString
+
+        svgWrapper.addEventListener("click", () => {
+            playPun(pun, durations).then()
+        })
+        components.results.appendChild(svgWrapper)
+    })
 }
 
 export {

@@ -1,3 +1,4 @@
+import {setupAudio} from "./audio"
 import {
     buildEdoWrapper,
     buildEtWrapper,
@@ -5,6 +6,7 @@ import {
     buildMaxUnpunninessWrapper,
     buildPeriodsWrapper,
     buildResults,
+    buildStop,
 } from "./components"
 import {handleChange} from "./handlers"
 
@@ -16,7 +18,10 @@ root.appendChild(buildEtWrapper())
 root.appendChild(buildMaxNormWrapper())
 root.appendChild(buildMaxUnpunninessWrapper())
 root.appendChild(buildPeriodsWrapper())
+root.appendChild(buildStop())
 root.appendChild(buildResults())
+
+setupAudio().then()
 
 handleChange()
 

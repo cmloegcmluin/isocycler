@@ -29,7 +29,7 @@ module.exports = {
     module: {
         rules: [
             {
-                test: /\.ts$/,
+                test: /\.[tj]s$/,
                 loader: "ts-loader",
                 options: {
                     compilerOptions: {

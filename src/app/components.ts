@@ -1,3 +1,4 @@
+import {stop} from "@musical-patterns/material"
 import {
     DEFAULT_EDO,
     DEFAULT_PERIODS,
@@ -116,11 +117,23 @@ const buildResults = (): HTMLDivElement => {
     return results
 }
 
+const buildStop = (): HTMLButtonElement => {
+    const stopButton = document.createElement("button")
+    stopButton.textContent = "stop"
+
+    stopButton.addEventListener("click", () => {
+        stop().then()
+    })
+
+    return stopButton
+}
+
 export {
     buildEdoWrapper,
     buildMaxNormWrapper,
     buildMaxUnpunninessWrapper,
     buildPeriodsWrapper,
     buildEtWrapper,
+    buildStop,
     buildResults,
 }
