@@ -3,6 +3,7 @@ import {vectorCanBeNormReduced} from "./canBeNormReduced"
 import {vectorCanBeReduced} from "./canBeReduced"
 import {DEFAULT_INITIAL_VECTOR} from "./constants"
 import {vectorContainsNoNotesRelatedByPeriod} from "./containsNoNotesRelatedByPeriod"
+import {vectorContainsPowersOfTwoShiftableByPeriod} from "./containsPowersOfTwoShiftableByPeriod"
 import {computeError} from "./error"
 import {invertVector} from "./invert"
 import {computeLowerHalfNorm, computeNorm, computeUpperHalfNorm} from "./norm"
@@ -68,6 +69,7 @@ export const computePuns = (
             && vectorContainsNoNotesRelatedByPeriod(vector, edo)
             && !vectorCanBeNormReduced(vector, edo, durations)
             && !vectorCanBeReduced(vector)
+            && !vectorContainsPowersOfTwoShiftableByPeriod(vector, edo)
         ) {
             let pun: Pun
             // If there are more notes in the upper half, then it overall has higher pitched notes

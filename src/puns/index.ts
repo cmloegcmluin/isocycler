@@ -1,4 +1,4 @@
-export {Edo, Unpunniness, Norm, Max, Pun} from "./types"
+export {Edo, Unpunniness, Norm, Max, Pun, Vector} from "./types"
 export {computePuns} from "./puns"
 export {computeEdoBasePeriodDurations} from "./edo"
 
@@ -23,10 +23,3 @@ export {computeEdoBasePeriodDurations} from "./edo"
 //  - Or, just my own dumb probably incomplete or horribly inefficient solution I came up with while unable to sleep:
 //  Find every combination of 2 vectors, then see if any of those are equal to any of the original vectors
 //  If so, eliminate them, and if any were eliminated this round, then repeat the process
-
-// TODO: PUNS, EXCLUDING REDUNDANT ONES
-//  look at EDO 11 max norm 7 unpunny 50 periods 2 a little ways down
-//  there's a set of bad ones where just one of the notes on one side is a power of two
-//  and you can find its replacement
-//  yeah I think you do still want to reject any power of 2, as long as one scale rep downwards is an empty cell
-//  which you could transfer yourself into 1/2 as high count

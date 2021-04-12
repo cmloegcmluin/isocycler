@@ -210,6 +210,7 @@ describe("computePuns", (): void => {
         expect(actual).toEqual(expected)
     })
 
+    // TODO: CODE CLEANLINESS: TESTS ONLY RUN IN CI
     it("runs fast", (): void => {
         const maxNorm: Max<Norm> = 5 as Max<Norm>
         const maxUnpunniness: Max<Unpunniness> = 0.000000001 as Max<Unpunniness>
@@ -266,6 +267,25 @@ describe("computePuns", (): void => {
 
         puns.forEach(pun => {
             expect(pun[0]).not.toEqual([-2, 2, 0, 0, 0, 0, 0, 2] as Vector)
+        })
+    })
+
+    // TODO: CODE CLEANLINESS: Perhaps you can find a faster-running example of this test
+    it("excludes puns that can be reduced in a different way", (): void => {
+        const maxNorm: Max<Norm> = 7 as Max<Norm>
+        const maxUnpunniness: Max<Unpunniness> = 50 as Max<Unpunniness>
+        const puns: Pun[] = []
+        const vector: Vector = DEFAULT_INITIAL_VECTOR_FOR_EQUAL_TEMPERED_TUNINGS
+        const edo = 11 as Edo
+        const basePeriodDurations: Duration[] = computeEdoBasePeriodDurations(edo)
+        const periods = 2 as Periods
+        const durations = computeDurations(basePeriodDurations, periods)
+
+        computePuns(puns, durations, vector, maxNorm, maxUnpunniness, edo)
+
+        puns.forEach(pun => {
+            // Because both of those 2's should be shifted 11 positions to the left and converted to 1's
+            expect(pun[0]).not.toEqual([-1, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 1, 0, 2] as Vector)
         })
     })
 })

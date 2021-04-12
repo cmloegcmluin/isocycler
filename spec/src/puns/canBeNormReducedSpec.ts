@@ -1,6 +1,6 @@
 import {Edo} from "../../../src/puns"
 import {vectorCanBeNormReduced} from "../../../src/puns/canBeNormReduced"
-import {Vector} from "../../../src/puns/types"
+import {Vector} from "../../../src/puns"
 
 describe("vectorCanBeNormReduced", (): void => {
     it("returns true if all notes in one half (positive or negative counts in the vector) can be reduced by a power of two and all notes on the other half can be shifted one period higher to balance out that halving of duration", (): void => {
