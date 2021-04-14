@@ -1,6 +1,6 @@
 import {Components} from "./types"
 
-const components = {} as Components
+const components: Components = {} as Components
 
 export {
     components,

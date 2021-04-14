@@ -51,5 +51,5 @@ const r = maxNorm
 const combinationsWithRepetition = factorial(n + r - 1) / (factorial(r) * factorial(n - 1))
 console.log(combinationsWithRepetition)
 
-const puns = [] as Pun[]
+const puns: Pun[] = []
 computePuns(puns, durations, initialVector, maxNorm, maxUnpunniness, edo)

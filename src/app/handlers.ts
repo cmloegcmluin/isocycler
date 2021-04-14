@@ -17,10 +17,9 @@ const handleChange = (): void => {
     console.log(durations)
     const initialVector = isEt ? DEFAULT_INITIAL_VECTOR_FOR_EQUAL_TEMPERED_TUNINGS : DEFAULT_INITIAL_VECTOR
 
-    const puns = [] as Pun[]
-    computePuns(puns, durations, initialVector, maxNorm, maxUnpunniness, edo)
+    computePuns(initialVector, maxNorm, maxUnpunniness, edo)
 
-    presentPuns(puns, durations)
+    presentPuns()
 }
 
 export {

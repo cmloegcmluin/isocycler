@@ -1,4 +1,5 @@
 import {Pun} from "../puns"
+import {punGlobals} from "../puns/globals"
 import {Count, Duration} from "../puns/types"
 import {playPun} from "./audio"
 import {computeColor} from "./color"
@@ -48,8 +49,9 @@ const sortPunsByUnpunniness = (puns: Pun[]): void => {
     puns.sort((a: Pun, b: Pun) => a[2] - b[2])
 }
 
-const presentPuns = (puns: Pun[], durations: Duration[]): void => {
+const presentPuns = (): void => {
     components.results.innerHTML = ""
+    const {puns, durations} = punGlobals
 
     sortPunsByUnpunniness(puns)
     puns.forEach((pun: Pun) => {

@@ -25,9 +25,6 @@ setupAudio().then()
 
 handleChange()
 
-// TODO: CODE CLEANLINESS
-//  globals should be used for puns so you don't have to pass them around a lot
-
 // TODO: UI FINESSE: CONTROLS FOR PLAYBACK OF INDIVIDUAL PUNS
 //  - There should be a loop checkbox, and only if it's checked does the stop button appear
 //  - might be cool to just randomize the notes, or make that a checkbox

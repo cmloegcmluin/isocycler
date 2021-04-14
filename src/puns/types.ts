@@ -11,6 +11,11 @@ type Periods = number & {_PeriodsBrand: boolean}
 
 type Max<T extends unknown = number> = T & {_MaxBrand: boolean}
 
+interface PunGlobals {
+    puns: Pun[],
+    durations: Duration[],
+}
+
 export {
     Count,
     Vector,
@@ -23,4 +28,5 @@ export {
     Unpunniness,
     Periods,
     Pitch,
+    PunGlobals,
 }
