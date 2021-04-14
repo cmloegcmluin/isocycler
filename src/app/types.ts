@@ -8,6 +8,8 @@ interface Components {
     periodsInput: HTMLInputElement,
     etCheckbox: HTMLInputElement,
     results: HTMLDivElement,
+    loopCheckbox: HTMLInputElement,
+    stopButton: HTMLButtonElement,
 }
 
 interface GuiState {
@@ -16,6 +18,7 @@ interface GuiState {
     maxUnpunniness: Max<Unpunniness>,
     periods: Periods,
     isEt: boolean,
+    loop: boolean,
 }
 
 type Color = [number, number, number]

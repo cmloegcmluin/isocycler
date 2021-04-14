@@ -4,18 +4,18 @@ import {
     DEFAULT_PERIODS,
     DEFAULT_MAX_NORM,
     DEFAULT_MAX_UNPUNNINESS,
-    DEFAULT_ET,
+    DEFAULT_ET, DEFAULT_LOOP,
 } from "./constants"
-import {components} from "./globals"
-import {handleChange} from "./handlers"
+import {components, guiState} from "./globals"
+import {handlePunsChange} from "./handlers"
 
-const buildEdoWrapper = (): HTMLDivElement => {
+const buildEdoSpinnerWrapper = (): HTMLDivElement => {
     const edoWrapper: HTMLDivElement = document.createElement("div")
 
     const edoInput: HTMLInputElement = document.createElement("input")
     edoInput.type = "number"
     edoInput.value = DEFAULT_EDO.toString()
-    edoInput.addEventListener("change", handleChange)
+    edoInput.addEventListener("change", handlePunsChange)
 
     const edoLabel = document.createElement("label")
     edoLabel.textContent = "EDO"
@@ -28,13 +28,13 @@ const buildEdoWrapper = (): HTMLDivElement => {
     return edoWrapper
 }
 
-const buildMaxNormWrapper = (): HTMLDivElement => {
+const buildMaxNormSpinnerWrapper = (): HTMLDivElement => {
     const maxNormWrapper: HTMLDivElement = document.createElement("div")
 
     const maxNormInput: HTMLInputElement = document.createElement("input")
     maxNormInput.type = "number"
     maxNormInput.value = DEFAULT_MAX_NORM.toString()
-    maxNormInput.addEventListener("change", handleChange)
+    maxNormInput.addEventListener("change", handlePunsChange)
 
     const maxNormLabel = document.createElement("label")
     maxNormLabel.textContent = "max norm"
@@ -47,7 +47,7 @@ const buildMaxNormWrapper = (): HTMLDivElement => {
     return maxNormWrapper
 }
 
-const buildMaxUnpunninessWrapper = (): HTMLDivElement => {
+const buildMaxUnpunninessSpinnerWrapper = (): HTMLDivElement => {
     const maxUnpunninessWrapper: HTMLDivElement = document.createElement("div")
 
     const maxUnpunninessInput: HTMLInputElement = document.createElement("input")
@@ -56,7 +56,7 @@ const buildMaxUnpunninessWrapper = (): HTMLDivElement => {
     maxUnpunninessInput.step = "0.1"
     maxUnpunninessInput.min = "0"
     maxUnpunninessInput.max = "500"
-    maxUnpunninessInput.addEventListener("change", handleChange)
+    maxUnpunninessInput.addEventListener("change", handlePunsChange)
 
     const maxUnpunninessLabel = document.createElement("label")
     maxUnpunninessLabel.textContent = "max unpunniness"
@@ -69,7 +69,7 @@ const buildMaxUnpunninessWrapper = (): HTMLDivElement => {
     return maxUnpunninessWrapper
 }
 
-const buildPeriodsWrapper = (): HTMLDivElement => {
+const buildPeriodsSpinnerWrapper = (): HTMLDivElement => {
     const periodsWrapper: HTMLDivElement = document.createElement("div")
 
     const periodsInput: HTMLInputElement = document.createElement("input")
@@ -77,7 +77,7 @@ const buildPeriodsWrapper = (): HTMLDivElement => {
     periodsInput.value = DEFAULT_PERIODS.toString()
     periodsInput.min = "1"
     periodsInput.max = "6"
-    periodsInput.addEventListener("change", handleChange)
+    periodsInput.addEventListener("change", handlePunsChange)
 
     const periodsLabel = document.createElement("label")
     periodsLabel.textContent = "periods"
@@ -90,13 +90,13 @@ const buildPeriodsWrapper = (): HTMLDivElement => {
     return periodsWrapper
 }
 
-const buildEtWrapper = (): HTMLDivElement => {
+const buildEtCheckboxWrapper = (): HTMLDivElement => {
     const etWrapper: HTMLDivElement = document.createElement("div")
 
     const etCheckbox: HTMLInputElement = document.createElement("input")
     etCheckbox.type = "checkbox"
     etCheckbox.checked = DEFAULT_ET
-    etCheckbox.addEventListener("change", handleChange)
+    etCheckbox.addEventListener("change", handlePunsChange)
 
     const etLabel = document.createElement("label")
     etLabel.textContent = "is equal tempered"
@@ -109,7 +109,7 @@ const buildEtWrapper = (): HTMLDivElement => {
     return etWrapper
 }
 
-const buildResults = (): HTMLDivElement => {
+const buildResultsDiv = (): HTMLDivElement => {
     const results: HTMLDivElement = document.createElement("div")
 
     components.results = results
@@ -117,23 +117,50 @@ const buildResults = (): HTMLDivElement => {
     return results
 }
 
-const buildStop = (): HTMLButtonElement => {
+const buildLoopCheckboxAndStopButtonWrapper = (): HTMLDivElement => {
+    const loopWrapper: HTMLDivElement = document.createElement("div")
+
+    const loopCheckbox: HTMLInputElement = document.createElement("input")
+    loopCheckbox.type = "checkbox"
+    loopCheckbox.checked = DEFAULT_LOOP
+    loopCheckbox.addEventListener("change", () => {
+        guiState.loop = !guiState.loop
+        if (guiState.loop) {
+            components.stopButton.style.visibility = "visible"
+        } else {
+            components.stopButton.style.visibility = "hidden"
+            stop().then()
+        }
+    })
+
+    const loopLabel = document.createElement("label")
+    loopLabel.textContent = "loop"
+
+    components.loopCheckbox = loopCheckbox
+
     const stopButton = document.createElement("button")
     stopButton.textContent = "stop"
+    stopButton.style.visibility = "hidden"
 
     stopButton.addEventListener("click", () => {
         stop().then()
     })
 
-    return stopButton
+    components.stopButton = stopButton
+
+    loopWrapper.appendChild(loopLabel)
+    loopWrapper.appendChild(loopCheckbox)
+    loopWrapper.appendChild(stopButton)
+
+    return loopWrapper
 }
 
 export {
-    buildEdoWrapper,
-    buildMaxNormWrapper,
-    buildMaxUnpunninessWrapper,
-    buildPeriodsWrapper,
-    buildEtWrapper,
-    buildStop,
-    buildResults,
+    buildEdoSpinnerWrapper,
+    buildMaxNormSpinnerWrapper,
+    buildMaxUnpunninessSpinnerWrapper,
+    buildPeriodsSpinnerWrapper,
+    buildEtCheckboxWrapper,
+    buildResultsDiv,
+    buildLoopCheckboxAndStopButtonWrapper,
 }

@@ -13,9 +13,18 @@ import {
     stop,
     TimbreNameEnum,
 } from "@musical-patterns/material"
-import {Duration as UtilitiesDuration, Intensity, Pitch, Scalar, Tone, Value} from "@musical-patterns/utilities"
+import {
+    Cardinal,
+    Duration as UtilitiesDuration,
+    Intensity,
+    Pitch,
+    Scalar,
+    Tone,
+    Value,
+} from "@musical-patterns/utilities"
 import {Pun} from "../puns"
 import {Count, Duration} from "../puns/types"
+import {guiState} from "./globals"
 
 const setupAudio = async () => {
     await setupPerformer()
@@ -54,7 +63,7 @@ const playPun = async ([vector]: Pun, durations: Duration[]) => {
         sections: [
             {
                 notes: upperNotes,
-                // repetitions: 1 as unknown as Cardinal,
+                repetitions: guiState.loop ? undefined : 1 as unknown as Cardinal,
             },
         ],
         timbreName: TimbreNameEnum.WARM_TRIANGLE,
@@ -63,7 +72,7 @@ const playPun = async ([vector]: Pun, durations: Duration[]) => {
         sections: [
             {
                 notes: lowerNotes,
-                // repetitions: 1 as unknown as Cardinal,
+                repetitions: guiState.loop ? undefined : 1 as unknown as Cardinal,
             },
         ],
         timbreName: TimbreNameEnum.WARM_TRIANGLE,

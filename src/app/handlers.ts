@@ -8,7 +8,7 @@ import {MAX_COMBINATIONS_TO_SEARCH} from "./constants"
 import {components, guiState} from "./globals"
 import {presentPuns} from "./output"
 
-const handleChange = (): void => {
+const handlePunsChange = (): void => {
     guiState.edo = parseInt(components.edoInput.value) as Edo
     guiState.maxNorm = parseInt(components.maxNormInput.value) as Max<Norm>
     guiState.maxUnpunniness = parseFloat(components.maxUnpunninessInput.value) as Max<Unpunniness>
@@ -40,5 +40,5 @@ const handleChange = (): void => {
 }
 
 export {
-    handleChange,
+    handlePunsChange,
 }

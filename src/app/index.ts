@@ -1,42 +1,34 @@
 import {setupAudio} from "./audio"
 import {
-    buildEdoWrapper,
-    buildEtWrapper,
-    buildMaxNormWrapper,
-    buildMaxUnpunninessWrapper,
-    buildPeriodsWrapper,
-    buildResults,
-    buildStop,
+    buildEdoSpinnerWrapper,
+    buildEtCheckboxWrapper, buildLoopCheckboxAndStopButtonWrapper,
+    buildMaxNormSpinnerWrapper,
+    buildMaxUnpunninessSpinnerWrapper,
+    buildPeriodsSpinnerWrapper,
+    buildResultsDiv,
 } from "./components"
-import {handleChange} from "./handlers"
+import {handlePunsChange} from "./handlers"
 
 const root: HTMLDivElement = document.createElement("div")
 document.body.appendChild(root)
 
-root.appendChild(buildEdoWrapper())
-root.appendChild(buildEtWrapper())
-root.appendChild(buildMaxNormWrapper())
-root.appendChild(buildMaxUnpunninessWrapper())
-root.appendChild(buildPeriodsWrapper())
-root.appendChild(buildStop())
-root.appendChild(buildResults())
+root.appendChild(buildEdoSpinnerWrapper())
+root.appendChild(buildEtCheckboxWrapper())
+root.appendChild(buildMaxNormSpinnerWrapper())
+root.appendChild(buildMaxUnpunninessSpinnerWrapper())
+root.appendChild(buildPeriodsSpinnerWrapper())
+root.appendChild(buildLoopCheckboxAndStopButtonWrapper())
+root.appendChild(buildResultsDiv())
 
 setupAudio().then()
 
-handleChange()
-
-// TODO: UI FINESSE: CONTROLS FOR PLAYBACK OF INDIVIDUAL PUNS
-//  - There should be a loop checkbox, and only if it's checked does the stop button appear
-//  - might be cool to just randomize the notes, or make that a checkbox
+handlePunsChange()
 
 // TODO: UI FINESSE: SORTING & FILTERING PUNS
 //  Maybe there's a better way to sort the puns than by unpunniness, because who really cares about that as long as
 //  it's within your tolerance. instead maybe it should sort them by norm, how many notes there are I mean.
 //  Or maybe ability to change what they're sorted by is a good feature to have
 //  - It would also be good if you could filter by things like "must include note A" or "must not include note B"
-
-// TODO: UI FINESSE: DEMOING SOUND OF PUNS
-//  you should be able to click any of the puns in the bank to demo it (hear it)
 
 // TODO: UI FINESSE: TRANSPOSING PUNS
 //  if equal tempered is checked, then there should be arrows up/down that appear next to each pun class
