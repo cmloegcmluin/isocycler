@@ -39,7 +39,7 @@ const playPun = async ([vector]: Pun, durations: Duration[]) => {
                     //  Sagittal, StaffCode, MusicalPatterns, and Isocycler
                     pitch: {scalar: 1 / duration as unknown as Scalar<Pitch>},
                     value: {scalar: duration as unknown as Scalar<Value>},
-                    envelope: {scalar: 0.9 * duration as unknown as Scalar<Value>},
+                    envelope: {scalar: 0.97 * duration as unknown as Scalar<Value>},
                     intensity: {scalar: 0.5 as unknown as Scalar<Intensity>},
                 })
             }
@@ -48,7 +48,7 @@ const playPun = async ([vector]: Pun, durations: Duration[]) => {
                 lowerNotes.push({
                     pitch: {scalar: 1 / duration as unknown as Scalar<Pitch>},
                     value: {scalar: duration as unknown as Scalar<Value>},
-                    envelope: {scalar: 0.9 * duration as unknown as Scalar<Value>},
+                    envelope: {scalar: 0.97 * duration as unknown as Scalar<Value>},
                     intensity: {scalar: 0.5 as unknown as Scalar<Intensity>},
                 })
             }
@@ -107,3 +107,6 @@ export {
 // TODO: AUDIO: IMPROVE TIMBRE
 //  I don't like the jerky sustain being arbitrary .9 or .95 of duration
 //  Would be better if it was 100% and instead the problem was solved with a timbre with an attack
+//  I don't want to use a sample
+//  But maybe the library that @sagittal/material uses has such a timbre
+//  No it doesn't, so instead I'm just modifying the envelope a bit.
