@@ -1,7 +1,7 @@
 import {guiState} from "../app/globals"
 import {vectorCanBeNormReduced} from "./canBeNormReduced"
 import {vectorCanBeReduced} from "./canBeReduced"
-import {vectorContainsNoNotesRelatedByPeriod} from "./containsNoNotesRelatedByPeriod"
+import {vectorContainsNotesRelatedByPeriod} from "./containsNoNotesRelatedByPeriod"
 import {vectorContainsPowersOfTwoShiftableByPeriod} from "./containsPowersOfTwoShiftableByPeriod"
 import {computeError} from "./error"
 import {punGlobals} from "./globals"
@@ -59,10 +59,10 @@ export const computePuns = (
 
         if (
             unpunniness < maxUnpunniness
-            && vectorContainsNoNotesRelatedByPeriod(vector, edo)
-            && !vectorCanBeNormReduced(vector, edo, durations)
-            && !vectorCanBeReduced(vector)
+            && !vectorContainsNotesRelatedByPeriod(vector, edo)
             && !vectorContainsPowersOfTwoShiftableByPeriod(vector, edo)
+            && !vectorCanBeReduced(vector)
+            && !vectorCanBeNormReduced(vector, edo, durations)
         ) {
             let pun: Pun
             // If there are more notes in the upper half, then it overall has higher pitched notes
