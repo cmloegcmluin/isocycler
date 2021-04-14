@@ -1,5 +1,6 @@
 import {performance} from "perf_hooks"
 import {DEFAULT_MAX_NORM} from "../../../src/app/constants"
+import {guiState} from "../../../src/app/globals"
 import {computeEdoBasePeriodDurations, computePuns, Edo, Max, Norm, Pun, Unpunniness} from "../../../src/puns"
 import {DEFAULT_INITIAL_VECTOR, DEFAULT_INITIAL_VECTOR_FOR_EQUAL_TEMPERED_TUNINGS} from "../../../src/puns/constants"
 import {computeDurations} from "../../../src/puns/durations"
@@ -15,15 +16,15 @@ describe("computePuns", (): void => {
     })
 
     it("returns puns for the given durations", (): void => {
-        const maxNorm = DEFAULT_MAX_NORM
-        const maxUnpunniness = 20 as Max<Unpunniness>
         const vector = DEFAULT_INITIAL_VECTOR
-        const edo = 12 as Edo
-        const basePeriodDurations: Duration[] = computeEdoBasePeriodDurations(edo)
+        guiState.maxNorm = DEFAULT_MAX_NORM
+        guiState.maxUnpunniness = 20 as Max<Unpunniness>
+        guiState.edo = 12 as Edo
+        const basePeriodDurations: Duration[] = computeEdoBasePeriodDurations(guiState.edo)
         const periods = 1 as Periods
         punGlobals.durations = computeDurations(basePeriodDurations, periods)
 
-        computePuns(vector, maxNorm, maxUnpunniness)
+        computePuns(vector)
 
         expect(punGlobals.puns).toEqual(jasmine.arrayWithExactContents([
             [[-2, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 1], 0.0005884873807988633, 11.109162441467543],
@@ -40,15 +41,15 @@ describe("computePuns", (): void => {
     })
 
     it("when the tuning is equally tempered, and thus puns are able to be transposed, only includes one of each class", (): void => {
-        const maxNorm = DEFAULT_MAX_NORM
-        const maxUnpunniness = 20 as Max<Unpunniness>
         const vector = DEFAULT_INITIAL_VECTOR_FOR_EQUAL_TEMPERED_TUNINGS
-        const edo = 12 as Edo
-        const basePeriodDurations: Duration[] = computeEdoBasePeriodDurations(edo)
+        guiState.maxNorm = DEFAULT_MAX_NORM
+        guiState.maxUnpunniness = 20 as Max<Unpunniness>
+        guiState.edo = 12 as Edo
+        const basePeriodDurations: Duration[] = computeEdoBasePeriodDurations(guiState.edo)
         const periods = 1 as Periods
         punGlobals.durations = computeDurations(basePeriodDurations, periods)
 
-        computePuns(vector, maxNorm, maxUnpunniness)
+        computePuns(vector)
 
         expect(punGlobals.puns).toEqual(jasmine.arrayWithExactContents([
             [[-2, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 1], 0.0005884873807988633, 11.109162441467543],
@@ -60,15 +61,15 @@ describe("computePuns", (): void => {
     })
 
     it("achieves exclusion of puns that are inverse equivalents by excluding those whose first non-zero term is not positive", (): void => {
-        const maxNorm: Max<Norm> = 9 as Max<Norm>
-        const maxUnpunniness: Max<Unpunniness> = 200 as Max<Unpunniness>
         const vector: Vector = DEFAULT_INITIAL_VECTOR_FOR_EQUAL_TEMPERED_TUNINGS
-        const edo = 3 as Edo
-        const basePeriodDurations: Duration[] = computeEdoBasePeriodDurations(edo)
+        guiState.maxNorm = 9 as Max<Norm>
+        guiState.maxUnpunniness = 200 as Max<Unpunniness>
+        guiState.edo = 3 as Edo
+        const basePeriodDurations: Duration[] = computeEdoBasePeriodDurations(guiState.edo)
         const periods = 1 as Periods
         punGlobals.durations = computeDurations(basePeriodDurations, periods)
 
-        computePuns(vector, maxNorm, maxUnpunniness, edo)
+        computePuns(vector)
 
         // Okay, this is kind of a bad example, because literally every one of these puns' 1st nonzero el is negative
         // But the reason for that is: every one had to be flipped in order for the total of the negative numbers
@@ -82,16 +83,16 @@ describe("computePuns", (): void => {
     })
 
     it("runs as efficiently as possible, only calling for the desired vectors, and once each only", (): void => {
-        const maxNorm: Max<Norm> = 3 as Max<Norm>
-        const maxUnpunniness: Max<Unpunniness> = 1 as Max<Unpunniness>
         const vector: Vector = DEFAULT_INITIAL_VECTOR_FOR_EQUAL_TEMPERED_TUNINGS
-        const edo = 3 as Edo
-        const basePeriodDurations: Duration[] = computeEdoBasePeriodDurations(edo)
+        guiState.maxNorm = 3 as Max<Norm>
+        guiState.maxUnpunniness = 1 as Max<Unpunniness>
+        guiState.edo = 3 as Edo
+        const basePeriodDurations: Duration[] = computeEdoBasePeriodDurations(guiState.edo)
         const periods = 1 as Periods
         punGlobals.durations = computeDurations(basePeriodDurations, periods)
         spyOn(punsModule, "computePuns").and.callThrough()
 
-        punsModule.computePuns(vector, maxNorm, maxUnpunniness, edo)
+        punsModule.computePuns(vector)
         const calls = (punsModule.computePuns as Spy).calls.all() as Array<unknown> as Array<{args: [Vector]}>
         const actual = calls.map(({args: [vector]}) => vector)
 
@@ -120,16 +121,16 @@ describe("computePuns", (): void => {
     })
 
     it("finds puns spanning multiple periods, extending the dimension of vector it searches", (): void => {
-        const maxNorm: Max<Norm> = 3 as Max<Norm>
-        const maxUnpunniness: Max<Unpunniness> = 1 as Max<Unpunniness>
         const vector: Vector = DEFAULT_INITIAL_VECTOR_FOR_EQUAL_TEMPERED_TUNINGS
-        const edo = 3 as Edo
-        const basePeriodDurations: Duration[] = computeEdoBasePeriodDurations(edo)
+        guiState.maxNorm = 3 as Max<Norm>
+        guiState.maxUnpunniness = 1 as Max<Unpunniness>
+        guiState.edo = 3 as Edo
+        const basePeriodDurations: Duration[] = computeEdoBasePeriodDurations(guiState.edo)
         const periods = 2 as Periods
         punGlobals.durations = computeDurations(basePeriodDurations, periods)
         spyOn(punsModule, "computePuns").and.callThrough()
 
-        punsModule.computePuns(vector, maxNorm, maxUnpunniness, edo)
+        punsModule.computePuns(vector)
         const calls = (punsModule.computePuns as Spy).calls.all() as Array<unknown> as Array<{args: [Vector]}>
         const actual = calls.map(({args: [vector]}) => vector)
 
@@ -213,11 +214,11 @@ describe("computePuns", (): void => {
 
     // TODO: CODE CLEANLINESS: TESTS ONLY RUN IN CI
     it("runs fast", (): void => {
-        const maxNorm: Max<Norm> = 5 as Max<Norm>
-        const maxUnpunniness: Max<Unpunniness> = 0.000000001 as Max<Unpunniness>
         const vector: Vector = DEFAULT_INITIAL_VECTOR_FOR_EQUAL_TEMPERED_TUNINGS
-        const edo = 12 as Edo
-        const basePeriodDurations: Duration[] = computeEdoBasePeriodDurations()
+        guiState.maxNorm = 5 as Max<Norm>
+        guiState.maxUnpunniness = 0.000000001 as Max<Unpunniness>
+        guiState.edo = 12 as Edo
+        const basePeriodDurations: Duration[] = computeEdoBasePeriodDurations(guiState.edo)
         const periods = 3 as Periods
         punGlobals.durations = computeDurations(basePeriodDurations, periods)
 
@@ -225,7 +226,7 @@ describe("computePuns", (): void => {
         let totalTime = 0
         for (let trial = 1; trial <= trials; trial++) {
             const before = performance.now()
-            computePuns(vector, maxNorm, maxUnpunniness, edo)
+            computePuns(vector)
             const time = performance.now() - before
             console.log(`trial ${trial}: ${time.toPrecision(5)}`)
             totalTime += time
@@ -237,15 +238,15 @@ describe("computePuns", (): void => {
     })
 
     it("excludes puns which include notes which are related by the period (and thus could be simplified)", (): void => {
-        const maxNorm: Max<Norm> = 8 as Max<Norm>
-        const maxUnpunniness: Max<Unpunniness> = 50 as Max<Unpunniness>
         const vector: Vector = DEFAULT_INITIAL_VECTOR_FOR_EQUAL_TEMPERED_TUNINGS
-        const edo = 3 as Edo
-        const basePeriodDurations: Duration[] = computeEdoBasePeriodDurations(edo)
+        guiState.maxNorm = 8 as Max<Norm>
+        guiState.maxUnpunniness = 50 as Max<Unpunniness>
+        guiState.edo = 3 as Edo
+        const basePeriodDurations: Duration[] = computeEdoBasePeriodDurations(guiState.edo)
         const periods = 2 as Periods
         punGlobals.durations = computeDurations(basePeriodDurations, periods)
 
-        computePuns(vector, maxNorm, maxUnpunniness, edo)
+        computePuns(vector)
 
         expect(punGlobals.puns).toEqual([
             // Otherwise would contain [-3,1,3,0,0,1]
@@ -253,15 +254,15 @@ describe("computePuns", (): void => {
     })
 
     it("excludes puns which can be reduced", (): void => {
-        const maxNorm: Max<Norm> = 6 as Max<Norm>
-        const maxUnpunniness: Max<Unpunniness> = 800 as Max<Unpunniness>
         const vector: Vector = DEFAULT_INITIAL_VECTOR_FOR_EQUAL_TEMPERED_TUNINGS
-        const edo = 3 as Edo
-        const basePeriodDurations: Duration[] = computeEdoBasePeriodDurations(edo)
+        guiState.maxNorm = 6 as Max<Norm>
+        guiState.maxUnpunniness = 800 as Max<Unpunniness>
+        guiState.edo = 3 as Edo
+        const basePeriodDurations: Duration[] = computeEdoBasePeriodDurations(guiState.edo)
         const periods = 3 as Periods
         punGlobals.durations = computeDurations(basePeriodDurations, periods)
 
-        computePuns(vector, maxNorm, maxUnpunniness, edo)
+        computePuns(vector)
 
         punGlobals.puns.forEach(pun => {
             expect(pun[0]).not.toEqual([-2, 2, 0, 0, 0, 0, 0, 2] as Vector)
@@ -270,15 +271,15 @@ describe("computePuns", (): void => {
 
     // TODO: CODE CLEANLINESS: Perhaps you can find a faster-running example of this test
     it("excludes puns that can be reduced in a different way", (): void => {
-        const maxNorm: Max<Norm> = 7 as Max<Norm>
-        const maxUnpunniness: Max<Unpunniness> = 50 as Max<Unpunniness>
         const vector: Vector = DEFAULT_INITIAL_VECTOR_FOR_EQUAL_TEMPERED_TUNINGS
-        const edo = 11 as Edo
-        const basePeriodDurations: Duration[] = computeEdoBasePeriodDurations(edo)
+        guiState.maxNorm = 7 as Max<Norm>
+        guiState.maxUnpunniness = 50 as Max<Unpunniness>
+        guiState.edo = 11 as Edo
+        const basePeriodDurations: Duration[] = computeEdoBasePeriodDurations(guiState.edo)
         const periods = 2 as Periods
         punGlobals.durations = computeDurations(basePeriodDurations, periods)
 
-        computePuns(vector, maxNorm, maxUnpunniness, edo)
+        computePuns(vector)
 
         punGlobals.puns.forEach(pun => {
             // Because both of those 2's should be shifted 11 positions to the left and converted to 1's
