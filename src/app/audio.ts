@@ -32,11 +32,6 @@ const playPun = async ([vector]: Pun, durations: Duration[]) => {
         if (count > 0) {
             for (let index = 0; index < count; index++) {
                 upperNotes.push({
-                    // TODO: CODE CLEANLINESS: INCONSISTENT CONCEPTION OF SOUND
-                    //  not pitch, it's frequency! that's why the isocyclicPitch function didn't work here
-                    //  because pitch takes the log
-                    //  I wonder if we'll ever want a like, shared general utility library that could work for
-                    //  Sagittal, StaffCode, MusicalPatterns, and Isocycler
                     pitch: {scalar: 1 / duration as unknown as Scalar<Pitch>},
                     value: {scalar: duration as unknown as Scalar<Value>},
                     envelope: {scalar: 0.97 * duration as unknown as Scalar<Value>},
