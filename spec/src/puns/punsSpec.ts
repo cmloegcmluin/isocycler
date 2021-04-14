@@ -212,8 +212,9 @@ describe("computePuns", (): void => {
         expect(actual).toEqual(expected)
     })
 
-    // TODO: CODE CLEANLINESS: TESTS ONLY RUN IN CI
     it("runs fast", (): void => {
+        if (!process.env.CI) pending("slow test; only runs in CI")
+
         const vector: Vector = DEFAULT_INITIAL_VECTOR_FOR_EQUAL_TEMPERED_TUNINGS
         guiState.maxNorm = 5 as Max<Norm>
         guiState.maxUnpunniness = 0.000000001 as Max<Unpunniness>
