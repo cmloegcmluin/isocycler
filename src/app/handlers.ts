@@ -15,6 +15,8 @@ const handleChange = (): void => {
 
     const {edo, periods, isEt} = guiState
 
+    punGlobals.puns = []
+
     const basePeriodDurations = computeEdoBasePeriodDurations(edo)
     punGlobals.durations = computeDurations(basePeriodDurations, periods)
 
