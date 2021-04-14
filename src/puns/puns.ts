@@ -1,8 +1,8 @@
 import {guiState} from "../app/globals"
-import {vectorCanBeNormReduced} from "./canBeNormReduced"
-import {vectorCanBeReduced} from "./canBeReduced"
+import {vectorCanBeNormReducedTransposingHigher} from "./canBeNormReducedTransposingHigher"
+import {vectorCanBeNormReducedWithoutTransposing} from "./canBeNormReducedWithoutTransposing"
 import {vectorContainsNotesRelatedByPeriod} from "./containsNoNotesRelatedByPeriod"
-import {vectorContainsPowersOfTwoShiftableByPeriod} from "./containsPowersOfTwoShiftableByPeriod"
+import {vectorCanBeNormReducedTransposingLower} from "./canBeNormReducedTransposingLower"
 import {computeError} from "./error"
 import {punGlobals} from "./globals"
 import {invertVector} from "./invert"
@@ -61,17 +61,17 @@ export const computePuns = (
         //     console.log("made it")
         //     console.log("&& unpunniness < maxUnpunniness", unpunniness < maxUnpunniness)
         //     console.log("&& !vectorContainsNotesRelatedByPeriod(vector, edo)", !vectorContainsNotesRelatedByPeriod(vector, edo))
-        //     console.log("&& !vectorContainsPowersOfTwoShiftableByPeriod(vector, edo)", !vectorContainsPowersOfTwoShiftableByPeriod(vector, edo))
-        //     console.log("&& !vectorCanBeReduced(vector)", !vectorCanBeReduced(vector))
-        //     console.log("&& !vectorCanBeNormReduced(vector, edo, durations)", !vectorCanBeNormReduced(vector, edo, durations))
+        //     console.log("&& !vectorCanBeNormReducedTransposingLower(vector, edo)", !vectorCanBeNormReducedTransposingLower(vector, edo))
+        //     console.log("&& !vectorCanBeNormReducedWithoutTransposing(vector)", !vectorCanBeNormReducedWithoutTransposing(vector))
+        //     console.log("&& !vectorCanBeNormReducedTransposingHigher(vector, edo, durations)", !vectorCanBeNormReducedTransposingHigher(vector, edo, durations))
         // }
 
         if (
             unpunniness < maxUnpunniness
             && !vectorContainsNotesRelatedByPeriod(vector, edo)
-            && !vectorContainsPowersOfTwoShiftableByPeriod(vector, edo)
-            && !vectorCanBeReduced(vector)
-            && !vectorCanBeNormReduced(vector, edo, durations)
+            && !vectorCanBeNormReducedTransposingLower(vector, edo)
+            && !vectorCanBeNormReducedWithoutTransposing(vector)
+            && !vectorCanBeNormReducedTransposingHigher(vector, edo, durations)
         ) {
             let pun: Pun
             // If there are more notes in the upper half, then it overall has higher pitched notes

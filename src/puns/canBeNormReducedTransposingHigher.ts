@@ -1,6 +1,6 @@
 import {Duration, Edo, Vector} from "./types"
 
-const vectorCanBeNormReduced = (vector: Vector, edo: Edo, durations: Duration[]): boolean => {
+const vectorCanBeNormReducedTransposingHigher = (vector: Vector, edo: Edo, durations: Duration[]): boolean => {
     let allUpperNotesArePowersOfTwo = true
     let allLowerNotesArePowersOfTwo = true
 
@@ -32,5 +32,5 @@ const vectorCanBeNormReduced = (vector: Vector, edo: Edo, durations: Duration[])
 }
 
 export {
-    vectorCanBeNormReduced,
+    vectorCanBeNormReducedTransposingHigher,
 }

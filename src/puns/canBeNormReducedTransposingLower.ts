@@ -1,6 +1,6 @@
 import {Edo, Vector} from "./types"
 
-const vectorContainsPowersOfTwoShiftableByPeriod = (vector: Vector, edo: Edo): boolean => {
+const vectorCanBeNormReducedTransposingLower = (vector: Vector, edo: Edo): boolean => {
     const absVector = vector.map(Math.abs)
 
     for (let index = edo; index < vector.length; index++) {
@@ -14,5 +14,5 @@ const vectorContainsPowersOfTwoShiftableByPeriod = (vector: Vector, edo: Edo): b
 }
 
 export {
-    vectorContainsPowersOfTwoShiftableByPeriod,
+    vectorCanBeNormReducedTransposingLower,
 }

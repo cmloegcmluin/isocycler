@@ -1,14 +1,14 @@
 import {Edo} from "../../../src/puns"
-import {vectorCanBeNormReduced} from "../../../src/puns/canBeNormReduced"
+import {vectorCanBeNormReducedTransposingHigher} from "../../../src/puns/canBeNormReducedTransposingHigher"
 import {Vector} from "../../../src/puns"
 
-describe("vectorCanBeNormReduced", (): void => {
+describe("vectorCanBeNormReducedTransposingHigher", (): void => {
     it("returns true if all notes in one half (positive or negative counts in the vector) can be reduced by a power of two and all notes on the other half can be shifted one period higher to balance out that halving of duration", (): void => {
         const vector = [-4, 5, 0] as Vector
         const edo = 3 as Edo
         const durations = new Array(9)
 
-        const actual = vectorCanBeNormReduced(vector, edo, durations)
+        const actual = vectorCanBeNormReducedTransposingHigher(vector, edo, durations)
 
         expect(actual).toBeTruthy() // could be [-2,0,0,0,5,0] or finally [-1,0,0,0,0,0,0,5,0] which have smaller norms
     })
@@ -18,7 +18,7 @@ describe("vectorCanBeNormReduced", (): void => {
         const edo = 3 as Edo
         const durations = new Array(3)
 
-        const actual = vectorCanBeNormReduced(vector, edo, durations)
+        const actual = vectorCanBeNormReducedTransposingHigher(vector, edo, durations)
 
         expect(actual).toBeFalsy()
     })
@@ -28,7 +28,7 @@ describe("vectorCanBeNormReduced", (): void => {
         const edo = 3 as Edo
         const durations = new Array(9)
 
-        const actual = vectorCanBeNormReduced(vector, edo, durations)
+        const actual = vectorCanBeNormReducedTransposingHigher(vector, edo, durations)
 
         expect(actual).toBeTruthy()
     })
@@ -38,7 +38,7 @@ describe("vectorCanBeNormReduced", (): void => {
         const edo = 3 as Edo
         const durations = new Array(3)
 
-        const actual = vectorCanBeNormReduced(vector, edo, durations)
+        const actual = vectorCanBeNormReducedTransposingHigher(vector, edo, durations)
 
         expect(actual).toBeFalsy()
     })
@@ -48,7 +48,7 @@ describe("vectorCanBeNormReduced", (): void => {
         const edo = 3 as Edo
         const durations = new Array(9)
 
-        const actual = vectorCanBeNormReduced(vector, edo, durations)
+        const actual = vectorCanBeNormReducedTransposingHigher(vector, edo, durations)
 
         expect(actual).toBeTruthy()
     })
@@ -58,7 +58,7 @@ describe("vectorCanBeNormReduced", (): void => {
         const edo = 12 as Edo
         const durations = new Array(24)
 
-        const actual = vectorCanBeNormReduced(vector, edo, durations)
+        const actual = vectorCanBeNormReducedTransposingHigher(vector, edo, durations)
 
         expect(actual).toBeFalsy()
     })
@@ -68,7 +68,7 @@ describe("vectorCanBeNormReduced", (): void => {
         const edo = 12 as Edo
         const durations = new Array(24)
 
-        const actual = vectorCanBeNormReduced(vector, edo, durations)
+        const actual = vectorCanBeNormReducedTransposingHigher(vector, edo, durations)
 
         expect(actual).toBeFalsy()
     })
@@ -79,7 +79,7 @@ describe("vectorCanBeNormReduced", (): void => {
         const edo = 12 as Edo
         const durations = new Array(24)
 
-        const actual = vectorCanBeNormReduced(vector, edo, durations)
+        const actual = vectorCanBeNormReducedTransposingHigher(vector, edo, durations)
 
         expect(actual).toBeFalsy()
     })
@@ -90,7 +90,7 @@ describe("vectorCanBeNormReduced", (): void => {
         const edo = 12 as Edo
         const durations = new Array(24)
 
-        const actual = vectorCanBeNormReduced(vector, edo, durations)
+        const actual = vectorCanBeNormReducedTransposingHigher(vector, edo, durations)
 
         expect(actual).toBeFalsy()
     })

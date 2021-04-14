@@ -1,6 +1,6 @@
 import {Vector} from "./types"
 
-const vectorCanBeReduced = (vector: Vector): boolean => {
+const vectorCanBeNormReducedWithoutTransposing = (vector: Vector): boolean => {
     const absVector = vector.map(Math.abs)
     const min = Math.min(...absVector.map(count => count === 0 ? Infinity : count))
 
@@ -12,5 +12,5 @@ const vectorCanBeReduced = (vector: Vector): boolean => {
 }
 
 export {
-    vectorCanBeReduced,
+    vectorCanBeNormReducedWithoutTransposing,
 }
