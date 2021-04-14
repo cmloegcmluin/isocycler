@@ -70,11 +70,6 @@ const playPun = async ([vector]: Pun, durations: Duration[]) => {
     }
     const materializeEntities: MaterializeEntities = () => [upperEntity, lowerEntity]
 
-    // TODO: HELP MUSICAL PATTERNS AS DISTANCED FUTURE SELF COMING TO IT
-    //  Readme for musical patterns material is out of date
-    //  And could really use a starting from scratch basic example
-    //  Like what I’ve just made in isocycler
-    //  Including a version that has the scales and it uses them by index which was an alternate approach here
     const pitchScale: Scale<Pitch> = {basis: 220 as unknown as Tone}
     const valueScale: Scale<Value> = {basis: 1000 as unknown as UtilitiesDuration}
     const scales: Scales = {PITCH: [pitchScale], VALUE: [valueScale]}
