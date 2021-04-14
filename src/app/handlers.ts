@@ -13,9 +13,7 @@ const handleChange = (): void => {
     const isEt = components.etCheckbox.checked
 
     const basePeriodDurations = computeEdoBasePeriodDurations(edo)
-    const durations = computeDurations(basePeriodDurations, periods)
-    console.log(durations)
-    const initialVector = isEt ? DEFAULT_INITIAL_VECTOR_FOR_EQUAL_TEMPERED_TUNINGS : DEFAULT_INITIAL_VECTOR
+    punGlobals.durations = computeDurations(basePeriodDurations, periods)
 
     computePuns(initialVector, maxNorm, maxUnpunniness, edo)
 
