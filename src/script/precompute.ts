@@ -1,6 +1,8 @@
+import {guiState} from "../app/globals"
 import {computeEdoBasePeriodDurations, computePuns, Edo, Max, Norm, Pun, Unpunniness} from "../puns"
 import {DEFAULT_INITIAL_VECTOR_FOR_EQUAL_TEMPERED_TUNINGS} from "../puns/constants"
 import {computeDurations} from "../puns/durations"
+import {punGlobals} from "../puns/globals"
 import {Periods} from "../puns/types"
 
 const edo = 12 as Edo
@@ -51,5 +53,11 @@ const r = maxNorm
 const combinationsWithRepetition = factorial(n + r - 1) / (factorial(r) * factorial(n - 1))
 console.log(combinationsWithRepetition)
 
-const puns: Pun[] = []
-computePuns(puns, durations, initialVector, maxNorm, maxUnpunniness, edo)
+punGlobals.durations = durations
+punGlobals.puns = []
+
+guiState.edo = edo
+guiState.maxNorm = maxNorm
+guiState.maxUnpunniness = maxUnpunniness
+
+computePuns(initialVector)

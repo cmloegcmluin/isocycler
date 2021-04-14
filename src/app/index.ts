@@ -29,9 +29,6 @@ handleChange()
 //  - There should be a loop checkbox, and only if it's checked does the stop button appear
 //  - might be cool to just randomize the notes, or make that a checkbox
 
-// TODO: UI FINESSE: DON'T CRASH
-//  It should compute the combinations w/ repetitions count (see precompute.ts) and abort if too big (with message)
-
 // TODO: UI FINESSE: SORTING & FILTERING PUNS
 //  Maybe there's a better way to sort the puns than by unpunniness, because who really cares about that as long as
 //  it's within your tolerance. instead maybe it should sort them by norm, how many notes there are I mean.
