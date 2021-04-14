@@ -57,6 +57,15 @@ export const computePuns = (
         const unpunniness = computeUnpunniness(vector, durations)
         error = computeError(vector, durations)
 
+        // if (vector.toString() === "-1,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,-2") {
+        //     console.log("made it")
+        //     console.log("&& unpunniness < maxUnpunniness", unpunniness < maxUnpunniness)
+        //     console.log("&& !vectorContainsNotesRelatedByPeriod(vector, edo)", !vectorContainsNotesRelatedByPeriod(vector, edo))
+        //     console.log("&& !vectorContainsPowersOfTwoShiftableByPeriod(vector, edo)", !vectorContainsPowersOfTwoShiftableByPeriod(vector, edo))
+        //     console.log("&& !vectorCanBeReduced(vector)", !vectorCanBeReduced(vector))
+        //     console.log("&& !vectorCanBeNormReduced(vector, edo, durations)", !vectorCanBeNormReduced(vector, edo, durations))
+        // }
+
         if (
             unpunniness < maxUnpunniness
             && !vectorContainsNotesRelatedByPeriod(vector, edo)

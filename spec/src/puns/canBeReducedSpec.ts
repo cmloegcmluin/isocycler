@@ -1,5 +1,5 @@
 import {vectorCanBeReduced} from "../../../src/puns/canBeReduced"
-import {Vector} from "../../../src/puns/types"
+import {Vector} from "../../../src/puns"
 
 describe("vectorCanBeReduced", (): void => {
     it("returns true if the terms of the vector are all multiples of some number > 1", (): void => {

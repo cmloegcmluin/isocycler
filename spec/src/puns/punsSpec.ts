@@ -269,11 +269,10 @@ describe("computePuns", (): void => {
         })
     })
 
-    // TODO: CODE CLEANLINESS: Perhaps you can find a faster-running example of this test
     it("excludes puns that can be reduced in a different way", (): void => {
         const vector: Vector = DEFAULT_INITIAL_VECTOR_FOR_EQUAL_TEMPERED_TUNINGS
-        guiState.maxNorm = 7 as Max<Norm>
-        guiState.maxUnpunniness = 50 as Max<Unpunniness>
+        guiState.maxNorm = 5 as Max<Norm>
+        guiState.maxUnpunniness = 14 as Max<Unpunniness>
         guiState.edo = 11 as Edo
         const basePeriodDurations: Duration[] = computeEdoBasePeriodDurations(guiState.edo)
         const periods = 2 as Periods
@@ -282,8 +281,8 @@ describe("computePuns", (): void => {
         computePuns(vector)
 
         punGlobals.puns.forEach(pun => {
-            // Because both of those 2's should be shifted 11 positions to the left and converted to 1's
-            expect(pun[0]).not.toEqual([-1, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 1, 0, 2] as Vector)
+            // Because that 2 should be shifted 11 positions to the left and converted to 1's
+            expect(pun[0]).not.toEqual([1,0,-1,0,0,0,-1,0,0,0,0,0,0,0,0,0,0,0,0,0,2] as Vector)
         })
     })
 })

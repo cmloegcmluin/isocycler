@@ -20,6 +20,15 @@ describe("vectorContainsPowersOfTwoShiftableByPeriod", (): void => {
         expect(actual).toBeFalsy()
     })
 
+    it("works even if the power of 2 is negative", (): void => {
+        const vector = [-1,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,-2] as Vector
+        const edo = 11 as Edo
+
+        const actual = vectorContainsPowersOfTwoShiftableByPeriod(vector, edo)
+
+        expect(actual).toBeTruthy()
+    })
+
     // TODO: CODE CLEANLINESS & PUNS: SIMPLIFY EXCLUSION METHODS
     //  I think that this is closely related to norm reduced
     //  It's just that norm reducing shifts things to the right and this shifts things to the left, maybe?
