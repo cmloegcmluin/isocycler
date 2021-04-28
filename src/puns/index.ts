@@ -23,3 +23,15 @@ export {computeEdoBasePeriodDurations} from "./edo"
 //  - Or, just my own dumb probably incomplete or horribly inefficient solution I came up with while unable to sleep:
 //  Find every combination of 2 vectors, then see if any of those are equal to any of the original vectors
 //  If so, eliminate them, and if any were eliminated this round, then repeat the process
+//  - Alright, so I just tried it for that above example: https://www.wolframalpha.com/input/?i=kernel+calculator&assumption=%7B%22F%22%2C+%22NullSpace%22%2C+%22theMatrix%22%7D+-%3E%22%7B%7B0%2C1%2C-1%2C0%2C0%2C0%2C-1%7D%2C%7B0%2C1%2C0%2C-1%2C0%2C-1%2C0%7D%2C%7B0%2C2%2C-1%2C-1%2C0%2C-1%2C-1%7D%7D%22
+//  And what it gives me back is
+//  (0 | 1 | 0 | -1 | 0 | -1 | 0
+//   0 | 0 | 1 | -1 | 0 | -1 | 1
+//   0 | 0 | 0 | 0  | 0 | 0  | 0)
+//  Which reveals to me a problem: when reducing rows of commas in RTT, it's fine, because each row = 0
+//  i.e. they're all tempered out
+//  But in isocycler's case, they all have some tiny error, that's different for each one
+//  So while this basically did what I hoped: return a row of all 0's indicating that it figured out one was redundant
+//  The two remaining results if you compare them with the originals are clearly not as close of puns as they should be
+//  So what I really need for isocycler is something else... or you just accept the problem as what you get with higher
+//  max norm...
