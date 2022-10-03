@@ -7,11 +7,13 @@ module.exports = {
     entry: "./src/app/index.ts",
     devtool: "inline-source-map",
     devServer: {
-        watchContentBase: true,
-        contentBase: "dist",
-        watchOptions: {
-            ignored: ["node_modules", "spec"],
+        static: {
+            directory: "dist",
+            watch: true,
         },
+    },
+    watchOptions: {
+        ignored: ["node_modules", "spec"],
     },
     resolve: {
         extensions: [".ts", ".scss", ".js", ".json"],
