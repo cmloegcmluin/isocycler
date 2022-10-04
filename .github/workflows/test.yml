@@ -12,4 +12,4 @@ jobs:
         with:
           node-version: 16.x
       - run: npm i
-      - run: npm run test-full
+      - run: npm run test
